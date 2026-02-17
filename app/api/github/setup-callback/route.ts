@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createSign } from "node:crypto";
+import { createSign, randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
 import sodium from "libsodium-wrappers";
 import { createClient } from "@supabase/supabase-js";
@@ -78,15 +78,28 @@ function createAppJwt(): string {
 	return `${headerB64}.${payloadB64}.${sig}`;
 }
 
-async function getProjectApiKey(projectId: string): Promise<string | null> {
-	LOG("getProjectApiKey: projectId", projectId);
+function getSupabaseClient() {
 	const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
 	const anonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-	if (!url || !anonKey) {
-		LOG_ERR("getProjectApiKey: Supabase not configured", { hasUrl: !!url, hasAnonKey: !!anonKey });
+	if (!url || !anonKey) return null;
+	return createClient(url, anonKey, { auth: { persistSession: false } });
+}
+
+/** Uses service role if set, so the callback can create keys even when RLS restricts anon. */
+function getSupabaseServiceClient() {
+	const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+	const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+	if (!url || !serviceKey) return null;
+	return createClient(url, serviceKey, { auth: { persistSession: false } });
+}
+
+async function getProjectApiKey(projectId: string): Promise<string | null> {
+	LOG("getProjectApiKey: projectId", projectId);
+	const supabase = getSupabaseClient();
+	if (!supabase) {
+		LOG_ERR("getProjectApiKey: Supabase not configured (missing URL or anon key)");
 		return null;
 	}
-	const supabase = createClient(url, anonKey, { auth: { persistSession: false } });
 	const { data, error } = await supabase.from("projects_api_keys").select("value").eq("project_id", projectId).eq("name", "github-actions").maybeSingle();
 	if (error) {
 		LOG_ERR("getProjectApiKey: Supabase lookup failed", error.message, error);
@@ -95,6 +108,24 @@ async function getProjectApiKey(projectId: string): Promise<string | null> {
 	const hasKey = !!data?.value;
 	LOG("getProjectApiKey:", hasKey ? "found key" : "no key for project");
 	return data?.value ?? null;
+}
+
+/** Create a github-actions API key for the project. Uses service role client if available so RLS does not block insert. */
+async function createProjectApiKey(projectId: string): Promise<string | null> {
+	LOG("createProjectApiKey: creating key for projectId", projectId);
+	const client = getSupabaseServiceClient() ?? getSupabaseClient();
+	if (!client) {
+		LOG_ERR("createProjectApiKey: Supabase not configured");
+		return null;
+	}
+	const value = randomBytes(32).toString("base64url");
+	const { data, error } = await client.from("projects_api_keys").insert({ project_id: projectId, name: "github-actions", value }).select("value").single();
+	if (error) {
+		LOG_ERR("createProjectApiKey: insert failed", error.message, error);
+		return null;
+	}
+	LOG("createProjectApiKey: created");
+	return data?.value ?? value;
 }
 
 async function encryptSecretForGitHub(publicKeyBase64: string, secretValue: string): Promise<string> {
@@ -202,9 +233,12 @@ export async function GET(request: NextRequest) {
 		return redirectTo(baseUrl, "/setup", { error: "invalid_callback" });
 	}
 
-	const apiKey = await getProjectApiKey(decoded.projectId);
+	let apiKey = await getProjectApiKey(decoded.projectId);
 	if (!apiKey) {
-		LOG_ERR("GET: no_key for project", decoded.projectId);
+		apiKey = await createProjectApiKey(decoded.projectId);
+	}
+	if (!apiKey) {
+		LOG_ERR("GET: no_key for project (create failed or not allowed)", decoded.projectId);
 		return redirectTo(baseUrl, "/setup", { error: "no_key" });
 	}
 

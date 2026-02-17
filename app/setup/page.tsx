@@ -5,7 +5,7 @@ const ERROR_MESSAGES: Record<string, string> = {
   invalid_callback:
     "Invalid or missing installation data. Please run perceo init again and use the install link from the CLI.",
   no_key:
-    "No API key found for this project. Make sure you've run perceo init and have a github-actions key set up.",
+    "Could not create or find an API key for this project. The project may not exist, or the database may not allow creating keys from the setup callback (e.g. set SUPABASE_SERVICE_ROLE_KEY if using RLS).",
   github_error:
     "We couldn't set the repository secret. The GitHub App may lack access or permissions.",
 };
