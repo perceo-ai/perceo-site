@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createSign, randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
+import bcrypt from "bcryptjs";
 import sodium from "libsodium-wrappers";
 import { createClient } from "@supabase/supabase-js";
+
+/** Scopes for the github-actions API key (matches CLI). */
+const GITHUB_ACTIONS_SCOPES = ["ci:analyze", "ci:test", "flows:read", "insights:read", "events:publish"] as const;
+const KEY_PREFIX_LENGTH = 12;
 
 const GITHUB_API = "https://api.github.com";
 const SECRET_NAME = "PERCEO_API_KEY";
@@ -93,39 +98,49 @@ function getSupabaseServiceClient() {
 	return createClient(url, serviceKey, { auth: { persistSession: false } });
 }
 
-async function getProjectApiKey(projectId: string): Promise<string | null> {
-	LOG("getProjectApiKey: projectId", projectId);
-	const supabase = getSupabaseClient();
-	if (!supabase) {
-		LOG_ERR("getProjectApiKey: Supabase not configured (missing URL or anon key)");
-		return null;
-	}
-	const { data, error } = await supabase.from("project_api_keys").select("value").eq("project_id", projectId).eq("name", "github-actions").maybeSingle();
-	if (error) {
-		LOG_ERR("getProjectApiKey: Supabase lookup failed", error.message, error);
-		return null;
-	}
-	const hasKey = !!data?.value;
-	LOG("getProjectApiKey:", hasKey ? "found key" : "no key for project");
-	return data?.value ?? null;
-}
-
-/** Create a github-actions API key for the project. Uses service role client if available so RLS does not block insert. */
-async function createProjectApiKey(projectId: string): Promise<string | null> {
-	LOG("createProjectApiKey: creating key for projectId", projectId);
+/**
+ * Ensures a github-actions API key for the project: revokes any existing one (we cannot read the secret back),
+ * creates a new key in project_api_keys (key_hash, key_prefix, scopes), and returns the plain key for GitHub.
+ * Uses service role client if available so RLS does not block.
+ */
+async function ensureProjectApiKey(projectId: string): Promise<string | null> {
+	LOG("ensureProjectApiKey: projectId", projectId);
 	const client = getSupabaseServiceClient() ?? getSupabaseClient();
 	if (!client) {
-		LOG_ERR("createProjectApiKey: Supabase not configured");
+		LOG_ERR("ensureProjectApiKey: Supabase not configured");
 		return null;
 	}
-	const value = randomBytes(32).toString("base64url");
-	const { data, error } = await client.from("project_api_keys").insert({ project_id: projectId, name: "github-actions", value }).select("value").single();
+
+	// Revoke existing active key if any (unique on project_id, name; we cannot retrieve the secret)
+	const { data: existing } = await client.from("project_api_keys").select("id").eq("project_id", projectId).eq("name", "github-actions").is("revoked_at", null).maybeSingle();
+	if (existing) {
+		LOG("ensureProjectApiKey: revoking existing key", existing.id);
+		await client
+			.from("project_api_keys")
+			.update({
+				revoked_at: new Date().toISOString(),
+				revocation_reason: "replaced by setup callback",
+			})
+			.eq("id", existing.id);
+	}
+
+	const key = `prc_${randomBytes(32).toString("base64url")}`;
+	const keyHash = await bcrypt.hash(key, 10);
+	const keyPrefix = key.substring(0, KEY_PREFIX_LENGTH);
+
+	const { error } = await client.from("project_api_keys").insert({
+		project_id: projectId,
+		name: "github-actions",
+		key_hash: keyHash,
+		key_prefix: keyPrefix,
+		scopes: [...GITHUB_ACTIONS_SCOPES],
+	});
 	if (error) {
-		LOG_ERR("createProjectApiKey: insert failed", error.message, error);
+		LOG_ERR("ensureProjectApiKey: insert failed", error.message, error);
 		return null;
 	}
-	LOG("createProjectApiKey: created");
-	return data?.value ?? value;
+	LOG("ensureProjectApiKey: created");
+	return key;
 }
 
 async function encryptSecretForGitHub(publicKeyBase64: string, secretValue: string): Promise<string> {
@@ -233,10 +248,7 @@ export async function GET(request: NextRequest) {
 		return redirectTo(baseUrl, "/setup", { error: "invalid_callback" });
 	}
 
-	let apiKey = await getProjectApiKey(decoded.projectId);
-	if (!apiKey) {
-		apiKey = await createProjectApiKey(decoded.projectId);
-	}
+	const apiKey = await ensureProjectApiKey(decoded.projectId);
 	if (!apiKey) {
 		LOG_ERR("GET: no_key for project (create failed or not allowed)", decoded.projectId);
 		return redirectTo(baseUrl, "/setup", { error: "no_key" });

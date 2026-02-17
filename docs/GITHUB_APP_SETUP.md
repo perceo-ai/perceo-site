@@ -43,17 +43,20 @@ In your [GitHub App](https://github.com/settings/apps) configuration:
 
 ## 3. Supabase schema (API keys)
 
-The callback reads from and, when missing, writes to the project’s API key row.
+The callback writes to `project_api_keys`: it revokes any existing active `github-actions` key for the project, then inserts a new row with a generated key (stored as `key_hash` and `key_prefix`; the plain key is only used once to set `PERCEO_API_KEY` in GitHub).
 
-**Table: `projects_api_keys`**
+**Table: `project_api_keys`**
 
-Suggested columns:
+Required columns used by the callback:
 
-- `project_id` (uuid, references your projects table)
+- `project_id` (uuid, references `projects.id`)
 - `name` (text) – the callback uses `name = 'github-actions'`
-- `value` (text) – the secret stored as `PERCEO_API_KEY` in the repo
+- `key_hash` (text) – bcrypt hash of the secret (callback generates `prc_` + base64url and hashes it)
+- `key_prefix` (text) – first 12 characters of the key for display
+- `scopes` (text[]) – callback uses `ci:analyze`, `ci:test`, `flows:read`, `insights:read`, `events:publish`
+- Optional: `revoked_at`, `revocation_reason` (callback revokes existing key before creating a new one)
 
-If no row exists for `project_id` + `name = 'github-actions'`, the callback creates one with a new random key. For that insert to succeed with RLS enabled, either set `SUPABASE_SERVICE_ROLE_KEY` (recommended) or add an RLS policy that allows the anon key to insert this row.
+For the insert to succeed with RLS enabled, set `SUPABASE_SERVICE_ROLE_KEY` (recommended) or add an RLS policy that allows the anon key to insert/update this table.
 
 ---
 
