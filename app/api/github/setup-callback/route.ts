@@ -100,7 +100,7 @@ async function getProjectApiKey(projectId: string): Promise<string | null> {
 		LOG_ERR("getProjectApiKey: Supabase not configured (missing URL or anon key)");
 		return null;
 	}
-	const { data, error } = await supabase.from("projects_api_keys").select("value").eq("project_id", projectId).eq("name", "github-actions").maybeSingle();
+	const { data, error } = await supabase.from("project_api_keys").select("value").eq("project_id", projectId).eq("name", "github-actions").maybeSingle();
 	if (error) {
 		LOG_ERR("getProjectApiKey: Supabase lookup failed", error.message, error);
 		return null;
@@ -119,7 +119,7 @@ async function createProjectApiKey(projectId: string): Promise<string | null> {
 		return null;
 	}
 	const value = randomBytes(32).toString("base64url");
-	const { data, error } = await client.from("projects_api_keys").insert({ project_id: projectId, name: "github-actions", value }).select("value").single();
+	const { data, error } = await client.from("project_api_keys").insert({ project_id: projectId, name: "github-actions", value }).select("value").single();
 	if (error) {
 		LOG_ERR("createProjectApiKey: insert failed", error.message, error);
 		return null;
