@@ -18,17 +18,17 @@ export default function Navbar() {
   return (
     <>
       <header
-        className="fixed w-full z-20 px-5 md:px-12.5 py-5 max-w-[1400px] mx-auto transition-[background-color,backdrop-filter] duration-300"
+        className="fixed left-0 right-0 z-20 px-5 md:px-12.5 py-5 transition-[background-color,backdrop-filter] duration-300 max-w-[1920px] mx-auto"
         style={
           scrolled
             ? {
-                background: "rgba(49, 47, 47, 0.7)",
-                backdropFilter: "blur(16px)",
-                WebkitBackdropFilter: "blur(16px)",
-              }
+              background: "rgba(49, 47, 47, 0.7)",
+              backdropFilter: "blur(16px)",
+              WebkitBackdropFilter: "blur(16px)",
+            }
             : {
-                background: "transparent",
-              }
+              background: "transparent",
+            }
         }
       >
         <div className="flex items-center justify-between md:relative">
@@ -73,17 +73,15 @@ export default function Navbar() {
       {/* Mobile Menu Sheet */}
       {/* Overlay */}
       <div
-        className={`md:hidden fixed inset-0 z-50 bg-black/40 transition-opacity duration-300 ${
-          menuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
-        }`}
+        className={`md:hidden fixed inset-0 z-50 bg-black/40 transition-opacity duration-300 ${menuOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
         onClick={() => setMenuOpen(false)}
       />
 
       {/* Sheet */}
       <div
-        className={`md:hidden fixed inset-0 z-50 flex flex-col px-6 py-5 transition-transform duration-300 ease-out ${
-          menuOpen ? "translate-y-0" : "-translate-y-full"
-        }`}
+        className={`md:hidden fixed inset-0 z-50 flex flex-col px-6 py-5 transition-transform duration-300 ease-out ${menuOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
         style={{
           background: "rgba(30, 28, 28, 0.65)",
           WebkitBackdropFilter: "blur(24px)",
