@@ -10,7 +10,9 @@ const features = [
   {
     title: "One command. Full coverage.",
     description:
-      "Run perceo init in any repo. Our CLI scans your codebase, detects every user flow, and generates a complete test graph — no config files, no boilerplate. Your agent swarms know exactly what to test from day one.",
+      "Run perceo init in any repo*. Our CLI scans your codebase, detects every user flow, and generates a complete test graph — no config files, no boilerplate. Your agent swarms know exactly what to test from day one.",
+    footnote:
+      "We only support React-based frameworks for testing and are expanding the frameworks we support quickly.",
   },
   {
     title: "See every path your users take.",
@@ -53,19 +55,25 @@ function FeatureBlock({
       </div>
 
       <h2
-        className={`text-3xl md:text-4xl font-bold font-serif italic mb-4 transition-colors duration-500 ${
-          isInView ? "text-white" : "text-zinc-600"
-        }`}
+        className={`text-3xl md:text-4xl font-bold font-serif italic mb-4 transition-colors duration-500 ${isInView ? "text-white" : "text-zinc-600"
+          }`}
       >
         {feature.title}
       </h2>
       <p
-        className={`text-lg leading-relaxed max-w-md transition-colors duration-500 ${
-          isInView ? "text-zinc-300" : "text-zinc-700"
-        }`}
+        className={`text-lg leading-relaxed max-w-md transition-colors duration-500 ${isInView ? "text-zinc-300" : "text-zinc-700"
+          }`}
       >
         {feature.description}
       </p>
+      {"footnote" in feature && feature.footnote && (
+        <p
+          className={`mt-2 text-sm text-zinc-500 transition-colors duration-500 ${isInView ? "text-zinc-400" : "text-zinc-600"
+            }`}
+        >
+          *{feature.footnote}
+        </p>
+      )}
     </div>
   );
 }

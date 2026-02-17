@@ -51,17 +51,15 @@ export default function StatusCard({
       {/* Header row */}
       <div className="flex gap-[5px] items-center w-full relative">
         <div
-          className={`w-[7px] h-[7px] rounded-full shrink-0 ${
-            isPassed ? "bg-[#8add84]" : "bg-[#848484]"
-          }`}
+          className={`w-[7px] h-[7px] rounded-full shrink-0 ${isPassed ? "bg-[#8add84]" : "bg-[#848484]"
+            }`}
         />
         <span className="text-white text-[16px] font-semibold truncate flex-1 min-w-0">
           {title}
         </span>
         <span
-          className={`text-[12px] px-[10px] py-[4px] rounded-full font-semibold shrink-0 text-black ${
-            isPassed ? "bg-[#8add84]" : "bg-[#dd9384]"
-          }`}
+          className={`text-[12px] px-[10px] py-[4px] rounded-full font-semibold shrink-0 text-black ${isPassed ? "bg-[#8add84]" : "bg-[#dd9384]"
+            }`}
         >
           {status}
         </span>

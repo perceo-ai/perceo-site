@@ -61,7 +61,7 @@ export default function HeroSection() {
   return (
     <main
       ref={containerRef}
-      className="relative mx-5 md:mx-12.5 min-h-screen flex flex-col justify-center"
+      className="relative px-5! md:px-12.5! min-h-screen flex flex-col justify-center"
     >
       <AnimatedHeading className="font-bold relative z-30 font-sans">
         Zero Code,
@@ -79,9 +79,9 @@ export default function HeroSection() {
         <span className="text-white">matter</span>
       </p>
 
-      {/* Failed Card - Left Side */}
+      {/* Sell Home card - below Zero Code, left side */}
       <motion.div
-        className="absolute left-10 top-[400px] z-50 hidden md:block"
+        className="absolute left-5 md:left-12 top-[58vh] z-10 hidden md:block"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
@@ -95,9 +95,9 @@ export default function HeroSection() {
         />
       </motion.div>
 
-      {/* Passed Card - Right Side */}
+      {/* Authenticate User card - above Infinite confidence, right side */}
       <motion.div
-        className="absolute right-5 top-25 z-50 hidden md:flex flex-col items-end gap-6"
+        className="absolute right-5 md:right-12 top-[35vh] z-10 hidden md:block"
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
