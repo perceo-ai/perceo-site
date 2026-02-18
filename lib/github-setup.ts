@@ -140,36 +140,42 @@ export async function getInstallationIdForAccount(owner: string): Promise<string
 
 /**
  * Ensures a github-actions API key for the project; returns the plain key or null.
+ * The table has a unique constraint on (project_id, name), so we update the existing row
+ * when present instead of inserting a second one.
  */
 export async function ensureProjectApiKey(projectId: string): Promise<string | null> {
 	const client = getSupabaseServiceClient() ?? getSupabaseClient();
 	if (!client) return null;
 
-	const { data: existing } = await client.from("project_api_keys").select("id").eq("project_id", projectId).eq("name", "github-actions").is("revoked_at", null).maybeSingle();
-
-	if (existing) {
-		await client
-			.from("project_api_keys")
-			.update({
-				revoked_at: new Date().toISOString(),
-				revocation_reason: "replaced by setup callback",
-			})
-			.eq("id", existing.id);
-	}
-
 	const key = `prc_${randomBytes(32).toString("base64url")}`;
 	const keyHash = await bcrypt.hash(key, 10);
 	const keyPrefix = key.substring(0, KEY_PREFIX_LENGTH);
+	const row = {
+		key_hash: keyHash,
+		key_prefix: keyPrefix,
+		scopes: [...GITHUB_ACTIONS_SCOPES],
+		revoked_at: null,
+		revocation_reason: null,
+	};
+
+	// One row per (project_id, name): update if exists, otherwise insert
+	const { data: existing } = await client.from("project_api_keys").select("id").eq("project_id", projectId).eq("name", "github-actions").maybeSingle();
+
+	if (existing) {
+		const { error } = await client.from("project_api_keys").update(row).eq("id", existing.id);
+		if (error) {
+			console.error("[github-setup] ensureProjectApiKey update failed:", error.message, error.code, error.details);
+			return null;
+		}
+		return key;
+	}
 
 	const { error } = await client.from("project_api_keys").insert({
 		project_id: projectId,
 		name: "github-actions",
-		key_hash: keyHash,
-		key_prefix: keyPrefix,
-		scopes: [...GITHUB_ACTIONS_SCOPES],
+		...row,
 	});
 	if (error) {
-		// Log so callers see why (e.g. foreign key = project missing, RLS = need service role)
 		console.error("[github-setup] ensureProjectApiKey insert failed:", error.message, error.code, error.details);
 		return null;
 	}
