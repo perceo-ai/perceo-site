@@ -1,6 +1,8 @@
-# GitHub App setup callback – what you need to configure
+# GitHub App setup – organization-level authorization
 
-The route `GET /api/github/setup-callback` handles the GitHub App installation redirect, decodes `state`, gets or creates the project’s `github-actions` API key, and creates the `PERCEO_API_KEY` repository secret in GitHub. You do not need to run `perceo init` first—the callback creates the key if it’s missing. Below is what you need to set up for it to work.
+GitHub authorizes the app **per organization** (or per user account). This project reflects that: users authorize **once per organization**. After that, additional repos in the same org can be configured without going through the install flow again.
+
+The route `GET /api/github/setup-callback` handles the GitHub App installation redirect: it decodes `state`, persists the installation at the org level, gets or creates the project’s `github-actions` API key, and creates the `PERCEO_API_KEY` repository secret in GitHub. The route `POST /api/github/configure-repo` lets you configure an additional repo for an already-authorized org without redirecting the user to GitHub again.
 
 ---
 
@@ -41,13 +43,43 @@ In your [GitHub App](https://github.com/settings/apps) configuration:
 
 ---
 
-## 3. Supabase schema (API keys)
+## 3. Supabase schema
 
-The callback writes to `project_api_keys`: it revokes any existing active `github-actions` key for the project, then inserts a new row with a generated key (stored as `key_hash` and `key_prefix`; the plain key is only used once to set `PERCEO_API_KEY` in GitHub).
+### 3.1 Table: `github_installations` (organization-level authorization)
 
-**Table: `project_api_keys`**
+The callback and configure-repo flow use this table so we only require one authorization per organization.
 
-Required columns used by the callback:
+| Column            | Type      | Description                                        |
+| ----------------- | --------- | -------------------------------------------------- |
+| `installation_id` | bigint PK | GitHub App installation ID (from callback query). |
+| `account_login`   | text      | Org or user login (lowercase).                     |
+| `account_type`    | text      | `'Organization'` or `'User'`.                     |
+| `created_at`      | timestamptz | Set on first insert (default now).              |
+| `updated_at`      | timestamptz | Updated on upsert.                              |
+
+Create the table (e.g. in Supabase SQL editor):
+
+```sql
+create table if not exists github_installations (
+  installation_id bigint primary key,
+  account_login   text not null,
+  account_type    text not null,
+  created_at      timestamptz default now(),
+  updated_at      timestamptz default now()
+);
+
+-- For lookups by org when configuring additional repos
+create index if not exists idx_github_installations_account_login
+  on github_installations (account_login);
+```
+
+The callback upserts a row after each successful install so that `POST /api/github/configure-repo` can find the installation by `account_login` when adding another repo from the same org.
+
+### 3.2 Table: `project_api_keys`
+
+The callback (and configure-repo) write to `project_api_keys`: they revoke any existing active `github-actions` key for the project, then insert a new row with a generated key (stored as `key_hash` and `key_prefix`; the plain key is only used once to set `PERCEO_API_KEY` in GitHub).
+
+Required columns:
 
 - `project_id` (uuid, references `projects.id`)
 - `name` (text) – the callback uses `name = 'github-actions'`
@@ -56,7 +88,7 @@ Required columns used by the callback:
 - `scopes` (text[]) – callback uses `ci:analyze`, `ci:test`, `flows:read`, `insights:read`, `events:publish`
 - Optional: `revoked_at`, `revocation_reason` (callback revokes existing key before creating a new one)
 
-For the insert to succeed with RLS enabled, set `SUPABASE_SERVICE_ROLE_KEY` (recommended) or add an RLS policy that allows the anon key to insert/update this table.
+For the insert to succeed with RLS enabled, set `SUPABASE_SERVICE_ROLE_KEY` (recommended) or add an RLS policy that allows the anon key to insert/update this table. The same applies to `github_installations` if RLS is on.
 
 ---
 
@@ -83,18 +115,35 @@ The callback decodes `state`, gets or creates the key for `projectId`, then crea
 
 ## 5. Flow summary
 
+**First repo in an organization (or first time adding Perceo to that org):**
+
 1. User has a project (e.g. created in your app or via CLI). The project has a `project_id` (uuid).
 2. User is sent to the GitHub App install link: `https://github.com/apps/.../installations/new?state=<base64url({ projectId, owner, repo })>`.
-3. User installs/updates the app; GitHub redirects to your **Setup URL** with `installation_id`, `setup_action`, and `state`.
-4. Callback decodes `state`, gets the existing `github-actions` key for `projectId` or creates one if missing, then uses the GitHub App to create `PERCEO_API_KEY` in the repo.
+3. User installs the app for that organization (one-time per org). GitHub redirects to your **Setup URL** with `installation_id`, `setup_action`, and `state`.
+4. Callback decodes `state`, **persists the installation for that org** in `github_installations`, gets or creates the `github-actions` key for `projectId`, then creates `PERCEO_API_KEY` in the repo.
 5. User is redirected to `/setup/complete?repo=owner/repo` on success, or `/setup?error=...` on failure.
+
+**Additional repos in the same organization:**
+
+1. Call `POST /api/github/configure-repo` with body `{ projectId, owner, repo }`.
+2. If the org is already authorized (row in `github_installations`), the API creates/gets the project API key and sets the repo secret using the stored `installation_id`. No redirect to GitHub.
+3. If the org is not authorized, the API returns `404` with `needInstall: true` and `installUrl` (and optionally `state`). The client can then send the user to that install URL so they authorize once for that org.
 
 ---
 
-## 6. Errors and redirects
+## 6. Errors and redirects (setup callback)
 
 - **Invalid or missing `state` / `installation_id`** → redirect to `/setup?error=invalid_callback`
 - **Could not get or create API key** (e.g. project missing, Supabase not configured, or insert blocked by RLS without service role) → `/setup?error=no_key`
 - **GitHub API error** (e.g. token, permissions, create secret) → `/setup?error=github_error` (details only in server logs)
 
-All logic runs in the Next.js API route; no Temporal worker is required for this flow.
+## 7. Configure-repo API (`POST /api/github/configure-repo`)
+
+- **Body:** `{ "projectId": "uuid", "owner": "org-or-user", "repo": "repo-name" }`
+- **200** – Repo configured; `PERCEO_API_KEY` set in GitHub.
+- **400** – Invalid or missing body.
+- **404** – Organization not yet authorized. Response includes `needInstall: true` and `installUrl` (full URL with state). Client should redirect the user to install the app for that org once, then call this API again or use the setup callback.
+- **500** – Could not create/find project API key.
+- **502** – GitHub API error while setting the secret.
+
+All logic runs in the Next.js API routes; no Temporal worker is required.
