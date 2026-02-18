@@ -1,17 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import {
-	encodeState,
-	ensureProjectApiKey,
-	getInstallationIdForAccount,
-	getInstallUrl,
-	setRepoSecret,
-	type DecodedState,
-} from "@/lib/github-setup";
+import { encodeState, ensureProjectApiKey, getInstallationIdForAccount, getInstallUrl, setRepoSecret, type DecodedState } from "@/lib/github-setup";
 
-const LOG = (msg: string, ...args: unknown[]) =>
-	console.log("[configure-repo]", msg, ...args);
-const LOG_ERR = (msg: string, ...args: unknown[]) =>
-	console.error("[configure-repo]", msg, ...args);
+const LOG = (msg: string, ...args: unknown[]) => console.log("[configure-repo]", msg, ...args);
+const LOG_ERR = (msg: string, ...args: unknown[]) => console.error("[configure-repo]", msg, ...args);
 
 /**
  * POST /api/github/configure-repo
@@ -30,25 +21,12 @@ export async function POST(request: NextRequest) {
 	try {
 		body = await request.json();
 	} catch {
-		return NextResponse.json(
-			{ error: "Invalid JSON body" },
-			{ status: 400 },
-		);
+		return NextResponse.json({ error: "Invalid JSON body" }, { status: 400 });
 	}
 
 	const { projectId, owner, repo } = body;
-	if (
-		typeof projectId !== "string" ||
-		typeof owner !== "string" ||
-		typeof repo !== "string" ||
-		!projectId ||
-		!owner ||
-		!repo
-	) {
-		return NextResponse.json(
-			{ error: "Missing or invalid projectId, owner, or repo" },
-			{ status: 400 },
-		);
+	if (typeof projectId !== "string" || typeof owner !== "string" || typeof repo !== "string" || !projectId || !owner || !repo) {
+		return NextResponse.json({ error: "Missing or invalid projectId, owner, or repo" }, { status: 400 });
 	}
 
 	LOG("POST: configure", { projectId, owner, repo });
@@ -70,9 +48,11 @@ export async function POST(request: NextRequest) {
 
 	const apiKey = await ensureProjectApiKey(projectId);
 	if (!apiKey) {
-		LOG_ERR("POST: no_key for project", projectId);
+		LOG_ERR("POST: no_key for project", projectId, "(check server logs for Supabase error: foreign key = project missing, RLS = set SUPABASE_SERVICE_ROLE_KEY)");
 		return NextResponse.json(
-			{ error: "Could not create or find API key for this project" },
+			{
+				error: "Could not create API key for this project. Ensure the project exists and the app can write to project_api_keys (e.g. set SUPABASE_SERVICE_ROLE_KEY if using RLS).",
+			},
 			{ status: 500 },
 		);
 	}
@@ -81,10 +61,7 @@ export async function POST(request: NextRequest) {
 		await setRepoSecret(installationId, owner, repo, apiKey);
 	} catch (err) {
 		LOG_ERR("POST: github_error", err instanceof Error ? err.message : err);
-		return NextResponse.json(
-			{ error: "Failed to set repository secret in GitHub" },
-			{ status: 502 },
-		);
+		return NextResponse.json({ error: "Failed to set repository secret in GitHub" }, { status: 502 });
 	}
 
 	LOG("POST: success", { owner, repo });

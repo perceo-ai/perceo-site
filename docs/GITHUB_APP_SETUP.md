@@ -49,13 +49,13 @@ In your [GitHub App](https://github.com/settings/apps) configuration:
 
 The callback and configure-repo flow use this table so we only require one authorization per organization.
 
-| Column            | Type      | Description                                        |
-| ----------------- | --------- | -------------------------------------------------- |
-| `installation_id` | bigint PK | GitHub App installation ID (from callback query). |
-| `account_login`   | text      | Org or user login (lowercase).                     |
-| `account_type`    | text      | `'Organization'` or `'User'`.                     |
-| `created_at`      | timestamptz | Set on first insert (default now).              |
-| `updated_at`      | timestamptz | Updated on upsert.                              |
+| Column            | Type        | Description                                       |
+| ----------------- | ----------- | ------------------------------------------------- |
+| `installation_id` | bigint PK   | GitHub App installation ID (from callback query). |
+| `account_login`   | text        | Org or user login (lowercase).                    |
+| `account_type`    | text        | `'Organization'` or `'User'`.                     |
+| `created_at`      | timestamptz | Set on first insert (default now).                |
+| `updated_at`      | timestamptz | Updated on upsert.                                |
 
 Create the table (e.g. in Supabase SQL editor):
 

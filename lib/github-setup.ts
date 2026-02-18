@@ -10,13 +10,7 @@ export const SECRET_NAME = "PERCEO_API_KEY";
 export const KEY_PREFIX_LENGTH = 12;
 
 /** Scopes for the github-actions API key (matches CLI). */
-export const GITHUB_ACTIONS_SCOPES = [
-	"ci:analyze",
-	"ci:test",
-	"flows:read",
-	"insights:read",
-	"events:publish",
-] as const;
+export const GITHUB_ACTIONS_SCOPES = ["ci:analyze", "ci:test", "flows:read", "insights:read", "events:publish"] as const;
 
 export type DecodedState = { projectId: string; owner: string; repo: string };
 
@@ -58,10 +52,7 @@ export function createAppJwt(): string {
 	const appId = process.env.PERCEO_GITHUB_APP_ID;
 	if (!appId) throw new Error("PERCEO_GITHUB_APP_ID is not set");
 	const privateKey = getPrivateKey();
-	if (!privateKey)
-		throw new Error(
-			"PERCEO_GITHUB_APP_PRIVATE_KEY or PERCEO_GITHUB_APP_PRIVATE_KEY_PATH is not set",
-		);
+	if (!privateKey) throw new Error("PERCEO_GITHUB_APP_PRIVATE_KEY or PERCEO_GITHUB_APP_PRIVATE_KEY_PATH is not set");
 	const now = Math.floor(Date.now() / 1000);
 	const payload = { iat: now, exp: now + 60, iss: appId };
 	const header = { alg: "RS256", typ: "JWT" };
@@ -109,10 +100,7 @@ export async function getInstallationAccount(installationId: string): Promise<{
 	};
 	const account = data.account;
 	if (!account || typeof account.login !== "string") return null;
-	const type =
-		account.type === "Organization" || account.type === "User"
-			? account.type
-			: "User";
+	const type = account.type === "Organization" || account.type === "User" ? account.type : "User";
 	return { login: account.login, type };
 }
 
@@ -120,11 +108,7 @@ export async function getInstallationAccount(installationId: string): Promise<{
  * Upserts the installation so we know this organization (or user) has authorized Perceo once.
  * Enables adding more repos from the same org without sending the user to GitHub again.
  */
-export async function upsertGitHubInstallation(
-	installationId: string,
-	accountLogin: string,
-	accountType: "Organization" | "User",
-): Promise<boolean> {
+export async function upsertGitHubInstallation(installationId: string, accountLogin: string, accountType: "Organization" | "User"): Promise<boolean> {
 	const client = getSupabaseServiceClient() ?? getSupabaseClient();
 	if (!client) return false;
 	const now = new Date().toISOString();
@@ -146,16 +130,10 @@ export async function upsertGitHubInstallation(
 /**
  * Returns the installation_id for an account (org or user login), or null if not yet authorized.
  */
-export async function getInstallationIdForAccount(
-	owner: string,
-): Promise<string | null> {
+export async function getInstallationIdForAccount(owner: string): Promise<string | null> {
 	const client = getSupabaseServiceClient() ?? getSupabaseClient();
 	if (!client) return null;
-	const { data, error } = await client
-		.from("github_installations")
-		.select("installation_id")
-		.eq("account_login", owner.toLowerCase())
-		.maybeSingle();
+	const { data, error } = await client.from("github_installations").select("installation_id").eq("account_login", owner.toLowerCase()).maybeSingle();
 	if (error || !data) return null;
 	return String(data.installation_id);
 }
@@ -167,13 +145,7 @@ export async function ensureProjectApiKey(projectId: string): Promise<string | n
 	const client = getSupabaseServiceClient() ?? getSupabaseClient();
 	if (!client) return null;
 
-	const { data: existing } = await client
-		.from("project_api_keys")
-		.select("id")
-		.eq("project_id", projectId)
-		.eq("name", "github-actions")
-		.is("revoked_at", null)
-		.maybeSingle();
+	const { data: existing } = await client.from("project_api_keys").select("id").eq("project_id", projectId).eq("name", "github-actions").is("revoked_at", null).maybeSingle();
 
 	if (existing) {
 		await client
@@ -196,42 +168,32 @@ export async function ensureProjectApiKey(projectId: string): Promise<string | n
 		key_prefix: keyPrefix,
 		scopes: [...GITHUB_ACTIONS_SCOPES],
 	});
-	if (error) return null;
+	if (error) {
+		// Log so callers see why (e.g. foreign key = project missing, RLS = need service role)
+		console.error("[github-setup] ensureProjectApiKey insert failed:", error.message, error.code, error.details);
+		return null;
+	}
 	return key;
 }
 
-async function encryptSecretForGitHub(
-	publicKeyBase64: string,
-	secretValue: string,
-): Promise<string> {
+async function encryptSecretForGitHub(publicKeyBase64: string, secretValue: string): Promise<string> {
 	await sodium.ready;
-	const binkey = sodium.from_base64(
-		publicKeyBase64,
-		sodium.base64_variants.ORIGINAL,
-	);
+	const binkey = sodium.from_base64(publicKeyBase64, sodium.base64_variants.ORIGINAL);
 	const binsec = sodium.from_string(secretValue);
 	const encBytes = sodium.crypto_box_seal(binsec, binkey);
 	return sodium.to_base64(encBytes, sodium.base64_variants.ORIGINAL);
 }
 
-export async function setRepoSecret(
-	installationId: string,
-	owner: string,
-	repo: string,
-	apiKeyValue: string,
-): Promise<void> {
+export async function setRepoSecret(installationId: string, owner: string, repo: string, apiKeyValue: string): Promise<void> {
 	const jwt = createAppJwt();
-	const tokenRes = await fetch(
-		`${GITHUB_API}/app/installations/${installationId}/access_tokens`,
-		{
-			method: "POST",
-			headers: {
-				Authorization: `Bearer ${jwt}`,
-				Accept: "application/vnd.github+json",
-				"X-GitHub-Api-Version": "2022-11-28",
-			},
+	const tokenRes = await fetch(`${GITHUB_API}/app/installations/${installationId}/access_tokens`, {
+		method: "POST",
+		headers: {
+			Authorization: `Bearer ${jwt}`,
+			Accept: "application/vnd.github+json",
+			"X-GitHub-Api-Version": "2022-11-28",
 		},
-	);
+	});
 	if (!tokenRes.ok) {
 		const text = await tokenRes.text();
 		throw new Error(`GitHub token: ${tokenRes.status} ${text}`);
@@ -240,43 +202,36 @@ export async function setRepoSecret(
 	const token = tokenData.token;
 	if (!token) throw new Error("GitHub token response missing token");
 
-	const keyRes = await fetch(
-		`${GITHUB_API}/repos/${owner}/${repo}/actions/secrets/public-key`,
-		{
-			headers: {
-				Authorization: `Bearer ${token}`,
-				Accept: "application/vnd.github+json",
-				"X-GitHub-Api-Version": "2022-11-28",
-			},
+	const keyRes = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/actions/secrets/public-key`, {
+		headers: {
+			Authorization: `Bearer ${token}`,
+			Accept: "application/vnd.github+json",
+			"X-GitHub-Api-Version": "2022-11-28",
 		},
-	);
+	});
 	if (!keyRes.ok) {
 		const text = await keyRes.text();
 		throw new Error(`GitHub public key: ${keyRes.status} ${text}`);
 	}
 	const keyData = (await keyRes.json()) as { key?: string; key_id?: string };
 	const { key: publicKey, key_id: keyId } = keyData;
-	if (!publicKey || !keyId)
-		throw new Error("GitHub public key response missing key or key_id");
+	if (!publicKey || !keyId) throw new Error("GitHub public key response missing key or key_id");
 
 	const encryptedValue = await encryptSecretForGitHub(publicKey, apiKeyValue);
 
-	const putRes = await fetch(
-		`${GITHUB_API}/repos/${owner}/${repo}/actions/secrets/${SECRET_NAME}`,
-		{
-			method: "PUT",
-			headers: {
-				Authorization: `Bearer ${token}`,
-				Accept: "application/vnd.github+json",
-				"X-GitHub-Api-Version": "2022-11-28",
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({
-				encrypted_value: encryptedValue,
-				key_id: keyId,
-			}),
+	const putRes = await fetch(`${GITHUB_API}/repos/${owner}/${repo}/actions/secrets/${SECRET_NAME}`, {
+		method: "PUT",
+		headers: {
+			Authorization: `Bearer ${token}`,
+			Accept: "application/vnd.github+json",
+			"X-GitHub-Api-Version": "2022-11-28",
+			"Content-Type": "application/json",
 		},
-	);
+		body: JSON.stringify({
+			encrypted_value: encryptedValue,
+			key_id: keyId,
+		}),
+	});
 	if (!putRes.ok) {
 		const text = await putRes.text();
 		throw new Error(`GitHub create secret: ${putRes.status} ${text}`);
@@ -289,8 +244,6 @@ export async function setRepoSecret(
 export function getInstallUrl(state?: DecodedState): string | null {
 	const base = process.env.PERCEO_GITHUB_APP_INSTALL_URL;
 	if (!base) return null;
-	const url = base.endsWith("/installations/new")
-		? base
-		: `${base.replace(/\/$/, "")}/installations/new`;
+	const url = base.endsWith("/installations/new") ? base : `${base.replace(/\/$/, "")}/installations/new`;
 	return state ? `${url}?state=${encodeState(state)}` : url;
 }
