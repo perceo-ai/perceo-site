@@ -4,7 +4,7 @@ export default function Footer() {
   return (
     <footer className="relative z-[15] border-t border-white/5 mt-20">
       {/* CTA */}
-      <div className="max-w-[1400px] mx-auto px-5 md:px-12.5 py-16 md:py-24 text-center">
+      <div id="contact" className="max-w-[1400px] mx-auto px-5 md:px-12.5 py-16 md:py-24 text-center">
         <h2 className="font-serif italic text-3xl md:text-5xl font-bold text-white mb-4">
           Ready to ship with confidence?
         </h2>
@@ -12,8 +12,8 @@ export default function Footer() {
           One command to know everything that could break — before your users do.
         </p>
         <div className="flex items-center justify-center gap-3">
-          <Button variant="secondary">Watch Demo</Button>
-          <Button variant="primary">Contact Sales</Button>
+          <a href="#features"><Button variant="secondary">Watch Demo</Button></a>
+          <a href="mailto:sales@perceo.ai"><Button variant="primary">Contact Sales</Button></a>
         </div>
       </div>
 
@@ -25,16 +25,16 @@ export default function Footer() {
           </div>
 
           <nav className="flex items-center gap-6">
-            <a href="#" className="text-zinc-500 hover:text-white transition-colors text-sm">
+            <a href="#hero" className="text-zinc-500 hover:text-white transition-colors text-sm">
               Home
             </a>
-            <a href="#" className="text-zinc-500 hover:text-white transition-colors text-sm">
+            <a href="#features" className="text-zinc-500 hover:text-white transition-colors text-sm">
               Pricing
             </a>
             <a href="#" className="text-zinc-500 hover:text-white transition-colors text-sm">
               Docs
             </a>
-            <a href="#" className="text-zinc-500 hover:text-white transition-colors text-sm">
+            <a href="https://github.com/perceo-ai" target="_blank" rel="noopener noreferrer" className="text-zinc-500 hover:text-white transition-colors text-sm">
               GitHub
             </a>
           </nav>

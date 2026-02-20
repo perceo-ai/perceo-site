@@ -39,13 +39,13 @@ export default function Navbar() {
           {/* Desktop Nav - absolutely centered */}
           <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             <a
-              href="#"
+              href="#hero"
               className="text-white/70 hover:text-white transition-colors text-sm"
             >
               Home
             </a>
             <a
-              href="#"
+              href="#features"
               className="text-white/70 hover:text-white transition-colors text-sm"
             >
               Pricing
@@ -53,12 +53,12 @@ export default function Navbar() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Button variant="secondary" className="hidden md:block">
-              Watch Demo
-            </Button>
-            <Button variant="primary">
-              Contact Sales
-            </Button>
+            <a href="#features" className="hidden md:block">
+              <Button variant="secondary">Watch Demo</Button>
+            </a>
+            <a href="#contact">
+              <Button variant="primary">Contact Sales</Button>
+            </a>
             <button
               className="md:hidden text-white p-1"
               onClick={() => setMenuOpen(true)}
@@ -105,14 +105,14 @@ export default function Navbar() {
         {/* Sheet Links */}
         <nav className="flex flex-col gap-6 mt-12">
           <a
-            href="#"
+            href="#hero"
             className="text-white text-2xl font-medium"
             onClick={() => setMenuOpen(false)}
           >
             Home
           </a>
           <a
-            href="#"
+            href="#features"
             className="text-white text-2xl font-medium"
             onClick={() => setMenuOpen(false)}
           >
@@ -122,9 +122,11 @@ export default function Navbar() {
 
         {/* Watch Demo at bottom of list */}
         <div className="mt-auto pb-12">
-          <Button variant="secondary" className="w-full" onClick={() => setMenuOpen(false)}>
-            Watch Demo
-          </Button>
+          <a href="#features" onClick={() => setMenuOpen(false)}>
+            <Button variant="secondary" className="w-full">
+              Watch Demo
+            </Button>
+          </a>
         </div>
       </div>
     </>

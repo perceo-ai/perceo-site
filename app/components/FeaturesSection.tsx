@@ -88,7 +88,7 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section className="relative z-[15] mx-5 md:mx-12.5">
+    <section id="features" className="relative z-[15] mx-5 md:mx-12.5">
       <div className="md:grid md:grid-cols-2 md:gap-16">
         {/* Left column - scrolling text */}
         <div>

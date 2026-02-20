@@ -60,6 +60,7 @@ export default function HeroSection() {
 
   return (
     <main
+      id="hero"
       ref={containerRef}
       className="relative px-5! md:px-12.5! min-h-screen flex flex-col justify-center"
     >
