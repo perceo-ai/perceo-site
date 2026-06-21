@@ -8,21 +8,19 @@ import AnalyticsPanel from "./AnalyticsPanel";
 
 const features = [
   {
-    title: "One command. Full coverage.",
+    title: "One repo. Many workspaces.",
     description:
-      "Run perceo init in any repo*. Our CLI scans your codebase, detects every user flow, and generates a complete test graph — no config files, no boilerplate. Your agent swarms know exactly what to test from day one.",
-    footnote:
-      "We only support React-based frameworks for testing and are expanding the frameworks we support quickly.",
+      "Add an existing repository or clone a Git URL. Archductor gives every task its own Git worktree, branch, .context directory, and stable port range.",
   },
   {
-    title: "See every path your users take.",
+    title: "Run agents in parallel.",
     description:
-      "Perceo maps your detected flows into a live dependency graph. Watch agent swarms validate each step in real time — passing, running, and pending — so you always know exactly where your product stands.",
+      "Start Shell, Codex, Claude Code, or Cursor sessions inside isolated workspaces. Keep setup, run logs, process state, and terminal output visible while work happens.",
   },
   {
-    title: "Synthetic meets reality.",
+    title: "Review, merge, archive.",
     description:
-      "Correlate your agent test results with real production analytics from Google Analytics. Instantly spot where synthetic tests pass but real users fail — like a mobile Safari timeout your desktop tests would never catch.",
+      "Inspect diffs, todos, PR checks, comments, and sibling conflicts. Create, merge, restore, and archive GitHub PR work without leaving the Linux app.",
   },
 ];
 
@@ -66,14 +64,6 @@ function FeatureBlock({
       >
         {feature.description}
       </p>
-      {"footnote" in feature && feature.footnote && (
-        <p
-          className={`mt-2 text-sm text-zinc-500 transition-colors duration-500 ${isInView ? "text-zinc-400" : "text-zinc-600"
-            }`}
-        >
-          *{feature.footnote}
-        </p>
-      )}
     </div>
   );
 }
@@ -88,7 +78,7 @@ export default function FeaturesSection() {
   ];
 
   return (
-    <section className="relative z-[15] mx-5 md:mx-12.5">
+    <section className="relative z-[15] mx-5 overflow-x-clip md:mx-12.5">
       <div className="md:grid md:grid-cols-2 md:gap-16">
         {/* Left column - scrolling text */}
         <div>

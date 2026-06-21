@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { List, X } from "@phosphor-icons/react";
 import Button from "./Button";
 
@@ -33,31 +34,31 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between md:relative">
           <div className="text-xl md:text-2xl font-bold font-serif text-white tracking-tight">
-            Perceo
+            Archductor
           </div>
 
           {/* Desktop Nav - absolutely centered */}
           <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-            <a
-              href="#"
+            <Link
+              href="/"
               className="text-white/70 hover:text-white transition-colors text-sm"
             >
               Home
-            </a>
+            </Link>
             <a
-              href="#"
+              href="/docs"
               className="text-white/70 hover:text-white transition-colors text-sm"
             >
-              Pricing
+              Docs
             </a>
           </nav>
 
           <div className="flex items-center gap-3">
             <Button variant="secondary" className="hidden md:block">
-              Watch Demo
+              Read Docs
             </Button>
             <Button variant="primary">
-              Contact Sales
+              Download
             </Button>
             <button
               className="md:hidden text-white p-1"
@@ -91,7 +92,7 @@ export default function Navbar() {
         {/* Sheet Header */}
         <div className="flex items-center justify-between">
           <div className="text-xl font-bold font-serif text-white tracking-tight">
-            Perceo
+            Archductor
           </div>
           <button
             className="text-white p-1"
@@ -104,26 +105,26 @@ export default function Navbar() {
 
         {/* Sheet Links */}
         <nav className="flex flex-col gap-6 mt-12">
-          <a
-            href="#"
+            <Link
+            href="/"
             className="text-white text-2xl font-medium"
             onClick={() => setMenuOpen(false)}
           >
             Home
-          </a>
+          </Link>
           <a
-            href="#"
+            href="/docs"
             className="text-white text-2xl font-medium"
             onClick={() => setMenuOpen(false)}
           >
-            Pricing
+            Docs
           </a>
         </nav>
 
-        {/* Watch Demo at bottom of list */}
+        {/* Mobile CTA at bottom of list */}
         <div className="mt-auto pb-12">
           <Button variant="secondary" className="w-full" onClick={() => setMenuOpen(false)}>
-            Watch Demo
+            Read Docs
           </Button>
         </div>
       </div>

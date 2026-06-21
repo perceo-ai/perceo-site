@@ -10,8 +10,8 @@ interface FlowNode {
   name: string;
   status: "passing" | "running" | "pending";
   steps: StepStatus[];
-  successRate: string;
-  volume: string;
+  leftMetric: string;
+  rightMetric: string;
   x: number;
   y: number;
   connectsTo?: string[];
@@ -20,54 +20,54 @@ interface FlowNode {
 const MOCK_FLOWS: FlowNode[] = [
   {
     id: "auth",
-    name: "Authenticate User",
+    name: "Add repository",
     status: "passing",
     steps: ["passed", "passed", "passed", "passed", "passed"],
-    successRate: "100%",
-    volume: "4.3k/day",
+    leftMetric: "Git ready",
+    rightMetric: "main",
     x: 130,
     y: 20,
     connectsTo: ["browse", "dashboard"],
   },
   {
     id: "browse",
-    name: "Browse Listings",
+    name: "Workspace berlin",
     status: "running",
     steps: ["passed", "passed", "running", "pending", "pending"],
-    successRate: "92%",
-    volume: "3.1k/day",
+    leftMetric: "Codex active",
+    rightMetric: "port 3100",
     x: 410,
     y: 0,
     connectsTo: ["checkout"],
   },
   {
     id: "dashboard",
-    name: "View Dashboard",
+    name: "Workspace tokyo",
     status: "passing",
     steps: ["passed", "passed", "passed", "passed", "passed"],
-    successRate: "99%",
-    volume: "2.8k/day",
+    leftMetric: "Claude done",
+    rightMetric: "PR #18",
     x: 410,
     y: 140,
     connectsTo: ["settings"],
   },
   {
     id: "checkout",
-    name: "Complete Checkout",
+    name: "Review checks",
     status: "running",
     steps: ["passed", "passed", "passed", "running", "pending"],
-    successRate: "87%",
-    volume: "1.2k/day",
+    leftMetric: "1 failing",
+    rightMetric: "staged",
     x: 690,
     y: 0,
   },
   {
     id: "settings",
-    name: "Update Settings",
+    name: "Merge & archive",
     status: "pending",
     steps: ["pending", "pending", "pending", "pending", "pending"],
-    successRate: "—",
-    volume: "890/day",
+    leftMetric: "blocked",
+    rightMetric: "pending",
     x: 690,
     y: 140,
   },
@@ -111,12 +111,14 @@ function AnimatedDot({
     timerRef.current = [];
 
     if (!active) {
-      setCurrentStatus("pending");
+      const resetTimer = setTimeout(() => setCurrentStatus("pending"), 0);
+      timerRef.current.push(resetTimer);
       return;
     }
 
     if (targetStatus === "pending") {
-      setCurrentStatus("pending");
+      const resetTimer = setTimeout(() => setCurrentStatus("pending"), 0);
+      timerRef.current.push(resetTimer);
       return;
     }
 
@@ -212,8 +214,8 @@ function FlowCard({
 
       {/* Stats */}
       <div className="flex justify-between text-[11px] text-[#848484]">
-        <span>{node.successRate} Success</span>
-        <span>{node.volume}</span>
+        <span>{node.leftMetric}</span>
+        <span>{node.rightMetric}</span>
       </div>
     </motion.div>
   );
@@ -222,13 +224,9 @@ function FlowCard({
 function EdgeLine({
   from,
   to,
-  animated,
-  delay,
 }: {
   from: FlowNode;
   to: FlowNode;
-  animated: boolean;
-  delay: number;
 }) {
   const x1 = from.x + 240; // right edge of source card
   const y1 = from.y + 50; // vertical center-ish
@@ -288,13 +286,11 @@ export default function FlowGraph({ active }: { active: boolean }) {
         <div className="relative p-5" style={{ minHeight: 280, minWidth: 860 }}>
           <svg className="absolute inset-0 w-full h-full pointer-events-none">
             {active &&
-              edges.map((edge, i) => (
+              edges.map((edge) => (
                 <EdgeLine
                   key={`${edge.from.id}-${edge.to.id}`}
                   from={edge.from}
                   to={edge.to}
-                  animated={edge.animated}
-                  delay={0.3 + i * 0.15}
                 />
               ))}
           </svg>

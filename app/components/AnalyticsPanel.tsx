@@ -1,82 +1,81 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 
-interface FlowMetric {
+interface ReviewItem {
   name: string;
   personaColor: string;
-  synthetic: number;
-  production: number;
-  delta: number;
-  volume: string;
+  surface: string;
+  status: string;
+  attention: number;
+  age: string;
   health: "healthy" | "warning" | "critical";
 }
 
-const MOCK_METRICS: FlowMetric[] = [
+const REVIEW_ITEMS: ReviewItem[] = [
   {
-    name: "Authenticate User",
+    name: "Workspace berlin",
     personaColor: "#64748B",
-    synthetic: 0.99,
-    production: 0.97,
-    delta: -2,
-    volume: "4.3k",
+    surface: "Diff",
+    status: "+42 / -8",
+    attention: 0,
+    age: "12m",
     health: "healthy",
   },
   {
-    name: "Browse Listings",
+    name: "PR checks",
     personaColor: "#10B981",
-    synthetic: 0.96,
-    production: 0.94,
-    delta: -2,
-    volume: "3.1k",
-    health: "healthy",
-  },
-  {
-    name: "Accept Offer & Close",
-    personaColor: "#F59E0B",
-    synthetic: 0.93,
-    production: 0.71,
-    delta: -22,
-    volume: "890",
+    surface: "GitHub",
+    status: "1 failed",
+    attention: 1,
+    age: "4m",
     health: "critical",
   },
   {
-    name: "Complete Checkout",
-    personaColor: "#10B981",
-    synthetic: 0.95,
-    production: 0.92,
-    delta: -3,
-    volume: "1.2k",
-    health: "healthy",
-  },
-  {
-    name: "View Dashboard",
-    personaColor: "#64748B",
-    synthetic: 0.99,
-    production: 0.98,
-    delta: -1,
-    volume: "2.8k",
-    health: "healthy",
-  },
-  {
-    name: "Update Settings",
+    name: "Review comments",
     personaColor: "#F59E0B",
-    synthetic: 0.97,
-    production: 0.89,
-    delta: -8,
-    volume: "1.5k",
+    surface: "PR #18",
+    status: "3 open",
+    attention: 3,
+    age: "9m",
     health: "warning",
+  },
+  {
+    name: "Workspace tokyo",
+    personaColor: "#10B981",
+    surface: "Agent",
+    status: "ready",
+    attention: 0,
+    age: "18m",
+    health: "healthy",
+  },
+  {
+    name: "Sibling conflict",
+    personaColor: "#64748B",
+    surface: "Files",
+    status: "1 overlap",
+    attention: 1,
+    age: "now",
+    health: "warning",
+  },
+  {
+    name: "Archive state",
+    personaColor: "#F59E0B",
+    surface: "Workspace",
+    status: "waiting",
+    attention: 0,
+    age: "post-merge",
+    health: "healthy",
   },
 ];
 
 const HEALTH_STYLES = {
-  healthy: { bg: "rgba(34,197,94,0.15)", text: "#4ade80", label: "HEALTHY" },
-  warning: { bg: "rgba(234,179,8,0.15)", text: "#facc15", label: "WARNING" },
-  critical: { bg: "rgba(239,68,68,0.15)", text: "#f87171", label: "CRITICAL" },
+  healthy: { bg: "rgba(34,197,94,0.15)", text: "#4ade80", label: "CLEAR" },
+  warning: { bg: "rgba(234,179,8,0.15)", text: "#facc15", label: "REVIEW" },
+  critical: { bg: "rgba(239,68,68,0.15)", text: "#f87171", label: "BLOCKED" },
 };
 
-function HealthBadge({ health }: { health: FlowMetric["health"] }) {
+function HealthBadge({ health }: { health: ReviewItem["health"] }) {
   const s = HEALTH_STYLES[health];
   return (
     <span
@@ -88,16 +87,16 @@ function HealthBadge({ health }: { health: FlowMetric["health"] }) {
   );
 }
 
-function MetricRow({
-  metric,
+function ReviewRow({
+  item,
   delay,
   active,
 }: {
-  metric: FlowMetric;
+  item: ReviewItem;
   delay: number;
   active: boolean;
 }) {
-  const isCritical = metric.health === "critical";
+  const isCritical = item.health === "critical";
 
   return (
     <motion.tr
@@ -110,48 +109,42 @@ function MetricRow({
         <div className="flex items-center gap-1.5">
           <div
             className="w-[5px] h-[5px] rounded-full shrink-0"
-            style={{ backgroundColor: metric.personaColor }}
+            style={{ backgroundColor: item.personaColor }}
           />
           <span
             className={`text-[12px] truncate max-w-[120px] ${
               isCritical ? "text-red-300 font-semibold" : "text-zinc-300"
             }`}
           >
-            {metric.name}
+            {item.name}
           </span>
         </div>
       </td>
       <td className="py-2 px-2 text-[12px] text-zinc-300 tabular-nums text-right">
-        {(metric.synthetic * 100).toFixed(0)}%
+        {item.surface}
       </td>
       <td className="py-2 px-2 text-[12px] text-zinc-300 tabular-nums text-right">
-        {(metric.production * 100).toFixed(0)}%
+        {item.status}
       </td>
       <td className="py-2 px-2 text-right">
         <span
-          className={`text-[12px] font-mono ${
-            metric.delta >= 0 ? "text-green-400" : Math.abs(metric.delta) > 10 ? "text-red-400" : "text-zinc-400"
-          }`}
+          className={`text-[12px] font-mono ${item.attention > 0 ? "text-amber-300" : "text-zinc-500"}`}
         >
-          {metric.delta > 0 ? "+" : ""}
-          {metric.delta}%
+          {item.attention}
         </span>
       </td>
-      <td className="py-2 px-2 text-[12px] text-zinc-500 tabular-nums text-right">
-        {metric.volume}
-      </td>
       <td className="py-2 pl-2 text-right">
-        <HealthBadge health={metric.health} />
+        <HealthBadge health={item.health} />
       </td>
     </motion.tr>
   );
 }
 
 export default function AnalyticsPanel({ active }: { active: boolean }) {
-  const healthyCount = MOCK_METRICS.filter((m) => m.health === "healthy").length;
-  const criticalCount = MOCK_METRICS.filter((m) => m.health === "critical").length;
-  const warningCount = MOCK_METRICS.filter((m) => m.health === "warning").length;
-  const overallScore = healthyCount / MOCK_METRICS.length;
+  const clearCount = REVIEW_ITEMS.filter((m) => m.health === "healthy").length;
+  const blockedCount = REVIEW_ITEMS.filter((m) => m.health === "critical").length;
+  const reviewCount = REVIEW_ITEMS.filter((m) => m.health === "warning").length;
+  const readinessScore = clearCount / REVIEW_ITEMS.length;
 
   return (
     <div
@@ -166,21 +159,21 @@ export default function AnalyticsPanel({ active }: { active: boolean }) {
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
           <span className="text-zinc-300 text-[13px] font-semibold">
-            Synthetic vs Production
+            Review & PR readiness
           </span>
         </div>
         <div className="flex items-center gap-3">
           <span className="text-[11px] text-zinc-500">
-            <span className="text-green-400 font-mono">{healthyCount}</span> healthy
+            <span className="text-green-400 font-mono">{clearCount}</span> clear
           </span>
-          {warningCount > 0 && (
+          {reviewCount > 0 && (
             <span className="text-[11px] text-zinc-500">
-              <span className="text-yellow-400 font-mono">{warningCount}</span> warning
+              <span className="text-yellow-400 font-mono">{reviewCount}</span> review
             </span>
           )}
-          {criticalCount > 0 && (
+          {blockedCount > 0 && (
             <span className="text-[11px] text-zinc-500">
-              <span className="text-red-400 font-mono">{criticalCount}</span> critical
+              <span className="text-red-400 font-mono">{blockedCount}</span> blocked
             </span>
           )}
         </div>
@@ -189,21 +182,21 @@ export default function AnalyticsPanel({ active }: { active: boolean }) {
       {/* Score bar */}
       <div className="px-4 py-2 border-b border-white/5 flex items-center gap-3">
         <span className="text-[10px] text-zinc-500 uppercase tracking-wider">
-          Health Score
+          Merge readiness
         </span>
         <div className="flex-1 h-1.5 bg-white/5 rounded-full overflow-hidden">
           <motion.div
             className="h-full rounded-full"
             style={{
               backgroundColor:
-                overallScore >= 0.9
+                readinessScore >= 0.8
                   ? "#4ade80"
-                  : overallScore >= 0.7
+                  : readinessScore >= 0.5
                   ? "#facc15"
                   : "#f87171",
             }}
             initial={{ width: 0 }}
-            animate={active ? { width: `${overallScore * 100}%` } : { width: 0 }}
+            animate={active ? { width: `${readinessScore * 100}%` } : { width: 0 }}
             transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
           />
         </div>
@@ -211,14 +204,14 @@ export default function AnalyticsPanel({ active }: { active: boolean }) {
           className="text-[13px] font-mono font-semibold"
           style={{
             color:
-              overallScore >= 0.9
+              readinessScore >= 0.8
                 ? "#4ade80"
-                : overallScore >= 0.7
+                : readinessScore >= 0.5
                 ? "#facc15"
                 : "#f87171",
           }}
         >
-          {(overallScore * 100).toFixed(0)}%
+          {(readinessScore * 100).toFixed(0)}%
         </span>
       </div>
 
@@ -228,19 +221,16 @@ export default function AnalyticsPanel({ active }: { active: boolean }) {
           <thead>
             <tr className="border-b border-white/5">
               <th className="text-[10px] text-zinc-500 uppercase tracking-wider text-left pb-2 font-normal">
-                Flow
+                Item
               </th>
               <th className="text-[10px] text-zinc-500 uppercase tracking-wider text-right pb-2 font-normal px-2">
-                Synth
+                Surface
               </th>
               <th className="text-[10px] text-zinc-500 uppercase tracking-wider text-right pb-2 font-normal px-2">
-                Prod
+                Status
               </th>
               <th className="text-[10px] text-zinc-500 uppercase tracking-wider text-right pb-2 font-normal px-2">
-                Delta
-              </th>
-              <th className="text-[10px] text-zinc-500 uppercase tracking-wider text-right pb-2 font-normal px-2">
-                Vol 24h
+                Attn
               </th>
               <th className="text-[10px] text-zinc-500 uppercase tracking-wider text-right pb-2 font-normal pl-2">
                 Health
@@ -248,10 +238,10 @@ export default function AnalyticsPanel({ active }: { active: boolean }) {
             </tr>
           </thead>
           <tbody>
-            {MOCK_METRICS.map((metric, i) => (
-              <MetricRow
-                key={metric.name}
-                metric={metric}
+            {REVIEW_ITEMS.map((item, i) => (
+              <ReviewRow
+                key={item.name}
+                item={item}
                 delay={0.15 + i * 0.08}
                 active={active}
               />
@@ -265,7 +255,7 @@ export default function AnalyticsPanel({ active }: { active: boolean }) {
         <div className="flex items-center gap-2">
           <div className="w-1.5 h-1.5 rounded-full bg-red-400 animate-pulse" />
           <span className="text-[11px] text-red-300">
-            Accept Offer & Close — production 22pts below synthetic (mobile Safari timeout)
+            PR checks — failing check staged for the selected Codex session.
           </span>
         </div>
       </div>

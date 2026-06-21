@@ -16,8 +16,8 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Perceo - Zero Code, Infinite Confidence",
-  description: "Agent swarms dedicated to testing your products in ways that matter",
+  title: "Archductor - Linux-native Conductor workspaces",
+  description: "Run Conductor-style coding agents in isolated Git worktree workspaces on Linux.",
 };
 
 export default function RootLayout({

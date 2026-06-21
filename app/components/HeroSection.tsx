@@ -64,22 +64,21 @@ export default function HeroSection() {
       className="relative px-5! md:px-12.5! min-h-screen flex flex-col justify-center"
     >
       <AnimatedHeading className="font-bold relative z-30 font-sans">
-        Zero Code,
+        Archductor
       </AnimatedHeading>
       <AnimatedHeading
         className="italic font-serif relative z-30 font-bold w-full text-right"
         delay={0.3}
       >
-        Infinite confidence.
+        for Linux.
       </AnimatedHeading>
       <p className="text-zinc-500 text-right text-sm leading-relaxed mt-4">
-        Agent swarms dedicated to testing your
+        Run coding agents in isolated
         <br />
-        products in ways that{" "}
-        <span className="text-white">matter</span>
+        Git worktree workspaces on{" "}
+        <span className="text-white">Linux</span>
       </p>
 
-      {/* Sell Home card - below Zero Code, left side */}
       <motion.div
         className="absolute left-5 md:left-12 top-[58vh] z-10 hidden md:block"
         initial={{ opacity: 0, y: 30 }}
@@ -88,14 +87,13 @@ export default function HeroSection() {
         style={{ y: failedCardY }}
       >
         <StatusCard
-          title="Sell Home and Close..."
-          status="Failed"
-          successRate="80% Success"
-          frequency="4.3k/day"
+          title="Workspace berlin"
+          status="Passed"
+          successRate="Checks clear"
+          frequency="PR ready"
         />
       </motion.div>
 
-      {/* Authenticate User card - above Infinite confidence, right side */}
       <motion.div
         className="absolute right-5 md:right-12 top-[35vh] z-10 hidden md:block"
         initial={{ opacity: 0, y: 30 }}
@@ -104,10 +102,10 @@ export default function HeroSection() {
         style={{ y: passedCardY }}
       >
         <StatusCard
-          title="Authenticate User"
+          title="Codex session"
           status="Passed"
-          successRate="100% Success"
-          frequency="4.3k/day"
+          successRate="Diff reviewed"
+          frequency="2 files"
         />
       </motion.div>
     </main>

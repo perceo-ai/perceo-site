@@ -10,22 +10,22 @@ interface TerminalLine {
 }
 
 const terminalSequence: TerminalLine[] = [
-  { text: "$ perceo init", type: "command", delay: 0 },
+  { text: "$ archductor workspace create app-repo --name berlin", type: "command", delay: 0 },
   { text: "", type: "output", delay: 800 },
-  { text: "Scanning repository structure...", type: "muted", delay: 1200 },
-  { text: "Detected framework: Next.js 16", type: "output", delay: 2000 },
-  { text: "Detected 14 routes, 8 API endpoints", type: "output", delay: 2600 },
+  { text: "Creating isolated Git worktree...", type: "muted", delay: 1200 },
+  { text: "Branch: lc/berlin-archductor-page", type: "output", delay: 2000 },
+  { text: "Workspace: .conductor/workspaces/berlin", type: "output", delay: 2600 },
   { text: "", type: "output", delay: 3000 },
-  { text: "Mapping user flows...", type: "muted", delay: 3200 },
-  { text: "  /login → /dashboard → /settings", type: "output", delay: 3800 },
-  { text: "  /signup → /onboarding → /dashboard", type: "output", delay: 4200 },
-  { text: "  /products → /cart → /checkout", type: "output", delay: 4600 },
-  { text: "  ... 12 more flows detected", type: "muted", delay: 5000 },
+  { text: "Starting Codex session...", type: "muted", delay: 3200 },
+  { text: "  context: .context/brief.md", type: "output", delay: 3800 },
+  { text: "  setup: pnpm install", type: "output", delay: 4200 },
+  { text: "  run: pnpm dev --port $CONDUCTOR_PORT", type: "output", delay: 4600 },
+  { text: "  linked directories: none", type: "muted", delay: 5000 },
   { text: "", type: "output", delay: 5200 },
-  { text: "Generating test graph...", type: "muted", delay: 5400 },
-  { text: "Created perceo.graph.json (47 nodes, 83 edges)", type: "output", delay: 6200 },
+  { text: "Review surface ready...", type: "muted", delay: 5400 },
+  { text: "Diffs, checks, todos, and PR comments available", type: "output", delay: 6200 },
   { text: "", type: "output", delay: 6400 },
-  { text: "Ready. Run `perceo test` to start your first cycle.", type: "success", delay: 6800 },
+  { text: "Ready. Create the PR when the workspace is clean.", type: "success", delay: 6800 },
 ];
 
 export default function TerminalWindow({ active }: { active: boolean }) {
@@ -37,7 +37,8 @@ export default function TerminalWindow({ active }: { active: boolean }) {
   useEffect(() => {
     if (active && !hasRun.current) {
       hasRun.current = true;
-      setVisibleLines(0);
+      const resetTimer = setTimeout(() => setVisibleLines(0), 0);
+      timersRef.current.push(resetTimer);
 
       terminalSequence.forEach((line, i) => {
         const timer = setTimeout(() => {
@@ -51,7 +52,8 @@ export default function TerminalWindow({ active }: { active: boolean }) {
       hasRun.current = false;
       timersRef.current.forEach(clearTimeout);
       timersRef.current = [];
-      setVisibleLines(0);
+      const resetTimer = setTimeout(() => setVisibleLines(0), 0);
+      timersRef.current.push(resetTimer);
     }
 
     return () => {
