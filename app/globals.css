@@ -85,15 +85,13 @@ h1 {
 	line-height: 1.1;
 }
 
-.docs-sidebar {
-	box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
-}
-
 .docs-prose p,
 .docs-prose ul,
 .docs-prose ol,
 .docs-prose pre,
-.docs-prose div {
+.docs-prose div,
+.docs-prose h2,
+.docs-prose h3 {
 	max-width: 56rem;
 }
 
@@ -108,9 +106,8 @@ h1 {
 .docs-code {
 	max-width: 100%;
 	overflow-x: auto;
-	border-radius: 1rem;
 	border: 1px solid rgba(255, 255, 255, 0.08);
-	background: rgba(0, 0, 0, 0.28);
+	background: rgba(15, 15, 15, 0.32);
 	padding: 1rem;
 	color: #e4e4e7;
 }
