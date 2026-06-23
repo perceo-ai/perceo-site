@@ -110,7 +110,7 @@ export default async function ProductDocsPage({
             }
 
             return (
-              <h3 key={`${block.id}-${index}`} className="pt-4 text-lg font-semibold text-white">
+              <h3 key={`${block.id}-${index}`} className="pt-4 text-lg font-semibold text-white md:text-xl">
                 {block.text}
               </h3>
             );

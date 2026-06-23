@@ -1,9 +1,8 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import DocsProductSwitcher from "./DocsProductSwitcher";
+import DocsSidebar from "./DocsSidebar";
 import Footer from "./Footer";
 import Navbar from "./Navbar";
-import SwarmingVectors from "./SwarmingVectors";
 
 type DocsPageLink = {
   href: string;
@@ -41,42 +40,35 @@ export default function ProductDocsShell({
   return (
     <div className="min-h-screen bg-[#312F2F] grid-lines relative text-white">
       <div className="dot-pattern dot-pattern-fade z-0" aria-hidden="true" />
-      <SwarmingVectors />
       <Navbar />
 
       <main className="relative z-[15] mx-auto max-w-[1920px] px-5! pt-28 pb-10 md:px-12.5! md:pt-36">
-        <div className="grid gap-14 md:grid-cols-[220px_minmax(0,1fr)] md:gap-16">
-          <aside className="md:sticky md:top-28 md:self-start">
-            <Link href={backHref} className="text-sm text-zinc-500 transition hover:text-white">
-              {backLabel}
-            </Link>
-            <div className="mt-6 max-w-[220px]">
-              <DocsProductSwitcher currentSlug={currentSlug} />
-            </div>
-            <nav className="mt-10 flex flex-col gap-3 text-sm text-zinc-500">
-              {pages.map((page) => (
-                <Link key={page.href} href={page.href} className="transition hover:text-white">
-                  {page.title}
-                </Link>
-              ))}
-            </nav>
+        <div className="grid gap-12 md:grid-cols-[240px_minmax(0,1fr)] md:gap-16">
+          <aside className="order-2 border-t border-white/10 pt-8 md:order-1 md:sticky md:top-28 md:self-start md:border-t-0 md:pt-0">
+            <DocsSidebar
+              backHref={backHref}
+              backLabel={backLabel}
+              currentSlug={currentSlug}
+              pages={pages}
+              toc={toc}
+            />
           </aside>
 
-          <article className="min-w-0">
+          <article className="order-1 min-w-0 md:order-2">
             <div className="max-w-4xl">
               <p className="text-sm font-medium uppercase tracking-[0.18em] text-zinc-500">
                 {eyebrow}
               </p>
-              <h1 className="mt-4 font-serif text-5xl font-bold italic leading-none tracking-tight text-white md:text-7xl">
+              <h1 className="mt-4 font-serif text-4xl font-bold italic leading-none tracking-tight text-white sm:text-5xl md:text-7xl">
                 {title}
               </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-zinc-400">
+              <p className="mt-6 max-w-2xl text-base leading-7 text-zinc-400 md:text-lg md:leading-8">
                 {description}
               </p>
             </div>
 
             {pages.length > 1 ? (
-              <div className="mt-10 flex flex-wrap gap-x-6 gap-y-3 border-b border-white/10 pb-8 text-sm text-zinc-500">
+              <div className="mt-8 flex flex-wrap gap-x-5 gap-y-3 border-b border-white/10 pb-6 text-sm text-zinc-500 md:mt-10 md:pb-8">
                 {pages.map((page) => (
                   <Link key={page.href} href={page.href} className="transition hover:text-white">
                     {page.title}
@@ -86,7 +78,7 @@ export default function ProductDocsShell({
             ) : null}
 
             {toc.length ? (
-              <div className="mt-8 flex flex-wrap gap-x-6 gap-y-3 border-b border-white/10 pb-8 text-xs uppercase tracking-[0.14em] text-zinc-600">
+              <div className="mt-6 flex flex-wrap gap-x-5 gap-y-3 border-b border-white/10 pb-6 text-[11px] uppercase tracking-[0.14em] text-zinc-600 md:mt-8 md:pb-8 md:text-xs">
                 {toc.map((item) => (
                   <a key={item.id} href={`#${item.id}`} className="transition hover:text-white">
                     {item.text}
@@ -95,7 +87,7 @@ export default function ProductDocsShell({
               </div>
             ) : null}
 
-            <div className="mt-10 max-w-4xl space-y-2">
+            <div className="mt-8 max-w-4xl space-y-2 md:mt-10">
               {children}
             </div>
           </article>

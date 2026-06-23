@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 const requiredFiles = [
   "app/components/ArchductorHome.tsx",
   "app/components/DocsProductSwitcher.tsx",
+  "app/components/DocsSidebar.tsx",
   "app/components/ProductDocsShell.tsx",
   "app/docs/[product]/[[...slug]]/page.tsx",
   "app/components/HeroSection.tsx",
@@ -30,6 +31,7 @@ const requiredPhrases = [
   "archive the workspace",
   "Product docs",
   "Switch product",
+  "Search docs",
   "Core workflow",
   "Conductor parity",
   "Screen Studio video placeholder",
@@ -58,3 +60,4 @@ assert.match(combined, /docs\/manual-testing-checklist\.md/);
 assert.match(combined, /docs\/deploy-and-local-test\.md/);
 assert.match(combined, /\/products\/archductor/);
 assert.match(combined, /\/docs\/archductor/);
+assert.doesNotMatch(readFileSync("app/components/ProductDocsShell.tsx", "utf8"), /SwarmingVectors/);
