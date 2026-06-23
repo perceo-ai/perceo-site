@@ -29,12 +29,12 @@ export default function Footer() {
             <Link href="/" className="text-zinc-500 hover:text-white transition-colors text-sm">
               Home
             </Link>
-            <a href="/products/archductor" className="text-zinc-500 hover:text-white transition-colors text-sm">
+            <Link href="/products/archductor" className="text-zinc-500 hover:text-white transition-colors text-sm">
               Archductor
-            </a>
-            <a href="/docs" className="text-zinc-500 hover:text-white transition-colors text-sm">
+            </Link>
+            <Link href="/docs" className="text-zinc-500 hover:text-white transition-colors text-sm">
               Docs
-            </a>
+            </Link>
             <a href="https://github.com/pranavkannepalli/conductor-arch" className="text-zinc-500 hover:text-white transition-colors text-sm">
               GitHub
             </a>

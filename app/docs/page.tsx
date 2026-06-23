@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Archductor Docs",
-  description: "Install, verify, build, and test Archductor for Linux.",
+  title: "Product Docs",
+  description: "Product docs for Archductor and future Perceo products.",
 };
 
 export default function DocsPage() {

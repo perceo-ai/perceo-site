@@ -45,12 +45,12 @@ export default function Navbar() {
             >
               Home
             </Link>
-            <a
+            <Link
               href="/docs"
               className="text-white/70 hover:text-white transition-colors text-sm"
             >
               Docs
-            </a>
+            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
@@ -112,13 +112,13 @@ export default function Navbar() {
           >
             Home
           </Link>
-          <a
+          <Link
             href="/docs"
             className="text-white text-2xl font-medium"
             onClick={() => setMenuOpen(false)}
           >
             Docs
-          </a>
+          </Link>
         </nav>
 
         {/* Mobile CTA at bottom of list */}
