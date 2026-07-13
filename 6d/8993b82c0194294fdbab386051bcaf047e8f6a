@@ -1,0 +1,42 @@
+app/components/ProductDocsShell.tsx
+  s_2a351f30474a10::t_7b2babbe487b37 51,62,72,78,80,95,101
+  s_2a351f30474a10::t_a2ee8087d52099 45-46,69
+app/docs/page.tsx
+  s_2a351f30474a10::t_a2ee8087d52099 16-17,20,25,42,55,68,87
+  s_2a351f30474a10::t_7b2babbe487b37 28,37,50,71,82,94,98
+app/components/DocsTopBar.tsx
+  s_2a351f30474a10::t_7b2babbe487b37 5,13,16,22,25
+  s_2a351f30474a10::t_a2ee8087d52099 7
+app/components/DocsProductSwitcher.tsx
+  s_2a351f30474a10::t_aa043cf90a93b1 19
+app/components/DocsPagination.tsx
+  s_2a351f30474a10::t_7b2babbe487b37 18,22,27,37,42
+app/docs/[product]/[[...slug]]/page.tsx
+  s_2a351f30474a10::t_a2ee8087d52099 144,152
+  s_2a351f30474a10::t_7b2babbe487b37 49,56,62,102,119,121,174,186,188-189
+scripts/validate-docs-quality.mjs
+  s_2a351f30474a10::t_d1da642d28dcfb 7-8,10
+  s_2a351f30474a10::t_426479a0cbed6b 20-25,39-43
+  s_2a351f30474a10::t_3bd580790c105a 44-46
+  s_2a351f30474a10::t_0e202a0b342441 47
+app/components/DocsCopyButton.tsx
+  s_2a351f30474a10::t_7b2babbe487b37 17
+app/components/DocsSidebar.tsx
+  s_2a351f30474a10::t_7b2babbe487b37 64,77,90,98-99,113,119
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "6d8993b82c0194294fdbab386051bcaf047e8f6a",
+  "prompts": {},
+  "sessions": {
+    "s_2a351f30474a10": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f5ac0-2eea-7a22-8778-28d16772ac26",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Pranav Kannepalli <pranav.kannepalli@gmail.com>"
+    }
+  }
+}
