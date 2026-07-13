@@ -2,32 +2,34 @@
 
 import { useRef, useState, useEffect, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
-import TerminalWindow from "./TerminalWindow";
-import FlowGraph from "./FlowGraph";
-import AnalyticsPanel from "./AnalyticsPanel";
+import SuiteProductVisual, { type SuiteVisualKind } from "./SuiteProductVisual";
 
 const features = [
   {
+    visual: "archivum",
     title: "Archivum stores human knowledge.",
     description:
       "Archivum is the calm second brain: Markdown pages, wiki navigation, backlinks, daily and project notes, AI ingest, semantic search, graph views, and MCP access for assistants.",
   },
   {
+    visual: "archgraph",
     title: "Archgraph structures project knowledge.",
     description:
       "Archgraph is the future GraphRAG layer: products, repos, branches, commits, issues, docs, source areas, freshness, confidence, and provenance exposed through API and MCP.",
   },
   {
+    visual: "archductor",
     title: "Archductor executes with that context.",
     description:
       "Archductor turns memory into work: isolated workspaces, branches, PTYs, Codex/Claude/Cursor-style workers, checks, diffs, reviews, PR flow, and archived execution traces.",
   },
   {
+    visual: "testing",
     title: "Computer-use testing verifies behavior.",
     description:
       "Computer-use testing is the future QA layer: autonomous agents run browser, desktop, mobile, and voice flows so shipped work is evaluated against real product behavior.",
   },
-];
+] satisfies Array<{ visual: SuiteVisualKind; title: string; description: string }>;
 
 function FeatureBlock({
   feature,
@@ -76,13 +78,6 @@ function FeatureBlock({
 export default function FeaturesSection() {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const mobileVisuals = [
-    <TerminalWindow key="terminal" active={true} />,
-    <FlowGraph key="flowgraph" active={true} />,
-    <AnalyticsPanel key="analytics" active={true} />,
-    <AnalyticsPanel key="testing" active={true} />,
-  ];
-
   return (
     <section className="relative z-[15] mx-5 overflow-x-clip md:mx-12.5">
       <div className="md:grid md:grid-cols-2 md:gap-16">
@@ -94,7 +89,7 @@ export default function FeaturesSection() {
               feature={feature}
               index={i}
               onActive={setActiveIndex}
-              mobileVisual={mobileVisuals[i]}
+              mobileVisual={<SuiteProductVisual kind={feature.visual} active={true} />}
             />
           ))}
         </div>
@@ -103,41 +98,16 @@ export default function FeaturesSection() {
         <div className="hidden md:block">
           <div className="sticky top-0 h-screen flex items-center pt-16">
             <div className="relative w-[130%] -mr-[30%] aspect-[4/3] rounded-l-lg" style={{ clipPath: "inset(0 0 0 -20px round 8px 0 0 8px)" }}>
-              {/* Feature 1: Terminal */}
-              <motion.div
-                className="absolute inset-0"
-                animate={{ opacity: activeIndex === 0 ? 1 : 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-              >
-                <TerminalWindow active={activeIndex === 0} />
-              </motion.div>
-
-              {/* Feature 2: Flow Graph */}
-              <motion.div
-                className="absolute inset-0"
-                animate={{ opacity: activeIndex === 1 ? 1 : 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-              >
-                <FlowGraph active={activeIndex === 1} />
-              </motion.div>
-
-              {/* Feature 3: Analytics Panel */}
-              <motion.div
-                className="absolute inset-0"
-                animate={{ opacity: activeIndex === 2 ? 1 : 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-              >
-                <AnalyticsPanel active={activeIndex === 2} />
-              </motion.div>
-
-              {/* Feature 4: Verification Panel */}
-              <motion.div
-                className="absolute inset-0"
-                animate={{ opacity: activeIndex === 3 ? 1 : 0 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-              >
-                <AnalyticsPanel active={activeIndex === 3} />
-              </motion.div>
+              {features.map((feature, index) => (
+                <motion.div
+                  key={feature.visual}
+                  className="absolute inset-0"
+                  animate={{ opacity: activeIndex === index ? 1 : 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                >
+                  <SuiteProductVisual kind={feature.visual} active={activeIndex === index} />
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>

@@ -19,7 +19,21 @@ const checks = [
   {
     name: "feature copy explains the stack model",
     file: "app/components/FeaturesSection.tsx",
-    needles: ["Archivum", "Archgraph", "Archductor", "Computer-use testing"],
+    needles: ["Archivum", "Archgraph", "Archductor", "Computer-use testing", "SuiteProductVisual"],
+  },
+  {
+    name: "home visuals represent each product",
+    file: "app/components/SuiteProductVisual.tsx",
+    needles: [
+      "Archivum",
+      "Archgraph",
+      "Archductor",
+      "Computer-use testing",
+      "Markdown wiki",
+      "typed GraphRAG",
+      "PTY agents",
+      "autonomous QA",
+    ],
   },
   {
     name: "docs registry exposes all suite manuals",
