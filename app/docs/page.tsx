@@ -1,10 +1,10 @@
 import { redirect } from "next/navigation";
 
 export const metadata = {
-  title: "Product Docs",
-  description: "Product docs for Archductor and future Perceo products.",
+  title: "Perceo Suite Docs",
+  description: "Product documentation for the Perceo Suite.",
 };
 
 export default function DocsPage() {
-  redirect("/docs/archductor");
+  redirect("/docs/archivum");
 }

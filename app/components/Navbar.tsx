@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { List, X } from "@phosphor-icons/react";
-import Button from "./Button";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -33,9 +32,9 @@ export default function Navbar() {
         }
       >
         <div className="flex items-center justify-between md:relative">
-          <div className="text-xl md:text-2xl font-bold font-serif text-white tracking-tight">
-            Archductor
-          </div>
+          <Link href="/" className="text-xl md:text-2xl font-bold font-serif text-white tracking-tight">
+            Perceo
+          </Link>
 
           {/* Desktop Nav - absolutely centered */}
           <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
@@ -46,20 +45,37 @@ export default function Navbar() {
               Home
             </Link>
             <Link
+              href="/products"
+              className="text-white/70 hover:text-white transition-colors text-sm"
+            >
+              Products
+            </Link>
+            <Link
               href="/docs"
               className="text-white/70 hover:text-white transition-colors text-sm"
             >
-              Docs
+              Documentation
             </Link>
           </nav>
 
           <div className="flex items-center gap-3">
-            <Button variant="secondary" className="hidden md:block">
+            <Link
+              href="/docs"
+              className="hidden rounded-[5px] px-[20px] py-[10px] text-sm font-semibold text-white transition-colors hover:bg-white/[0.08] md:block"
+              style={{
+                background: "rgba(255, 255, 255, 0.05)",
+                backdropFilter: "blur(10px)",
+                WebkitBackdropFilter: "blur(10px)",
+              }}
+            >
               Read Docs
-            </Button>
-            <Button variant="primary">
-              Download
-            </Button>
+            </Link>
+            <Link
+              href="/products"
+              className="rounded-[5px] bg-gradient-to-b from-[#8b5cf6] to-[#7848e6] px-[20px] py-[10px] text-sm font-semibold text-white transition-colors hover:from-[#7c3aed] hover:to-[#6d28d9]"
+            >
+              View Suite
+            </Link>
             <button
               className="md:hidden text-white p-1"
               onClick={() => setMenuOpen(true)}
@@ -91,9 +107,9 @@ export default function Navbar() {
       >
         {/* Sheet Header */}
         <div className="flex items-center justify-between">
-          <div className="text-xl font-bold font-serif text-white tracking-tight">
-            Archductor
-          </div>
+          <Link href="/" className="text-xl font-bold font-serif text-white tracking-tight">
+            Perceo
+          </Link>
           <button
             className="text-white p-1"
             onClick={() => setMenuOpen(false)}
@@ -113,19 +129,35 @@ export default function Navbar() {
             Home
           </Link>
           <Link
+            href="/products"
+            className="text-white text-2xl font-medium"
+            onClick={() => setMenuOpen(false)}
+          >
+            Products
+          </Link>
+          <Link
             href="/docs"
             className="text-white text-2xl font-medium"
             onClick={() => setMenuOpen(false)}
           >
-            Docs
+            Documentation
           </Link>
         </nav>
 
         {/* Mobile CTA at bottom of list */}
         <div className="mt-auto pb-12">
-          <Button variant="secondary" className="w-full" onClick={() => setMenuOpen(false)}>
+          <Link
+            href="/docs"
+            className="block w-full rounded-[5px] px-[20px] py-[12px] text-center text-sm font-semibold text-white"
+            onClick={() => setMenuOpen(false)}
+            style={{
+              background: "rgba(255, 255, 255, 0.08)",
+              backdropFilter: "blur(10px)",
+              WebkitBackdropFilter: "blur(10px)",
+            }}
+          >
             Read Docs
-          </Button>
+          </Link>
         </div>
       </div>
     </>

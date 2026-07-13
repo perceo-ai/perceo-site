@@ -8,19 +8,24 @@ import AnalyticsPanel from "./AnalyticsPanel";
 
 const features = [
   {
-    title: "One repo. Many workspaces.",
+    title: "Archivum stores human knowledge.",
     description:
-      "Add an existing repository or clone a Git URL. Archductor gives every task its own Git worktree, branch, .context directory, and stable port range.",
+      "Archivum is the calm second brain: Markdown pages, wiki navigation, backlinks, daily and project notes, AI ingest, semantic search, graph views, and MCP access for assistants.",
   },
   {
-    title: "Run agents in parallel.",
+    title: "Archgraph structures project knowledge.",
     description:
-      "Start Shell, Codex, Claude Code, or Cursor sessions inside isolated workspaces. Keep setup, run logs, process state, and terminal output visible while work happens.",
+      "Archgraph is the future GraphRAG layer: products, repos, branches, commits, issues, docs, source areas, freshness, confidence, and provenance exposed through API and MCP.",
   },
   {
-    title: "Review, merge, archive.",
+    title: "Archductor executes with that context.",
     description:
-      "Inspect diffs, todos, PR checks, comments, and sibling conflicts. Create, merge, restore, and archive GitHub PR work without leaving the Linux app.",
+      "Archductor turns memory into work: isolated workspaces, branches, PTYs, Codex/Claude/Cursor-style workers, checks, diffs, reviews, PR flow, and archived execution traces.",
+  },
+  {
+    title: "Computer-use testing verifies behavior.",
+    description:
+      "Computer-use testing is the future QA layer: autonomous agents run browser, desktop, mobile, and voice flows so shipped work is evaluated against real product behavior.",
   },
 ];
 
@@ -75,6 +80,7 @@ export default function FeaturesSection() {
     <TerminalWindow key="terminal" active={true} />,
     <FlowGraph key="flowgraph" active={true} />,
     <AnalyticsPanel key="analytics" active={true} />,
+    <AnalyticsPanel key="testing" active={true} />,
   ];
 
   return (
@@ -122,6 +128,15 @@ export default function FeaturesSection() {
                 transition={{ duration: 0.5, ease: "easeInOut" }}
               >
                 <AnalyticsPanel active={activeIndex === 2} />
+              </motion.div>
+
+              {/* Feature 4: Verification Panel */}
+              <motion.div
+                className="absolute inset-0"
+                animate={{ opacity: activeIndex === 3 ? 1 : 0 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                <AnalyticsPanel active={activeIndex === 3} />
               </motion.div>
             </div>
           </div>

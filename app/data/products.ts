@@ -1,10 +1,12 @@
-export type ProductStatus = "current" | "coming-soon";
+export type ProductStatus = "in-development" | "concept";
 
 export type ProductSummary = {
   slug: string;
   name: string;
   status: ProductStatus;
+  role: string;
   summary: string;
+  pitch: string;
   href: string;
   docsHref: string;
   primaryCta: string;
@@ -12,13 +14,48 @@ export type ProductSummary = {
 
 export const products: ProductSummary[] = [
   {
+    slug: "archivum",
+    name: "Archivum",
+    status: "in-development",
+    role: "Knowledge workspace",
+    summary: "Server-hosted Obsidian for personal and team knowledge.",
+    pitch: "Self-hosted second brain with AI ingest, Markdown wiki, backlinks, semantic search, graph views, and MCP knowledge access.",
+    href: "/products#archivum",
+    docsHref: "/docs/archivum",
+    primaryCta: "Read docs",
+  },
+  {
+    slug: "archgraph",
+    name: "Archgraph",
+    status: "concept",
+    role: "Memory/retrieval infrastructure",
+    summary: "Self-hosted GraphRAG infrastructure for projects, products, repos, and agents.",
+    pitch: "Typed project graph that tracks products, repositories, branches, commits, issues, docs, source areas, confidence, freshness, and provenance.",
+    href: "/products#archgraph",
+    docsHref: "/docs/archgraph",
+    primaryCta: "View concept",
+  },
+  {
     slug: "archductor",
     name: "Archductor",
-    status: "current",
-    summary: "Run Conductor-style coding agents in isolated Git worktree workspaces on Linux.",
+    status: "in-development",
+    role: "Agent execution workbench",
+    summary: "Linux-native conductor for running coding agents across branches, PTYs, checks, and PRs.",
+    pitch: "Create workspaces, launch Codex/Claude/Cursor-style workers, watch PTYs, review diffs, run checks, and move PRs through the loop.",
     href: "/products/archductor",
     docsHref: "/docs/archductor",
     primaryCta: "Download",
+  },
+  {
+    slug: "computer-use-testing",
+    name: "Computer-use Testing",
+    status: "concept",
+    role: "Future QA/eval layer",
+    summary: "Autonomous computer-use agents for browser, desktop, mobile, and voice testing.",
+    pitch: "A future verification layer that runs flows, evaluates behavior, catches regressions, and feeds evidence back into the Perceo stack.",
+    href: "/products#computer-use-testing",
+    docsHref: "/docs/computer-use-testing",
+    primaryCta: "View concept",
   },
 ];
 
@@ -31,7 +68,7 @@ export const linuxConductor = {
   readmeUrl: "https://github.com/pranavkannepalli/conductor-arch/blob/main/README.md",
   deployDocsUrl: "https://github.com/pranavkannepalli/conductor-arch/blob/main/docs/deploy-and-local-test.md",
   manualChecklistUrl: "https://github.com/pranavkannepalli/conductor-arch/blob/main/docs/manual-testing-checklist.md",
-  subhead: "Run Conductor-style coding agents in isolated Git worktree workspaces on Linux.",
+  subhead: "Linux-native agent execution workbench for the Perceo Suite.",
   shortDescription: "A Linux-native desktop control plane for running multiple coding agents across isolated workspaces.",
   heroPoints: [
     "Run multiple Shell, Codex, Claude Code, and Cursor sessions in parallel.",

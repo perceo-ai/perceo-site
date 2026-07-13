@@ -12,11 +12,11 @@ export default function DocsProductSwitcher({ currentSlug }: DocsProductSwitcher
   const pathname = usePathname();
 
   return (
-    <label className="flex flex-col gap-2 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+    <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
       Switch product
       <select
         aria-label="Switch product docs"
-        className="docs-select w-full border-b border-white/10 bg-transparent px-0 py-3 text-sm font-medium tracking-normal text-white outline-none transition focus:border-white/25"
+        className="docs-select w-full rounded-[6px] border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium normal-case tracking-normal text-zinc-950 outline-none transition focus:border-zinc-400 focus:bg-white"
         value={currentSlug}
         onChange={(event) => {
           const nextProduct = products.find((product) => product.slug === event.target.value);
@@ -28,9 +28,9 @@ export default function DocsProductSwitcher({ currentSlug }: DocsProductSwitcher
         }}
       >
         {products.map((product) => (
-          <option key={product.slug} value={product.slug} disabled={product.status !== "current"}>
+          <option key={product.slug} value={product.slug}>
             {product.name}
-            {product.status !== "current" ? " (Coming soon)" : ""}
+            {product.status === "concept" ? " (Concept)" : ""}
           </option>
         ))}
       </select>

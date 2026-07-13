@@ -1,14 +1,14 @@
-# What is Archductor?
+# Archductor Overview
 
-Archductor is the Linux product surface for Linux Conductor: a desktop control plane for running coding agents across isolated Git worktree workspaces.
+Archductor is the execution surface of the Perceo Suite: a Linux-native agent workbench for running coding agents across isolated Git worktree workspaces.
 
-Use it when one repository has several streams of work in flight and you do not want branch state, terminal state, or review state bleeding together.
+Use it when one repository has several streams of work in flight and you do not want branch state, terminal state, agent logs, or review state bleeding together.
 
-## Why it exists
+## Role in the suite
 
-Create a workspace, start Codex or Claude Code, review the diff, open or merge a GitHub pull request, archive the workspace, then move to the next task without leaving the app.
+Archductor executes work using knowledge from Archivum and Archgraph.
 
-The product target is Conductor parity first. Linux flavor matters, but the repo-to-workspace-to-review loop matters more.
+The killer workflow is simple: start a task, pull context, create an isolated workspace, launch the agent, watch the PTY, review the diff, run checks, open or merge a PR, archive the workspace, and push useful execution facts back into memory.
 
 ## What works today
 
@@ -20,7 +20,22 @@ The product target is Conductor parity first. Linux flavor matters, but the repo
 - Review changed files, todos, local review comments, sibling conflicts, PR checks, and GitHub PR comments.
 - Create, refresh, merge, archive, and restore GitHub PR work from the app.
 
-## Conductor parity
+## What it owns
+
+- Workspace lifecycle.
+- Git worktrees and branches.
+- PTY-backed agent sessions.
+- Setup, run, check, and archive scripts.
+- Diffs, todos, comments, PR checks, reviews, and merge flow.
+- Execution logs and artifacts that can later become project memory.
+
+## What it does not own
+
+Archductor should not become the long-term memory system. It consumes memory from Archgraph and Archivum, produces execution traces, and sends important artifacts back.
+
+It should not become the QA platform either. Computer-use testing owns end-to-end behavior verification.
+
+## Conductor parity direction
 
 Archductor should feel like a Conductor-style control plane on Linux, not a pile of disconnected wrappers around CLIs.
 

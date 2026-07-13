@@ -50,36 +50,40 @@ export default function DocsSidebar({
   }, [normalizedQuery, toc]);
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
-        <Link href={backHref} className="text-sm text-zinc-500 transition hover:text-white">
+        <Link href={backHref} className="text-sm font-medium text-zinc-500 transition hover:text-zinc-950">
           {backLabel}
         </Link>
       </div>
 
-      <div className="max-w-[260px] space-y-6">
+      <div className="max-w-[280px] rounded-[8px] border border-zinc-200 bg-white p-4 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
         <DocsProductSwitcher currentSlug={currentSlug} />
 
-        <label className="flex flex-col gap-2 text-xs font-medium uppercase tracking-[0.18em] text-zinc-500">
+        <label className="mt-5 flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
           Search docs
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Workflow, install, settings..."
-            className="w-full border-b border-white/10 bg-transparent px-0 py-3 text-sm font-medium normal-case tracking-normal text-white outline-none placeholder:text-zinc-600 focus:border-white/25"
+            className="w-full rounded-[6px] border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium normal-case tracking-normal text-zinc-950 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white"
           />
         </label>
       </div>
 
-      <div className="space-y-8">
+      <div className="max-w-[280px] space-y-6 rounded-[8px] border border-zinc-200 bg-white p-4 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
         <div>
-          <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-zinc-600">
+          <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">
             Product docs
           </p>
-          <nav className="flex flex-col gap-3 text-sm text-zinc-500">
+          <nav className="flex flex-col gap-1 text-sm text-zinc-600">
             {filteredPages.map((page) => (
-              <Link key={page.href} href={page.href} className="transition hover:text-white">
+              <Link
+                key={page.href}
+                href={page.href}
+                className="rounded-[6px] px-2 py-2 transition hover:bg-zinc-50 hover:text-zinc-950"
+              >
                 {page.title}
               </Link>
             ))}
@@ -87,13 +91,13 @@ export default function DocsSidebar({
         </div>
 
         {filteredToc.length ? (
-          <div>
-            <p className="mb-3 text-xs font-medium uppercase tracking-[0.18em] text-zinc-600">
+          <div className="border-t border-zinc-200 pt-5 xl:hidden">
+            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">
               On this page
             </p>
-            <nav className="flex flex-col gap-3 text-sm text-zinc-600">
+            <nav className="flex flex-col gap-2 text-sm text-zinc-500">
               {filteredToc.map((item) => (
-                <a key={item.id} href={`#${item.id}`} className="transition hover:text-white">
+                <a key={item.id} href={`#${item.id}`} className="transition hover:text-zinc-950">
                   {item.text}
                 </a>
               ))}

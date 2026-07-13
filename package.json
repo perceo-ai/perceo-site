@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "validate:archductor": "node scripts/validate-linux-conductor-content.mjs"
+    "validate:archductor": "node scripts/validate-linux-conductor-content.mjs",
+    "validate:suite": "node scripts/validate-perceo-suite-content.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",

@@ -1,4 +1,4 @@
-import ArchductorHome from "../../components/ArchductorHome";
+import { redirect } from "next/navigation";
 import { linuxConductor } from "../../data/products";
 
 export const metadata = {
@@ -7,5 +7,5 @@ export const metadata = {
 };
 
 export default function ArchductorPage() {
-  return <ArchductorHome />;
+  redirect("/products#archductor");
 }

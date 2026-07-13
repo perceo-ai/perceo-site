@@ -22,11 +22,45 @@ const docsRoot = path.join(process.cwd(), "content", "docs");
 
 const products: DocsProduct[] = [
   {
+    slug: "archivum",
+    title: "Archivum Docs",
+    eyebrow: "Knowledge workspace",
+    description:
+      "Understand Archivum, the human knowledge layer of the Perceo Suite: a self-hosted Markdown wiki with AI ingest, search, graph, and MCP access.",
+    backHref: "/products#archivum",
+    backLabel: "Back to products",
+    pages: [
+      {
+        slug: [],
+        title: "Overview",
+        description: "How Archivum stores human and team knowledge.",
+        file: "overview.md",
+      },
+    ],
+  },
+  {
+    slug: "archgraph",
+    title: "Archgraph Docs",
+    eyebrow: "GraphRAG infrastructure",
+    description:
+      "Preview Archgraph, the structured project memory layer for repos, products, branches, commits, docs, issues, provenance, and agent retrieval.",
+    backHref: "/products#archgraph",
+    backLabel: "Back to products",
+    pages: [
+      {
+        slug: [],
+        title: "Overview",
+        description: "How Archgraph will structure project knowledge.",
+        file: "overview.md",
+      },
+    ],
+  },
+  {
     slug: "archductor",
     title: "Archductor Docs",
-    eyebrow: "Linux Conductor docs",
+    eyebrow: "Agent execution workbench",
     description:
-      "Install, understand, and run the Linux-native Conductor workflow with a docs shell that behaves like a real product manual instead of a loose marketing page.",
+      "Install, understand, and run Archductor, the Perceo execution surface for isolated workspaces, PTY agents, branches, checks, reviews, and PR flow.",
     backHref: "/products/archductor",
     backLabel: "Back to Archductor",
     pages: [
@@ -59,6 +93,23 @@ const products: DocsProduct[] = [
         title: "Release readiness",
         description: "Review flow, verification, and known limits.",
         file: "release-readiness.md",
+      },
+    ],
+  },
+  {
+    slug: "computer-use-testing",
+    title: "Computer-use Testing Docs",
+    eyebrow: "Future QA/eval layer",
+    description:
+      "Preview the Perceo verification layer for autonomous browser, desktop, mobile, and voice application testing.",
+    backHref: "/products#computer-use-testing",
+    backLabel: "Back to products",
+    pages: [
+      {
+        slug: [],
+        title: "Overview",
+        description: "How computer-use testing will verify work produced by the suite.",
+        file: "overview.md",
       },
     ],
   },

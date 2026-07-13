@@ -42,20 +42,20 @@ function InlineMarkdown({ text }: { text: string }) {
     }
     if (part.type === "code") {
       return (
-        <code key={index} className="rounded bg-white/8 px-1.5 py-0.5 text-zinc-100">
+        <code key={index} className="rounded bg-zinc-100 px-1.5 py-0.5 text-zinc-900">
           {part.value}
         </code>
       );
     }
     if (part.type === "strong") {
       return (
-        <strong key={index} className="font-semibold text-white">
+        <strong key={index} className="font-semibold text-zinc-950">
           {part.value}
         </strong>
       );
     }
     return (
-      <Link key={index} href={part.href} className="text-[#8fc6ff] hover:text-[#c5e2ff]">
+      <Link key={index} href={part.href} className="font-medium text-[#6d28d9] hover:text-[#4c1d95]">
         {part.label}
       </Link>
     );
@@ -90,7 +90,7 @@ export default async function ProductDocsPage({
       }))}
       toc={toc}
     >
-      <div className="docs-prose space-y-5 text-sm leading-7 text-zinc-300">
+      <div className="docs-prose space-y-5 text-[15px] leading-7 text-zinc-600">
         {blocks.map((block, index) => {
           if (block.type === "heading") {
             if (block.level === 1) {
@@ -102,7 +102,7 @@ export default async function ProductDocsPage({
                 <h2
                   key={`${block.id}-${index}`}
                   id={block.id}
-                  className="scroll-mt-28 pt-6 text-2xl font-semibold tracking-tight text-white md:text-3xl"
+                  className="scroll-mt-28 pt-8 text-2xl font-semibold tracking-tight text-zinc-950 md:text-3xl"
                 >
                   {block.text}
                 </h2>
@@ -110,7 +110,7 @@ export default async function ProductDocsPage({
             }
 
             return (
-              <h3 key={`${block.id}-${index}`} className="pt-4 text-lg font-semibold text-white md:text-xl">
+              <h3 key={`${block.id}-${index}`} className="pt-5 text-lg font-semibold text-zinc-950 md:text-xl">
                 {block.text}
               </h3>
             );
@@ -132,8 +132,7 @@ export default async function ProductDocsPage({
                 className={block.ordered ? "list-decimal space-y-2 pl-5" : "space-y-2"}
               >
                 {block.items.map((item) => (
-                  <li key={item}>
-                    {!block.ordered ? "- " : null}
+                  <li key={item} className={block.ordered ? "" : "relative pl-5 before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-zinc-300"}>
                     <InlineMarkdown text={item} />
                   </li>
                 ))}

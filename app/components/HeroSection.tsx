@@ -64,19 +64,18 @@ export default function HeroSection() {
       className="relative px-5! md:px-12.5! min-h-screen flex flex-col justify-center"
     >
       <AnimatedHeading className="font-bold relative z-30 font-sans">
-        Archductor
+        Perceo Suite
       </AnimatedHeading>
       <AnimatedHeading
         className="italic font-serif relative z-30 font-bold w-full text-right"
         delay={0.3}
       >
-        for Linux.
+        agentic work stack.
       </AnimatedHeading>
       <p className="text-zinc-500 text-right text-sm leading-relaxed mt-4">
-        Run coding agents in isolated
+        remember, structure, execute,
         <br />
-        Git worktree workspaces on{" "}
-        <span className="text-white">Linux</span>
+        and <span className="text-white">verify</span> AI-assisted work.
       </p>
 
       <motion.div
@@ -87,10 +86,10 @@ export default function HeroSection() {
         style={{ y: failedCardY }}
       >
         <StatusCard
-          title="Workspace berlin"
+          title="Archductor task"
           status="Passed"
-          successRate="Checks clear"
-          frequency="PR ready"
+          successRate="Agent running"
+          frequency="PR tracked"
         />
       </motion.div>
 
@@ -102,10 +101,10 @@ export default function HeroSection() {
         style={{ y: passedCardY }}
       >
         <StatusCard
-          title="Codex session"
+          title="Archgraph context"
           status="Passed"
-          successRate="Diff reviewed"
-          frequency="2 files"
+          successRate="Memory loaded"
+          frequency="Fresh"
         />
       </motion.div>
     </main>
