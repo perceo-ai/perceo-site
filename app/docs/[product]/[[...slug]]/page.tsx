@@ -1,8 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import DocsCopyButton from "@/app/components/DocsCopyButton";
+import DocsPagination from "@/app/components/DocsPagination";
 import ProductDocsShell from "@/app/components/ProductDocsShell";
 import {
   getDocsPage,
+  getDocsNavProducts,
+  getDocsNeighbors,
   getDocsProducts,
   parseMarkdown,
   renderInlineMarkdown,
@@ -75,10 +79,13 @@ export default async function ProductDocsPage({
   }
 
   const { blocks, toc } = parseMarkdown(entry.markdown);
+  const neighbors = getDocsNeighbors(product, slug ?? []);
+  const pageUrl = entry.page.slug.length
+    ? `/docs/${entry.product.slug}/${entry.page.slug.join("/")}`
+    : `/docs/${entry.product.slug}`;
 
   return (
     <ProductDocsShell
-      currentSlug={entry.product.slug}
       backHref={entry.product.backHref}
       backLabel={entry.product.backLabel}
       eyebrow={entry.product.eyebrow}
@@ -88,10 +95,42 @@ export default async function ProductDocsPage({
         title: page.title,
         href: page.slug.length ? `/docs/${entry.product.slug}/${page.slug.join("/")}` : `/docs/${entry.product.slug}`,
       }))}
+      navProducts={getDocsNavProducts(entry.product.slug, slug ?? [])}
       toc={toc}
+      pageUrl={pageUrl}
     >
       <div className="docs-prose space-y-5 text-[15px] leading-7 text-zinc-600">
         {blocks.map((block, index) => {
+          if (block.type === "card" && blocks[index - 1]?.type !== "card") {
+            const cards = [];
+            let cursor = index;
+            while (blocks[cursor]?.type === "card") {
+              cards.push(blocks[cursor]);
+              cursor += 1;
+            }
+
+            return (
+              <div key={index} className="card-grid my-6 grid gap-3 md:grid-cols-2">
+                {cards.map((card) =>
+                  card.type === "card" ? (
+                    <Link
+                      key={`${card.title}-${card.href}`}
+                      href={card.href}
+                      className="rounded-[8px] border border-zinc-200 bg-white p-4 no-underline transition hover:border-zinc-300 hover:shadow-[0_8px_30px_rgba(15,23,42,0.08)]"
+                    >
+                      <span className="block text-sm font-semibold text-zinc-950">{card.title}</span>
+                      <span className="mt-1 block text-sm leading-6 text-zinc-500">{card.description}</span>
+                    </Link>
+                  ) : null,
+                )}
+              </div>
+            );
+          }
+
+          if (block.type === "card") {
+            return null;
+          }
+
           if (block.type === "heading") {
             if (block.level === 1) {
               return null;
@@ -118,7 +157,7 @@ export default async function ProductDocsPage({
 
           if (block.type === "paragraph") {
             return (
-              <p key={index}>
+              <p key={index} className="leading-7">
                 <InlineMarkdown text={block.text} />
               </p>
             );
@@ -140,13 +179,39 @@ export default async function ProductDocsPage({
             );
           }
 
+          if (block.type === "callout") {
+            const callout = block;
+            const toneClass =
+              callout.tone === "Warning"
+                ? "border-amber-200 bg-amber-50 text-amber-950"
+                : callout.tone === "Tip"
+                  ? "border-emerald-200 bg-emerald-50 text-emerald-950"
+                  : "border-blue-200 bg-blue-50 text-blue-950";
+
+            return (
+              <div key={index} className={`callout rounded-[8px] border p-4 ${toneClass}`}>
+                <p className="text-sm font-semibold">{callout.tone}</p>
+                <p className="mt-1 text-sm leading-6">
+                  <InlineMarkdown text={callout.text} />
+                </p>
+              </div>
+            );
+          }
+
           return (
-            <pre key={index} className="docs-code">
-              <code>{block.code}</code>
-            </pre>
+            <div key={index} className="overflow-hidden rounded-[8px] border border-zinc-800 bg-[#101014]">
+              <div className="docs-code-header flex items-center justify-between border-b border-white/10 bg-white/[0.04] px-4 py-2">
+                <span className="font-mono text-xs text-zinc-400">{block.language || "text"}</span>
+                <DocsCopyButton value={block.code} />
+              </div>
+              <pre className="docs-code border-0">
+                <code>{block.code}</code>
+              </pre>
+            </div>
           );
         })}
       </div>
+      <DocsPagination previous={neighbors.previous} next={neighbors.next} />
     </ProductDocsShell>
   );
 }

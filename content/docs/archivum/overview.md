@@ -4,6 +4,12 @@ Archivum is the human knowledge layer of the Perceo Suite.
 
 It is a self-hosted second brain for people and teams who want durable Markdown knowledge, calm editing, AI-native ingest, semantic search, graph exploration, and MCP access without giving up control of their data.
 
+> Info: Archivum is in development. The current positioning is intentionally narrow: human knowledge first, repo graph memory elsewhere.
+
+::card Archgraph | See how structured project memory stays separate from the human wiki. | /docs/archgraph
+::card Archductor | See how agent execution consumes memory without owning long-term knowledge. | /docs/archductor
+::card Computer-use testing | See where future behavioral verification fits in the stack. | /docs/computer-use-testing
+
 ## Role in the suite
 
 Archivum stores human knowledge.
@@ -29,3 +35,9 @@ Use it for notes, pages, folders, backlinks, daily notes, project notes, public 
 Archivum is in development. The product priority is a sharp, self-hosted knowledge workspace that feels calm for humans and useful for agents.
 
 The long-term win is compounding memory: every source you ingest becomes structured, searchable, linkable knowledge that future human and agent work can use.
+
+```bash
+# planned local-first shape
+docker compose up -d
+open http://localhost:3000
+```

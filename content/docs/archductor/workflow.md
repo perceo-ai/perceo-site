@@ -2,6 +2,12 @@
 
 The normal path is repository first:
 
+> Tip: Treat each workspace as one shippable unit. If two changes should be reviewed separately, they should usually live in separate workspaces.
+
+::card Install | Get the Linux app running before creating workspaces. | /docs/archductor/install
+::card Project setup | Configure shared scripts and defaults. | /docs/archductor/project-setup
+::card Release readiness | Verify checks, limits, and packaging status. | /docs/archductor/release-readiness
+
 1. Add or clone a repository.
 2. Configure scripts, prompts, providers, and workspace defaults.
 3. Create a workspace from a branch, prompt, GitHub issue, GitHub PR, or Linear issue.

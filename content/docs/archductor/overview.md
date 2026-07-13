@@ -4,6 +4,12 @@ Archductor is the execution surface of the Perceo Suite: a Linux-native agent wo
 
 Use it when one repository has several streams of work in flight and you do not want branch state, terminal state, agent logs, or review state bleeding together.
 
+> Info: Archductor is in development. The immediate target is Linux-native Conductor-style execution, not a second-brain app or long-term memory database.
+
+::card Install Archductor | Get the Linux app running from release artifacts or source. | /docs/archductor/install
+::card Core workflow | Understand repositories, workspaces, sessions, checks, PRs, and archive flow. | /docs/archductor/workflow
+::card Project setup | Configure scripts, prompts, providers, and workspace defaults. | /docs/archductor/project-setup
+
 ## Role in the suite
 
 Archductor executes work using knowledge from Archivum and Archgraph.
@@ -43,3 +49,9 @@ Archductor should feel like a Conductor-style control plane on Linux, not a pile
 - Multiple workspaces are for independently reviewable work.
 - Multiple sessions in one workspace are for shared branch state.
 - Review, checks, merge, and archive belong in the same workflow.
+
+```bash
+# source build path
+cargo build --workspace --release --locked
+./target/release/linux-conductor-gtk
+```

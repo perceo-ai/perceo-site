@@ -2,12 +2,7 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import DocsProductSwitcher from "./DocsProductSwitcher";
-
-type DocsLink = {
-  href: string;
-  title: string;
-};
+import type { DocsNavProduct } from "@/lib/docs";
 
 type DocsHeadingLink = {
   id: string;
@@ -17,16 +12,16 @@ type DocsHeadingLink = {
 type DocsSidebarProps = {
   backHref: string;
   backLabel: string;
-  currentSlug: string;
-  pages: DocsLink[];
+  navProducts: DocsNavProduct[];
   toc: DocsHeadingLink[];
 };
+
+const sectionLabels = ["Get started", "Concepts", "Guides", "Reference"];
 
 export default function DocsSidebar({
   backHref,
   backLabel,
-  currentSlug,
-  pages,
+  navProducts,
   toc,
 }: DocsSidebarProps) {
   const [query, setQuery] = useState("");
@@ -35,11 +30,25 @@ export default function DocsSidebar({
 
   const filteredPages = useMemo(() => {
     if (!normalizedQuery) {
-      return pages;
+      return navProducts;
     }
 
-    return pages.filter((page) => page.title.toLowerCase().includes(normalizedQuery));
-  }, [normalizedQuery, pages]);
+    return navProducts
+      .map((product) => ({
+        ...product,
+        sections: product.sections
+          .map((section) => ({
+            ...section,
+            links: section.links.filter((page) =>
+              `${product.title} ${section.title} ${page.title} ${page.description}`
+                .toLowerCase()
+                .includes(normalizedQuery),
+            ),
+          }))
+          .filter((section) => section.links.length > 0),
+      }))
+      .filter((product) => product.sections.length > 0);
+  }, [normalizedQuery, navProducts]);
 
   const filteredToc = useMemo(() => {
     if (!normalizedQuery) {
@@ -50,61 +59,70 @@ export default function DocsSidebar({
   }, [normalizedQuery, toc]);
 
   return (
-    <div className="space-y-6">
-      <div>
+    <div className="space-y-7">
+      <div className="px-2">
         <Link href={backHref} className="text-sm font-medium text-zinc-500 transition hover:text-zinc-950">
           {backLabel}
         </Link>
       </div>
 
-      <div className="max-w-[280px] rounded-[8px] border border-zinc-200 bg-white p-4 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
-        <DocsProductSwitcher currentSlug={currentSlug} />
-
-        <label className="mt-5 flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
+      <div className="px-2">
+        <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">
           Search docs
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
-            placeholder="Workflow, install, settings..."
+            placeholder="Workflow, concepts, API..."
             className="w-full rounded-[6px] border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium normal-case tracking-normal text-zinc-950 outline-none placeholder:text-zinc-400 focus:border-zinc-400 focus:bg-white"
           />
         </label>
       </div>
 
-      <div className="max-w-[280px] space-y-6 rounded-[8px] border border-zinc-200 bg-white p-4 shadow-[0_12px_40px_rgba(15,23,42,0.06)]">
-        <div>
+      <nav className="space-y-8 text-sm" aria-label={`Docs navigation: ${sectionLabels.join(", ")}`}>
+        {filteredPages.map((product) => (
+          <div key={product.slug} className="space-y-5">
+            <p className="px-2 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">
+              {product.title}
+            </p>
+            {product.sections.map((section) => (
+              <div key={`${product.slug}-${section.title}`} className="space-y-2">
+                <p className="px-2 text-xs font-semibold text-zinc-950">{section.title}</p>
+                <div className="space-y-0.5">
+                  {section.links.map((page) => (
+                    <Link
+                      key={page.href}
+                      href={page.href}
+                      className={`block rounded-[6px] px-2 py-1.5 leading-6 transition ${
+                        page.active
+                          ? "bg-zinc-950 text-white"
+                          : "text-zinc-600 hover:bg-zinc-100 hover:text-zinc-950"
+                      }`}
+                    >
+                      {page.title}
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
+        ))}
+      </nav>
+
+      {filteredToc.length ? (
+        <div className="border-t border-zinc-200 px-2 pt-5 xl:hidden">
           <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">
-            Product docs
+            On this page
           </p>
-          <nav className="flex flex-col gap-1 text-sm text-zinc-600">
-            {filteredPages.map((page) => (
-              <Link
-                key={page.href}
-                href={page.href}
-                className="rounded-[6px] px-2 py-2 transition hover:bg-zinc-50 hover:text-zinc-950"
-              >
-                {page.title}
-              </Link>
+          <nav className="flex flex-col gap-2 text-sm text-zinc-500">
+            {filteredToc.map((item) => (
+              <a key={item.id} href={`#${item.id}`} className="transition hover:text-zinc-950">
+                {item.text}
+              </a>
             ))}
           </nav>
         </div>
-
-        {filteredToc.length ? (
-          <div className="border-t border-zinc-200 pt-5 xl:hidden">
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-400">
-              On this page
-            </p>
-            <nav className="flex flex-col gap-2 text-sm text-zinc-500">
-              {filteredToc.map((item) => (
-                <a key={item.id} href={`#${item.id}`} className="transition hover:text-zinc-950">
-                  {item.text}
-                </a>
-              ))}
-            </nav>
-          </div>
-        ) : null}
-      </div>
+      ) : null}
     </div>
   );
 }

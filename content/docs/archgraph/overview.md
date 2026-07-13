@@ -4,6 +4,12 @@ Archgraph is the structured project memory layer of the Perceo Suite.
 
 It is planned as self-hosted GraphRAG infrastructure for products, projects, repositories, branches, commits, issues, PRDs, docs, source files, and agent context.
 
+> Info: Archgraph is a concept product. It is documented now because the boundary prevents Archivum and Archductor from absorbing the wrong responsibilities.
+
+::card Archivum | Human-authored notes, wiki pages, backlinks, and team memory. | /docs/archivum
+::card Archductor | Workspaces, PTYs, checks, branches, diffs, reviews, and PR flow. | /docs/archductor
+::card Workflow | How execution should consume graph context before work starts. | /docs/archductor/workflow
+
 ## Role in the suite
 
 Archgraph structures project knowledge.
@@ -28,3 +34,8 @@ When an AI agent asks, "what context matters before touching this repo?", Archgr
 Archgraph is a concept product. It exists in the suite architecture because the boundary matters now: long-term memory should not live inside Archductor, and repo-aware project graph logic should not bloat Archivum.
 
 The first useful version should ingest existing docs and repository metadata, then expose narrow context retrieval for agent tasks.
+
+```bash
+# future retrieval shape
+archgraph query "what context matters before changing auth?"
+```

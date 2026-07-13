@@ -29,7 +29,7 @@ const requiredPhrases = [
   "execution surface of the Perceo Suite",
   "Create workspaces from a branch, prompt, GitHub issue, GitHub PR, or Linear issue.",
   "archive the workspace",
-  "Product docs",
+  "Docs navigation",
   "Switch product",
   "Search docs",
   "Core workflow",

@@ -6,6 +6,7 @@ export type DocsPage = {
   title: string;
   description: string;
   file: string;
+  section: "Get started" | "Concepts" | "Guides" | "Reference";
 };
 
 export type DocsProduct = {
@@ -16,6 +17,22 @@ export type DocsProduct = {
   backHref: string;
   backLabel: string;
   pages: DocsPage[];
+};
+
+export type DocsNavLink = {
+  href: string;
+  title: string;
+  description: string;
+  active: boolean;
+};
+
+export type DocsNavProduct = {
+  slug: string;
+  title: string;
+  sections: Array<{
+    title: DocsPage["section"];
+    links: DocsNavLink[];
+  }>;
 };
 
 const docsRoot = path.join(process.cwd(), "content", "docs");
@@ -35,6 +52,7 @@ const products: DocsProduct[] = [
         title: "Overview",
         description: "How Archivum stores human and team knowledge.",
         file: "overview.md",
+        section: "Get started",
       },
     ],
   },
@@ -52,6 +70,7 @@ const products: DocsProduct[] = [
         title: "Overview",
         description: "How Archgraph will structure project knowledge.",
         file: "overview.md",
+        section: "Get started",
       },
     ],
   },
@@ -69,30 +88,35 @@ const products: DocsProduct[] = [
         title: "Overview",
         description: "What Archductor is and why the workflow exists.",
         file: "overview.md",
+        section: "Get started",
       },
       {
         slug: ["workflow"],
         title: "Workflow",
         description: "How repositories, workspaces, and sessions fit together.",
         file: "workflow.md",
+        section: "Concepts",
       },
       {
         slug: ["project-setup"],
         title: "Project setup",
         description: "Shared settings, prompts, scripts, and repo defaults.",
         file: "project-setup.md",
+        section: "Guides",
       },
       {
         slug: ["install"],
         title: "Install",
         description: "Install channels and source build steps.",
         file: "install.md",
+        section: "Get started",
       },
       {
         slug: ["release-readiness"],
         title: "Release readiness",
         description: "Review flow, verification, and known limits.",
         file: "release-readiness.md",
+        section: "Reference",
       },
     ],
   },
@@ -110,13 +134,41 @@ const products: DocsProduct[] = [
         title: "Overview",
         description: "How computer-use testing will verify work produced by the suite.",
         file: "overview.md",
+        section: "Get started",
       },
     ],
   },
 ];
 
+const docsHref = (productSlug: string, page: DocsPage) =>
+  page.slug.length ? `/docs/${productSlug}/${page.slug.join("/")}` : `/docs/${productSlug}`;
+
+const sectionOrder: DocsPage["section"][] = ["Get started", "Concepts", "Guides", "Reference"];
+
 export function getDocsProducts() {
   return products;
+}
+
+export function getDocsNavProducts(currentProductSlug?: string, currentSlugParts: string[] = []): DocsNavProduct[] {
+  return products.map((product) => ({
+    slug: product.slug,
+    title: product.title.replace(/ Docs$/, ""),
+    sections: sectionOrder
+      .map((section) => ({
+        title: section,
+        links: product.pages
+          .filter((page) => page.section === section)
+          .map((page) => ({
+            href: docsHref(product.slug, page),
+            title: page.title,
+            description: page.description,
+            active:
+              product.slug === currentProductSlug &&
+              page.slug.join("/") === currentSlugParts.join("/"),
+          })),
+      }))
+      .filter((section) => section.links.length > 0),
+  }));
 }
 
 export function getDocsProduct(productSlug: string) {
@@ -143,10 +195,30 @@ export function getDocsPage(productSlug: string, slugParts: string[]) {
   };
 }
 
+export function getDocsNeighbors(productSlug: string, slugParts: string[]) {
+  const allPages = products.flatMap((product) =>
+    product.pages.map((page) => ({
+      product,
+      page,
+      href: docsHref(product.slug, page),
+    })),
+  );
+  const currentIndex = allPages.findIndex(
+    (entry) => entry.product.slug === productSlug && entry.page.slug.join("/") === slugParts.join("/"),
+  );
+
+  return {
+    previous: currentIndex > 0 ? allPages[currentIndex - 1] : null,
+    next: currentIndex >= 0 && currentIndex < allPages.length - 1 ? allPages[currentIndex + 1] : null,
+  };
+}
+
 type ParsedBlock =
   | { type: "heading"; level: 1 | 2 | 3; text: string; id: string }
   | { type: "paragraph"; text: string }
   | { type: "list"; ordered: boolean; items: string[] }
+  | { type: "callout"; tone: "Info" | "Warning" | "Tip"; text: string }
+  | { type: "card"; title: string; description: string; href: string }
   | { type: "code"; language: string; code: string };
 
 export function parseMarkdown(markdown: string) {
@@ -166,6 +238,29 @@ export function parseMarkdown(markdown: string) {
     const trimmed = line.trim();
 
     if (!trimmed) {
+      index += 1;
+      continue;
+    }
+
+    const calloutMatch = trimmed.match(/^> (Info|Warning|Tip):\s+(.+)$/);
+    if (calloutMatch) {
+      blocks.push({
+        type: "callout",
+        tone: calloutMatch[1] as "Info" | "Warning" | "Tip",
+        text: calloutMatch[2],
+      });
+      index += 1;
+      continue;
+    }
+
+    const cardMatch = trimmed.match(/^::card\s+(.+?)\s+\|\s+(.+?)\s+\|\s+(.+)$/);
+    if (cardMatch) {
+      blocks.push({
+        type: "card",
+        title: cardMatch[1].trim(),
+        description: cardMatch[2].trim(),
+        href: cardMatch[3].trim(),
+      });
       index += 1;
       continue;
     }
@@ -223,6 +318,8 @@ export function parseMarkdown(markdown: string) {
       const current = lines[index].trim();
       if (
         !current ||
+        current.startsWith("> ") ||
+        current.startsWith("::card ") ||
         current.startsWith("```") ||
         current.startsWith("#") ||
         current.startsWith("- ") ||
