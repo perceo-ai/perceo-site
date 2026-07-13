@@ -1,0 +1,58 @@
+docs/superpowers/specs/2026-07-13-mintlify-grade-docs-design.md
+  s_2a351f30474a10::t_aaaeb2b89d4565 1-35
+content/docs/archductor/overview.md
+  s_2a351f30474a10::t_548afe235297eb 7-12,52-57
+app/components/DocsPagination.tsx
+  s_2a351f30474a10::t_e3b0bd3267f758 1-48
+docs/superpowers/plans/2026-07-13-mintlify-grade-docs.md
+  s_2a351f30474a10::t_aaaeb2b89d4565 1-95
+content/docs/archgraph/overview.md
+  s_2a351f30474a10::t_548afe235297eb 7-12,37-41
+scripts/validate-docs-quality.mjs
+  s_2a351f30474a10::t_aaaeb2b89d4565 1-41
+app/components/ProductDocsShell.tsx
+  s_2a351f30474a10::t_5992dd528e8f24 111
+  s_2a351f30474a10::t_dad175210ce155 3-4,6,26,28,39,41,45-46,48,50,54,60-67,71,86,92,94,96,98-103
+lib/docs.ts
+  s_2a351f30474a10::t_f9773f693d4180 9,22-37,55,73,91,98,105,112,119,137,143-147,152-173,198-215,220-221,245-267,321-322
+app/globals.css
+  s_2a351f30474a10::t_5992dd528e8f24 109,113-114
+content/docs/archivum/overview.md
+  s_2a351f30474a10::t_548afe235297eb 7-12,38-43
+scripts/validate-linux-conductor-content.mjs
+  s_2a351f30474a10::t_c5095b48ff8deb 32
+app/components/DocsCopyButton.tsx
+  s_2a351f30474a10::t_e3b0bd3267f758 1-28
+app/components/DocsTopBar.tsx
+  s_2a351f30474a10::t_e3b0bd3267f758 1-32
+app/docs/page.tsx
+  s_2a351f30474a10::t_2a39fa234f3c69 1-4,12-103,105-108
+  s_2a351f30474a10::t_5992dd528e8f24 104
+content/docs/computer-use-testing/overview.md
+  s_2a351f30474a10::t_548afe235297eb 7-12,38-42
+content/docs/archductor/workflow.md
+  s_2a351f30474a10::t_548afe235297eb 5-10
+app/docs/[product]/[[...slug]]/page.tsx
+  s_2a351f30474a10::t_d27d093c72a0c7 3-4,8-9,82-85,98,100,104-133,160,182-200,202-210,214
+app/components/DocsSidebar.tsx
+  s_2a351f30474a10::t_a7ae756e95516b 19-20,82
+  s_2a351f30474a10::t_dad175210ce155 5,15,24,33,36-51,62-63,69-70,76,83-113,115,117-121,125
+package.json
+  s_2a351f30474a10::t_aaaeb2b89d4565 11-12
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.12",
+  "base_commit_sha": "afc055cb4b45a86bdb5ace1b1ee315017a15ae0b",
+  "prompts": {},
+  "sessions": {
+    "s_2a351f30474a10": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f5ac0-2eea-7a22-8778-28d16772ac26",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Pranav Kannepalli <pranav.kannepalli@gmail.com>"
+    }
+  }
+}
