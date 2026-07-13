@@ -14,7 +14,7 @@ export default function DocsCopyButton({ value, label = "Copy" }: DocsCopyButton
   return (
     <button
       type="button"
-      className="inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-zinc-200 bg-white px-2.5 text-xs font-medium text-zinc-600 transition hover:border-zinc-300 hover:text-zinc-950 focus:outline-none focus:ring-2 focus:ring-zinc-300"
+      className="inline-flex h-8 items-center gap-1.5 rounded-[6px] border border-white/10 bg-white/[0.05] px-2.5 text-xs font-medium text-zinc-400 transition hover:border-white/20 hover:text-white focus:outline-none focus:ring-2 focus:ring-white/20"
       onClick={async () => {
         await navigator.clipboard.writeText(value);
         setCopied(true);

@@ -46,20 +46,20 @@ function InlineMarkdown({ text }: { text: string }) {
     }
     if (part.type === "code") {
       return (
-        <code key={index} className="rounded bg-zinc-100 px-1.5 py-0.5 text-zinc-900">
+        <code key={index} className="rounded bg-white/[0.08] px-1.5 py-0.5 text-zinc-100">
           {part.value}
         </code>
       );
     }
     if (part.type === "strong") {
       return (
-        <strong key={index} className="font-semibold text-zinc-950">
+        <strong key={index} className="font-semibold text-white">
           {part.value}
         </strong>
       );
     }
     return (
-      <Link key={index} href={part.href} className="font-medium text-[#6d28d9] hover:text-[#4c1d95]">
+      <Link key={index} href={part.href} className="font-medium text-[#c4b5fd] hover:text-white">
         {part.label}
       </Link>
     );
@@ -99,7 +99,7 @@ export default async function ProductDocsPage({
       toc={toc}
       pageUrl={pageUrl}
     >
-      <div className="docs-prose space-y-5 text-[15px] leading-7 text-zinc-600">
+      <div className="docs-prose space-y-5 text-[15px] leading-7 text-zinc-300">
         {blocks.map((block, index) => {
           if (block.type === "card" && blocks[index - 1]?.type !== "card") {
             const cards = [];
@@ -116,9 +116,9 @@ export default async function ProductDocsPage({
                     <Link
                       key={`${card.title}-${card.href}`}
                       href={card.href}
-                      className="rounded-[8px] border border-zinc-200 bg-white p-4 no-underline transition hover:border-zinc-300 hover:shadow-[0_8px_30px_rgba(15,23,42,0.08)]"
+                      className="rounded-[8px] border border-white/10 bg-white/[0.045] p-4 no-underline transition hover:border-white/20 hover:bg-white/[0.07]"
                     >
-                      <span className="block text-sm font-semibold text-zinc-950">{card.title}</span>
+                      <span className="block text-sm font-semibold text-white">{card.title}</span>
                       <span className="mt-1 block text-sm leading-6 text-zinc-500">{card.description}</span>
                     </Link>
                   ) : null,
@@ -141,7 +141,7 @@ export default async function ProductDocsPage({
                 <h2
                   key={`${block.id}-${index}`}
                   id={block.id}
-                  className="scroll-mt-28 pt-8 text-2xl font-semibold tracking-tight text-zinc-950 md:text-3xl"
+                  className="scroll-mt-28 pt-8 font-serif text-2xl font-bold italic tracking-tight text-white md:text-3xl"
                 >
                   {block.text}
                 </h2>
@@ -149,7 +149,7 @@ export default async function ProductDocsPage({
             }
 
             return (
-              <h3 key={`${block.id}-${index}`} className="pt-5 text-lg font-semibold text-zinc-950 md:text-xl">
+              <h3 key={`${block.id}-${index}`} className="pt-5 font-serif text-lg font-bold italic text-white md:text-xl">
                 {block.text}
               </h3>
             );
@@ -171,7 +171,7 @@ export default async function ProductDocsPage({
                 className={block.ordered ? "list-decimal space-y-2 pl-5" : "space-y-2"}
               >
                 {block.items.map((item) => (
-                  <li key={item} className={block.ordered ? "" : "relative pl-5 before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-zinc-300"}>
+                  <li key={item} className={block.ordered ? "" : "relative pl-5 before:absolute before:left-0 before:top-[0.72em] before:h-1.5 before:w-1.5 before:rounded-full before:bg-zinc-500"}>
                     <InlineMarkdown text={item} />
                   </li>
                 ))}
@@ -183,10 +183,10 @@ export default async function ProductDocsPage({
             const callout = block;
             const toneClass =
               callout.tone === "Warning"
-                ? "border-amber-200 bg-amber-50 text-amber-950"
+                ? "border-amber-400/20 bg-amber-400/[0.08] text-amber-100"
                 : callout.tone === "Tip"
-                  ? "border-emerald-200 bg-emerald-50 text-emerald-950"
-                  : "border-blue-200 bg-blue-50 text-blue-950";
+                  ? "border-emerald-400/20 bg-emerald-400/[0.08] text-emerald-100"
+                  : "border-sky-400/20 bg-sky-400/[0.08] text-sky-100";
 
             return (
               <div key={index} className={`callout rounded-[8px] border p-4 ${toneClass}`}>

@@ -16,7 +16,7 @@ export default function DocsProductSwitcher({ currentSlug }: DocsProductSwitcher
       Switch product
       <select
         aria-label="Switch product docs"
-        className="docs-select w-full rounded-[6px] border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-medium normal-case tracking-normal text-zinc-950 outline-none transition focus:border-zinc-400 focus:bg-white"
+        className="docs-select w-full rounded-[6px] border border-white/10 bg-white/[0.05] px-3 py-2 text-sm font-medium normal-case tracking-normal text-white outline-none transition focus:border-white/25 focus:bg-white/[0.07]"
         value={currentSlug}
         onChange={(event) => {
           const nextProduct = products.find((product) => product.slug === event.target.value);
