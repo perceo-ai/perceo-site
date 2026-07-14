@@ -1,0 +1,19 @@
+app/components/DocsProductSwitcher.tsx
+  s_8f69ed2e134ed2::t_fd676d73a9d74c 3,5,17-59,62-73,75-122
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "e61928c95c8818909380a18ae2fb59e9582c79d5",
+  "prompts": {},
+  "sessions": {
+    "s_8f69ed2e134ed2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f5eee-6a8f-7193-a0b6-17a04b514ad1",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Pranav Kannepalli <pranav.kannepalli@gmail.com>"
+    }
+  }
+}
