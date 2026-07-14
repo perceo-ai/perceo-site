@@ -1,0 +1,23 @@
+scripts/validate-docs-quality.mjs
+  s_8f69ed2e134ed2::t_df8b8cd9cb32b0 7,10,23-24
+app/docs/page.tsx
+  s_8f69ed2e134ed2::t_c2f6e6ed9f97c5 3,17,19
+app/components/ProductDocsShell.tsx
+  s_8f69ed2e134ed2::t_c2f6e6ed9f97c5 7,47,49
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "0cf805a44de848ea57b0b95e6707b66b35aac125",
+  "prompts": {},
+  "sessions": {
+    "s_8f69ed2e134ed2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f5eee-6a8f-7193-a0b6-17a04b514ad1",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Pranav Kannepalli <pranav.kannepalli@gmail.com>"
+    }
+  }
+}
