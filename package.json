@@ -7,6 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
+    "validate:config": "node scripts/validate-site-config.mjs",
     "validate:archductor": "node scripts/validate-linux-conductor-content.mjs",
     "validate:suite": "node scripts/validate-perceo-suite-content.mjs",
     "validate:docs": "node scripts/validate-docs-quality.mjs"

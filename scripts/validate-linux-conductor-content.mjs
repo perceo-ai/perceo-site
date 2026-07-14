@@ -15,6 +15,8 @@ const requiredFiles = [
   "app/docs/page.tsx",
   "app/data/products.ts",
   "lib/docs.ts",
+  "content/site.json",
+  "content/docs/index.json",
   "content/docs/archductor/overview.md",
   "content/docs/archductor/workflow.md",
   "content/docs/archductor/project-setup.md",

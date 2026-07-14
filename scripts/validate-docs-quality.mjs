@@ -4,10 +4,11 @@ import { readFileSync } from "node:fs";
 const read = (file) => readFileSync(file, "utf8");
 
 const required = [
-  ["app/docs/page.tsx", ["Start with the suite", "Popular guides", "Reference", "Quickstart", "bg-[#312F2F]", "grid-lines", "dot-pattern", "font-serif"]],
+  ["app/docs/page.tsx", ["docsPage", "docs-surface", "docs-backdrop", "font-serif"]],
+  ["content/site.json", ["Start with the suite", "Popular guides", "Reference", "Quickstart"]],
   ["app/components/DocsTopBar.tsx", ["Search documentation", "⌘K", "Perceo Docs", "bg-[#312F2F]/90", "font-serif"]],
   ["app/components/DocsSidebar.tsx", ["Get started", "Concepts", "Guides", "Reference"]],
-  ["app/components/ProductDocsShell.tsx", ["DocsTopBar", "On this page", "Copy page", "bg-[#312F2F]", "grid-lines", "dot-pattern", "font-serif"]],
+  ["app/components/ProductDocsShell.tsx", ["DocsTopBar", "On this page", "Copy page", "bg-[#312F2F]", "docs-surface", "docs-backdrop", "font-serif"]],
   ["app/components/DocsPagination.tsx", ["Previous", "Next"]],
   ["app/docs/[product]/[[...slug]]/page.tsx", ["callout", "card-grid", "docs-code-header"]],
   ["lib/docs.ts", ["sections", "getDocsNeighbors", "card", "callout"]],

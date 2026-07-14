@@ -42,8 +42,8 @@ export default function ProductDocsShell({
   children,
 }: ProductDocsShellProps) {
   return (
-    <div className="grid-lines relative min-h-screen bg-[#312F2F] text-white">
-      <div className="dot-pattern dot-pattern-fade z-0" aria-hidden="true" />
+    <div className="docs-surface relative min-h-screen bg-[#312F2F] text-white">
+      <div className="docs-backdrop z-0" aria-hidden="true" />
       <DocsTopBar />
 
       <main className="relative z-[15] mx-auto max-w-[1500px] px-5! py-8 md:px-8!">

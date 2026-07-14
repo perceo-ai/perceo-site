@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, type ComponentProps } from "react";
 import {
   motion,
   useScroll,
   useTransform,
   useInView,
 } from "framer-motion";
+import { siteConfig } from "@/lib/site-config";
 import StatusCard from "./StatusCard";
 
 function AnimatedHeading({
@@ -49,6 +50,9 @@ function AnimatedHeading({
 }
 
 export default function HeroSection() {
+  const { hero } = siteConfig.homePage;
+  const [failedCard, passedCard] = hero.cards as Array<ComponentProps<typeof StatusCard>>;
+  const secondDescriptionLine = hero.descriptionLines[1] ?? "";
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
@@ -64,18 +68,25 @@ export default function HeroSection() {
       className="relative px-5! md:px-12.5! min-h-screen flex flex-col justify-center"
     >
       <AnimatedHeading className="font-bold relative z-30 font-sans">
-        Perceo Suite
+        {hero.title}
       </AnimatedHeading>
       <AnimatedHeading
         className="italic font-serif relative z-30 font-bold w-full text-right"
         delay={0.3}
       >
-        agentic work stack.
+        {hero.subtitle}
       </AnimatedHeading>
       <p className="text-zinc-500 text-right text-sm leading-relaxed mt-4">
-        remember, structure, execute,
+        {hero.descriptionLines[0]}
         <br />
-        and <span className="text-white">verify</span> AI-assisted work.
+        {secondDescriptionLine.startsWith("and verify ") ? (
+          <>
+            and <span className="text-white">verify</span>{" "}
+            {secondDescriptionLine.slice("and verify ".length)}
+          </>
+        ) : (
+          secondDescriptionLine
+        )}
       </p>
 
       <motion.div
@@ -86,10 +97,10 @@ export default function HeroSection() {
         style={{ y: failedCardY }}
       >
         <StatusCard
-          title="Archductor task"
-          status="Passed"
-          successRate="Agent running"
-          frequency="PR tracked"
+          title={failedCard.title}
+          status={failedCard.status}
+          successRate={failedCard.successRate}
+          frequency={failedCard.frequency}
         />
       </motion.div>
 
@@ -101,10 +112,10 @@ export default function HeroSection() {
         style={{ y: passedCardY }}
       >
         <StatusCard
-          title="Archgraph context"
-          status="Passed"
-          successRate="Memory loaded"
-          frequency="Fresh"
+          title={passedCard.title}
+          status={passedCard.status}
+          successRate={passedCard.successRate}
+          frequency={passedCard.frequency}
         />
       </motion.div>
     </main>

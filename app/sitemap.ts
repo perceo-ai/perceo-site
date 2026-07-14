@@ -1,9 +1,11 @@
 import type { MetadataRoute } from "next";
+import { getDocsProducts } from "@/lib/docs";
+import { siteConfig } from "@/lib/site-config";
 
-const baseUrl = "https://perceo.ai";
+const baseUrl = siteConfig.site.baseUrl;
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  return [
+  const staticRoutes: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
@@ -11,17 +13,23 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
-      url: `${baseUrl}/products/archductor`,
+      url: `${baseUrl}/products`,
       lastModified: new Date(),
       changeFrequency: "weekly",
       priority: 0.9,
     },
-    {
-      url: `${baseUrl}/docs/archductor`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
   ];
-}
 
+  const docsRoutes = getDocsProducts().flatMap((product) =>
+    product.pages.map((page) => ({
+      url: page.slug.length
+        ? `${baseUrl}/docs/${product.slug}/${page.slug.join("/")}`
+        : `${baseUrl}/docs/${product.slug}`,
+      lastModified: new Date(),
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    })),
+  );
+
+  return [...staticRoutes, ...docsRoutes];
+}

@@ -2,34 +2,14 @@
 
 import { useRef, useState, useEffect, type ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
-import SuiteProductVisual, { type SuiteVisualKind } from "./SuiteProductVisual";
+import { siteConfig, type SuiteVisualKind } from "@/lib/site-config";
+import SuiteProductVisual from "./SuiteProductVisual";
 
-const features = [
-  {
-    visual: "archivum",
-    title: "Archivum stores human knowledge.",
-    description:
-      "Archivum is the calm second brain: Markdown pages, wiki navigation, backlinks, daily and project notes, AI ingest, semantic search, graph views, and MCP access for assistants.",
-  },
-  {
-    visual: "archgraph",
-    title: "Archgraph structures project knowledge.",
-    description:
-      "Archgraph is the future GraphRAG layer: products, repos, branches, commits, issues, docs, source areas, freshness, confidence, and provenance exposed through API and MCP.",
-  },
-  {
-    visual: "archductor",
-    title: "Archductor executes with that context.",
-    description:
-      "Archductor turns memory into work: isolated workspaces, branches, PTYs, Codex/Claude/Cursor-style workers, checks, diffs, reviews, PR flow, and archived execution traces.",
-  },
-  {
-    visual: "testing",
-    title: "Computer-use testing verifies behavior.",
-    description:
-      "Computer-use testing is the future QA layer: autonomous agents run browser, desktop, mobile, and voice flows so shipped work is evaluated against real product behavior.",
-  },
-] satisfies Array<{ visual: SuiteVisualKind; title: string; description: string }>;
+const features = siteConfig.homePage.features as Array<{
+  visual: SuiteVisualKind;
+  title: string;
+  description: string;
+}>;
 
 function FeatureBlock({
   feature,
@@ -85,7 +65,7 @@ export default function FeaturesSection() {
         <div>
           {features.map((feature, i) => (
             <FeatureBlock
-              key={i}
+              key={feature.visual}
               feature={feature}
               index={i}
               onActive={setActiveIndex}

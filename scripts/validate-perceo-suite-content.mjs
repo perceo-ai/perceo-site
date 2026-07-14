@@ -8,18 +8,18 @@ const read = (file) => readFileSync(path.join(root, file), "utf8");
 const checks = [
   {
     name: "product data includes all four Perceo Suite products",
-    file: "app/data/products.ts",
+    file: "content/site.json",
     needles: ["Archivum", "Archgraph", "Archductor", "Computer-use Testing"],
   },
   {
     name: "home page tells the suite story",
-    file: "app/components/HeroSection.tsx",
+    file: "content/site.json",
     needles: ["Perceo Suite", "remember", "structure", "execute", "verify"],
   },
   {
     name: "feature copy explains the stack model",
-    file: "app/components/FeaturesSection.tsx",
-    needles: ["Archivum", "Archgraph", "Archductor", "Computer-use testing", "SuiteProductVisual"],
+    file: "content/site.json",
+    needles: ["Archivum", "Archgraph", "Archductor", "Computer-use testing"],
   },
   {
     name: "home visuals represent each product",
@@ -37,7 +37,7 @@ const checks = [
   },
   {
     name: "docs registry exposes all suite manuals",
-    file: "lib/docs.ts",
+    file: "content/docs/index.json",
     needles: ["archivum", "archgraph", "archductor", "computer-use-testing"],
   },
   {

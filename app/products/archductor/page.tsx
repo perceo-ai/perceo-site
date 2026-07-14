@@ -1,11 +1,12 @@
 import { redirect } from "next/navigation";
 import { linuxConductor } from "../../data/products";
+import { siteConfig } from "@/lib/site-config";
 
 export const metadata = {
-  title: "Archductor | Linux-native Conductor workspaces",
+  title: `${linuxConductor.name} | Linux-native Conductor workspaces`,
   description: linuxConductor.subhead,
 };
 
 export default function ArchductorPage() {
-  redirect("/products#archductor");
+  redirect(siteConfig.products.find((product) => product.slug === "archductor")?.href ?? "/products#archductor");
 }

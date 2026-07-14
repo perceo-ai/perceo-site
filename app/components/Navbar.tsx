@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { List, X } from "@phosphor-icons/react";
+import { siteConfig } from "@/lib/site-config";
 
 export default function Navbar() {
+  const { site } = siteConfig;
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
@@ -33,34 +35,25 @@ export default function Navbar() {
       >
         <div className="flex items-center justify-between md:relative">
           <Link href="/" className="text-xl md:text-2xl font-bold font-serif text-white tracking-tight">
-            Perceo
+            {site.name}
           </Link>
 
           {/* Desktop Nav - absolutely centered */}
           <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-            <Link
-              href="/"
-              className="text-white/70 hover:text-white transition-colors text-sm"
-            >
-              Home
-            </Link>
-            <Link
-              href="/products"
-              className="text-white/70 hover:text-white transition-colors text-sm"
-            >
-              Products
-            </Link>
-            <Link
-              href="/docs"
-              className="text-white/70 hover:text-white transition-colors text-sm"
-            >
-              Documentation
-            </Link>
+            {site.nav.links.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="text-white/70 hover:text-white transition-colors text-sm"
+              >
+                {link.label}
+              </Link>
+            ))}
           </nav>
 
           <div className="flex items-center gap-3">
             <Link
-              href="/docs"
+              href={site.nav.secondaryCta.href}
               className="hidden rounded-[5px] px-[20px] py-[10px] text-sm font-semibold text-white transition-colors hover:bg-white/[0.08] md:block"
               style={{
                 background: "rgba(255, 255, 255, 0.05)",
@@ -68,13 +61,13 @@ export default function Navbar() {
                 WebkitBackdropFilter: "blur(10px)",
               }}
             >
-              Read Docs
+              {site.nav.secondaryCta.label}
             </Link>
             <Link
-              href="/products"
+              href={site.nav.primaryCta.href}
               className="rounded-[5px] bg-gradient-to-b from-[#8b5cf6] to-[#7848e6] px-[20px] py-[10px] text-sm font-semibold text-white transition-colors hover:from-[#7c3aed] hover:to-[#6d28d9]"
             >
-              View Suite
+              {site.nav.primaryCta.label}
             </Link>
             <button
               className="md:hidden text-white p-1"
@@ -108,7 +101,7 @@ export default function Navbar() {
         {/* Sheet Header */}
         <div className="flex items-center justify-between">
           <Link href="/" className="text-xl font-bold font-serif text-white tracking-tight">
-            Perceo
+            {site.name}
           </Link>
           <button
             className="text-white p-1"
@@ -121,33 +114,22 @@ export default function Navbar() {
 
         {/* Sheet Links */}
         <nav className="flex flex-col gap-6 mt-12">
+          {site.nav.links.map((link) => (
             <Link
-            href="/"
-            className="text-white text-2xl font-medium"
-            onClick={() => setMenuOpen(false)}
-          >
-            Home
-          </Link>
-          <Link
-            href="/products"
-            className="text-white text-2xl font-medium"
-            onClick={() => setMenuOpen(false)}
-          >
-            Products
-          </Link>
-          <Link
-            href="/docs"
-            className="text-white text-2xl font-medium"
-            onClick={() => setMenuOpen(false)}
-          >
-            Documentation
-          </Link>
+              key={link.href}
+              href={link.href}
+              className="text-white text-2xl font-medium"
+              onClick={() => setMenuOpen(false)}
+            >
+              {link.label}
+            </Link>
+          ))}
         </nav>
 
         {/* Mobile CTA at bottom of list */}
         <div className="mt-auto pb-12">
           <Link
-            href="/docs"
+            href={site.nav.secondaryCta.href}
             className="block w-full rounded-[5px] px-[20px] py-[12px] text-center text-sm font-semibold text-white"
             onClick={() => setMenuOpen(false)}
             style={{
@@ -156,7 +138,7 @@ export default function Navbar() {
               WebkitBackdropFilter: "blur(10px)",
             }}
           >
-            Read Docs
+            {site.nav.secondaryCta.label}
           </Link>
         </div>
       </div>
