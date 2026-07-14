@@ -133,6 +133,7 @@
       "pitch": "Self-hosted second brain with AI ingest, Markdown wiki, backlinks, semantic search, graph views, and MCP knowledge access.",
       "href": "/products#archivum",
       "docsHref": "/docs/archivum",
+      "docsVisibility": "public",
       "primaryCta": "Read docs"
     },
     {
@@ -144,6 +145,7 @@
       "pitch": "Typed project graph that tracks products, repositories, branches, commits, issues, docs, source areas, confidence, freshness, and provenance.",
       "href": "/products#archgraph",
       "docsHref": "/docs/archgraph",
+      "docsVisibility": "locked",
       "primaryCta": "View concept"
     },
     {
@@ -155,6 +157,7 @@
       "pitch": "Create workspaces, launch Codex/Claude/Cursor-style workers, watch PTYs, review diffs, run checks, and move PRs through the loop.",
       "href": "/products/archductor",
       "docsHref": "/docs/archductor",
+      "docsVisibility": "public",
       "primaryCta": "Download"
     },
     {
@@ -166,6 +169,7 @@
       "pitch": "A future verification layer that runs flows, evaluates behavior, catches regressions, and feeds evidence back into the Perceo stack.",
       "href": "/products#computer-use-testing",
       "docsHref": "/docs/computer-use-testing",
+      "docsVisibility": "locked",
       "primaryCta": "View concept"
     }
   ],

@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import type { DocsNavProduct } from "@/lib/docs";
+import DocsProductSwitcher from "./DocsProductSwitcher";
 
 type DocsHeadingLink = {
   id: string;
@@ -25,6 +26,7 @@ export default function DocsSidebar({
   toc,
 }: DocsSidebarProps) {
   const [query, setQuery] = useState("");
+  const currentProductSlug = navProducts[0]?.slug;
 
   const normalizedQuery = query.trim().toLowerCase();
 
@@ -65,6 +67,12 @@ export default function DocsSidebar({
           {backLabel}
         </Link>
       </div>
+
+      {currentProductSlug ? (
+        <div className="px-2">
+          <DocsProductSwitcher currentSlug={currentProductSlug} />
+        </div>
+      ) : null}
 
       <div className="px-2">
         <label className="flex flex-col gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-zinc-500">

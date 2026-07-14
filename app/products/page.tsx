@@ -47,12 +47,14 @@ export default function ProductsPage() {
               </div>
               <p className="mt-4 text-base leading-7 text-zinc-300">{product.pitch}</p>
               <div className="mt-6 flex flex-wrap gap-3">
-                <Link
-                  href={product.docsHref}
-                  className="rounded-[5px] bg-white px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-200"
-                >
-                  {product.primaryCta}
-                </Link>
+                {product.docsVisibility !== "locked" ? (
+                  <Link
+                    href={product.docsHref}
+                    className="rounded-[5px] bg-white px-4 py-2 text-sm font-semibold text-zinc-950 transition hover:bg-zinc-200"
+                  >
+                    {product.primaryCta}
+                  </Link>
+                ) : null}
                 {product.slug === "archductor" ? (
                   <Link
                     href="/products/archductor"

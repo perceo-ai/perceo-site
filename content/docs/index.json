@@ -5,6 +5,7 @@
       "title": "Archivum Docs",
       "eyebrow": "Knowledge workspace",
       "description": "Understand Archivum, the human knowledge layer of the Perceo Suite: a self-hosted Markdown wiki with AI ingest, search, graph, and MCP access.",
+      "visibility": "public",
       "backHref": "/products#archivum",
       "backLabel": "Back to products",
       "pages": [
@@ -22,6 +23,7 @@
       "title": "Archgraph Docs",
       "eyebrow": "GraphRAG infrastructure",
       "description": "Preview Archgraph, the structured project memory layer for repos, products, branches, commits, docs, issues, provenance, and agent retrieval.",
+      "visibility": "locked",
       "backHref": "/products#archgraph",
       "backLabel": "Back to products",
       "pages": [
@@ -39,6 +41,7 @@
       "title": "Archductor Docs",
       "eyebrow": "Agent execution workbench",
       "description": "Install, understand, and run Archductor, the Perceo execution surface for isolated workspaces, PTY agents, branches, checks, reviews, and PR flow.",
+      "visibility": "public",
       "backHref": "/products/archductor",
       "backLabel": "Back to Archductor",
       "pages": [
@@ -84,6 +87,7 @@
       "title": "Computer-use Testing Docs",
       "eyebrow": "Future QA/eval layer",
       "description": "Preview the Perceo verification layer for autonomous browser, desktop, mobile, and voice application testing.",
+      "visibility": "locked",
       "backHref": "/products#computer-use-testing",
       "backLabel": "Back to products",
       "pages": [

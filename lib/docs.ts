@@ -15,6 +15,7 @@ export type DocsProduct = {
   title: string;
   eyebrow: string;
   description: string;
+  visibility: "public" | "locked";
   backHref: string;
   backLabel: string;
   pages: DocsPage[];
@@ -38,6 +39,7 @@ export type DocsNavProduct = {
 
 const docsRoot = path.join(process.cwd(), "content", "docs");
 const products = docsIndex.products as DocsProduct[];
+const publicProducts = products.filter((product) => product.visibility === "public");
 
 const docsHref = (productSlug: string, page: DocsPage) =>
   page.slug.length ? `/docs/${productSlug}/${page.slug.join("/")}` : `/docs/${productSlug}`;
@@ -45,33 +47,35 @@ const docsHref = (productSlug: string, page: DocsPage) =>
 const sectionOrder: DocsPage["section"][] = ["Get started", "Concepts", "Guides", "Reference"];
 
 export function getDocsProducts() {
-  return products;
+  return publicProducts;
 }
 
 export function getDocsNavProducts(currentProductSlug?: string, currentSlugParts: string[] = []): DocsNavProduct[] {
-  return products.map((product) => ({
-    slug: product.slug,
-    title: product.title.replace(/ Docs$/, ""),
-    sections: sectionOrder
-      .map((section) => ({
-        title: section,
-        links: product.pages
-          .filter((page) => page.section === section)
-          .map((page) => ({
-            href: docsHref(product.slug, page),
-            title: page.title,
-            description: page.description,
-            active:
-              product.slug === currentProductSlug &&
-              page.slug.join("/") === currentSlugParts.join("/"),
-          })),
-      }))
-      .filter((section) => section.links.length > 0),
-  }));
+  return publicProducts
+    .filter((product) => !currentProductSlug || product.slug === currentProductSlug)
+    .map((product) => ({
+      slug: product.slug,
+      title: product.title.replace(/ Docs$/, ""),
+      sections: sectionOrder
+        .map((section) => ({
+          title: section,
+          links: product.pages
+            .filter((page) => page.section === section)
+            .map((page) => ({
+              href: docsHref(product.slug, page),
+              title: page.title,
+              description: page.description,
+              active:
+                product.slug === currentProductSlug &&
+                page.slug.join("/") === currentSlugParts.join("/"),
+            })),
+        }))
+        .filter((section) => section.links.length > 0),
+    }));
 }
 
 export function getDocsProduct(productSlug: string) {
-  return products.find((product) => product.slug === productSlug);
+  return publicProducts.find((product) => product.slug === productSlug);
 }
 
 export function getDocsPage(productSlug: string, slugParts: string[]) {
@@ -95,13 +99,20 @@ export function getDocsPage(productSlug: string, slugParts: string[]) {
 }
 
 export function getDocsNeighbors(productSlug: string, slugParts: string[]) {
-  const allPages = products.flatMap((product) =>
-    product.pages.map((page) => ({
-      product,
-      page,
-      href: docsHref(product.slug, page),
-    })),
-  );
+  const product = getDocsProduct(productSlug);
+
+  if (!product) {
+    return {
+      previous: null,
+      next: null,
+    };
+  }
+
+  const allPages = product.pages.map((page) => ({
+    product,
+    page,
+    href: docsHref(product.slug, page),
+  }));
   const currentIndex = allPages.findIndex(
     (entry) => entry.product.slug === productSlug && entry.page.slug.join("/") === slugParts.join("/"),
   );

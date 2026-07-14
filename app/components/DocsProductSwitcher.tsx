@@ -3,6 +3,8 @@
 import { usePathname, useRouter } from "next/navigation";
 import { products } from "../data/products";
 
+const docsProducts = products.filter((product) => product.docsVisibility !== "locked");
+
 type DocsProductSwitcherProps = {
   currentSlug: string;
 };
@@ -27,7 +29,7 @@ export default function DocsProductSwitcher({ currentSlug }: DocsProductSwitcher
           router.push(nextProduct.docsHref);
         }}
       >
-        {products.map((product) => (
+        {docsProducts.map((product) => (
           <option key={product.slug} value={product.slug}>
             {product.name}
             {product.status === "concept" ? " (Concept)" : ""}

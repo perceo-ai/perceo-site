@@ -8,6 +8,7 @@ const docsIndex = readJson("content/docs/index.json");
 
 const failures = [];
 const requiredProductStatuses = new Set(["in-development", "concept"]);
+const requiredVisibility = new Set(["public", "locked"]);
 const requiredDocSections = new Set(["Get started", "Concepts", "Guides", "Reference"]);
 const requiredVisuals = new Set(["archivum", "archgraph", "archductor", "testing"]);
 
@@ -50,6 +51,9 @@ for (const [index, product] of requireArray(siteConfig.products, "products").ent
   if (!requiredProductStatuses.has(product.status)) {
     failures.push(`products[${index}].status must be one of ${Array.from(requiredProductStatuses).join(", ")}`);
   }
+  if (product.docsVisibility && !requiredVisibility.has(product.docsVisibility)) {
+    failures.push(`products[${index}].docsVisibility must be one of ${Array.from(requiredVisibility).join(", ")}`);
+  }
   requireString(product.href, `products[${index}].href`);
   requireString(product.docsHref, `products[${index}].docsHref`);
 }
@@ -60,6 +64,9 @@ for (const [productIndex, product] of requireArray(docsIndex.products, "docs.pro
   requireString(product.slug, `docs.products[${productIndex}].slug`);
   if (!productSlugs.has(product.slug)) {
     failures.push(`docs.products[${productIndex}].slug "${product.slug}" has no matching product in content/site.json`);
+  }
+  if (!requiredVisibility.has(product.visibility)) {
+    failures.push(`docs.products[${productIndex}].visibility must be one of ${Array.from(requiredVisibility).join(", ")}`);
   }
 
   const seenPageSlugs = new Set();
@@ -82,6 +89,17 @@ for (const [productIndex, product] of requireArray(docsIndex.products, "docs.pro
     if (!existsSync(markdownPath)) {
       failures.push(`missing markdown file for docs page: content/docs/${product.slug}/${page.file}`);
     }
+  }
+}
+
+for (const slug of ["archgraph", "computer-use-testing"]) {
+  const docsProduct = docsIndex.products.find((product) => product.slug === slug);
+  const siteProduct = siteConfig.products.find((product) => product.slug === slug);
+  if (docsProduct?.visibility !== "locked") {
+    failures.push(`${slug} docs must stay locked`);
+  }
+  if (siteProduct?.docsVisibility !== "locked") {
+    failures.push(`${slug} product docsVisibility must stay locked`);
   }
 }
 

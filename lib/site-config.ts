@@ -6,6 +6,7 @@ export type ProductSummary = {
   slug: string;
   name: string;
   status: ProductStatus;
+  docsVisibility?: "public" | "locked";
   role: string;
   summary: string;
   pitch: string;
