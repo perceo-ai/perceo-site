@@ -1,0 +1,38 @@
+content/docs/perceo/products.md
+  s_8f69ed2e134ed2::t_b3265006015cba 10-14
+  s_8f69ed2e134ed2::t_1eea1e7d9a6ff8 1-9,15-25
+content/docs/perceo/workflow.md
+  s_8f69ed2e134ed2::t_1eea1e7d9a6ff8 1-17,23-25
+  s_8f69ed2e134ed2::t_b3265006015cba 18-22
+content/docs/index.json
+  s_8f69ed2e134ed2::t_2761e17c236d34 4-34
+  s_8f69ed2e134ed2::t_2aaacc39573e26 3
+content/docs/perceo/overview.md
+  s_8f69ed2e134ed2::t_b3265006015cba 14-18
+  s_8f69ed2e134ed2::t_1eea1e7d9a6ff8 1-13,19-27
+content/site.json
+  s_8f69ed2e134ed2::t_bdbd35dec4443f 98,100-101,122-133
+  s_8f69ed2e134ed2::t_e1e606deddb9fc 77
+scripts/validate-perceo-suite-content.mjs
+  s_8f69ed2e134ed2::t_e1e606deddb9fc 10,12
+scripts/validate-docs-quality.mjs
+  s_8f69ed2e134ed2::t_20c554a96cbc1f 18-20
+  s_8f69ed2e134ed2::t_e505fc90df49b5 2,38-42
+  s_8f69ed2e134ed2::t_3d738de34a1a32 16-17
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "c141c9cf12f795e0f57558ee6e3c5ce491dc6bb4",
+  "prompts": {},
+  "sessions": {
+    "s_8f69ed2e134ed2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f5eee-6a8f-7193-a0b6-17a04b514ad1",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Pranav Kannepalli <pranav.kannepalli@gmail.com>"
+    }
+  }
+}
