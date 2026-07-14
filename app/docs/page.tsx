@@ -1,6 +1,6 @@
 import Link from "next/link";
-import DocsTopBar from "../components/DocsTopBar";
 import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 import { getDocsProducts } from "@/lib/docs";
 import { siteConfig } from "@/lib/site-config";
 
@@ -14,9 +14,9 @@ export default function DocsPage() {
   return (
     <div className="docs-surface relative min-h-screen bg-[#312F2F] text-white">
       <div className="docs-backdrop z-0" aria-hidden="true" />
-      <DocsTopBar />
+      <Navbar />
 
-      <main className="relative z-[15] mx-auto max-w-[1180px] px-5! py-12 md:px-8! md:py-16">
+      <main className="relative z-[15] mx-auto max-w-[1180px] px-5! pb-12 pt-32 md:px-8! md:pb-16 md:pt-36">
         <section className="max-w-3xl">
           <p className="text-xs font-semibold uppercase tracking-[0.18em] text-zinc-500">
             {docsPage.eyebrow}

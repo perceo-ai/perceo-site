@@ -3,8 +3,8 @@ import type { ReactNode } from "react";
 import type { DocsNavProduct } from "@/lib/docs";
 import DocsCopyButton from "./DocsCopyButton";
 import DocsSidebar from "./DocsSidebar";
-import DocsTopBar from "./DocsTopBar";
 import Footer from "./Footer";
+import Navbar from "./Navbar";
 
 type DocsPageLink = {
   href: string;
@@ -44,9 +44,9 @@ export default function ProductDocsShell({
   return (
     <div className="docs-surface relative min-h-screen bg-[#312F2F] text-white">
       <div className="docs-backdrop z-0" aria-hidden="true" />
-      <DocsTopBar />
+      <Navbar />
 
-      <main className="relative z-[15] mx-auto max-w-[1500px] px-5! py-8 md:px-8!">
+      <main className="relative z-[15] mx-auto max-w-[1500px] px-5! pb-8 pt-32 md:px-8! md:pt-36">
         <div className="grid gap-8 lg:grid-cols-[280px_minmax(0,1fr)] xl:grid-cols-[300px_minmax(0,1fr)_220px]">
           <aside className="order-2 border-t border-white/10 pt-8 lg:order-1 lg:sticky lg:top-24 lg:max-h-[calc(100dvh-7rem)] lg:self-start lg:overflow-y-auto lg:border-t-0 lg:pt-0">
             <DocsSidebar
