@@ -10,7 +10,7 @@ const failures = [];
 const requiredProductStatuses = new Set(["in-development", "concept"]);
 const requiredVisibility = new Set(["public", "locked"]);
 const requiredDocSections = new Set(["Get started", "Concepts", "Guides", "Reference"]);
-const requiredVisuals = new Set(["archivum", "archgraph", "archductor", "testing"]);
+const requiredVisuals = new Set(["archivum", "archductor"]);
 
 const requireString = (value, label) => {
   if (typeof value !== "string" || value.trim().length === 0) {

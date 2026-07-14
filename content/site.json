@@ -30,7 +30,7 @@
     "hero": {
       "title": "Perceo Suite",
       "subtitle": "agentic work stack.",
-      "descriptionLines": ["remember, structure, execute,", "and verify AI-assisted work."],
+      "descriptionLines": ["capture context, run agents,", "and ship reviewable work."],
       "cards": [
         {
           "title": "Archductor task",
@@ -39,33 +39,28 @@
           "frequency": "PR tracked"
         },
         {
-          "title": "Archgraph context",
+          "title": "Review surface",
           "status": "Passed",
-          "successRate": "Memory loaded",
-          "frequency": "Fresh"
+          "successRate": "Checks ready",
+          "frequency": "Diff tracked"
         }
       ]
     },
     "features": [
       {
         "visual": "archivum",
-        "title": "Archivum stores human knowledge.",
-        "description": "Archivum is the calm second brain: Markdown pages, wiki navigation, backlinks, daily and project notes, AI ingest, semantic search, graph views, and MCP access for assistants."
-      },
-      {
-        "visual": "archgraph",
-        "title": "Archgraph structures project knowledge.",
-        "description": "Archgraph is the future GraphRAG layer: products, repos, branches, commits, issues, docs, source areas, freshness, confidence, and provenance exposed through API and MCP."
+        "title": "Archivum keeps the brief close.",
+        "description": "Turn notes, repo context, meeting takeaways, and project decisions into a calm Markdown workspace your agents can read before they start work."
       },
       {
         "visual": "archductor",
-        "title": "Archductor executes with that context.",
-        "description": "Archductor turns memory into work: isolated workspaces, branches, PTYs, Codex/Claude/Cursor-style workers, checks, diffs, reviews, PR flow, and archived execution traces."
+        "title": "Archductor gives each task a clean workspace.",
+        "description": "Spin up isolated branches, worktrees, ports, and PTY-backed agent sessions without mixing terminal state or half-finished diffs."
       },
       {
-        "visual": "testing",
-        "title": "Computer-use testing verifies behavior.",
-        "description": "Computer-use testing is the future QA layer: autonomous agents run browser, desktop, mobile, and voice flows so shipped work is evaluated against real product behavior."
+        "visual": "archductor",
+        "title": "Review the work before it ships.",
+        "description": "Keep diffs, checks, comments, PR state, and archive flow in one place so agent output stays visible and reviewable."
       }
     ],
     "video": {

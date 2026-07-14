@@ -14,25 +14,21 @@ const checks = [
   {
     name: "home page tells the suite story",
     file: "content/site.json",
-    needles: ["Perceo Suite", "remember", "structure", "execute", "verify"],
+    needles: ["Perceo Suite", "capture", "run", "review"],
   },
   {
-    name: "feature copy explains the stack model",
+    name: "homepage feature copy only exposes public products",
     file: "content/site.json",
-    needles: ["Archivum", "Archgraph", "Archductor", "Computer-use testing"],
+    needles: ["Archivum", "Archductor"],
   },
   {
-    name: "home visuals represent each product",
+    name: "home visuals represent public products",
     file: "app/components/SuiteProductVisual.tsx",
     needles: [
       "Archivum",
-      "Archgraph",
       "Archductor",
-      "Computer-use testing",
       "Markdown wiki",
-      "typed GraphRAG",
       "PTY agents",
-      "autonomous QA",
     ],
   },
   {
@@ -68,6 +64,20 @@ for (const check of checks) {
 for (const file of requiredDocs) {
   if (!existsSync(path.join(root, file))) {
     failures.push(`missing docs file: ${file}`);
+  }
+}
+
+const homeOnly = read("content/site.json").match(/"homePage": \{[\s\S]*?\n  \},\n  "productsPage"/)?.[0] ?? "";
+for (const forbidden of ["Archgraph", "Computer-use testing", "Computer-use Testing", "GraphRAG"]) {
+  if (homeOnly.includes(forbidden)) {
+    failures.push(`homepage content leaks locked product: ${forbidden}`);
+  }
+}
+
+const visuals = read("app/components/SuiteProductVisual.tsx");
+for (const forbidden of ["Archgraph", "Computer-use testing", "GraphRAG", "autonomous QA"]) {
+  if (visuals.includes(forbidden)) {
+    failures.push(`homepage visual leaks locked product: ${forbidden}`);
   }
 }
 

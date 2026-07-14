@@ -15,7 +15,7 @@ export type ProductSummary = {
   primaryCta: string;
 };
 
-export type SuiteVisualKind = "archivum" | "archgraph" | "archductor" | "testing";
+export type SuiteVisualKind = "archivum" | "archductor";
 
 export type SiteConfig = typeof siteConfigData & {
   products: ProductSummary[];

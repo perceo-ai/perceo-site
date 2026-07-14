@@ -65,7 +65,7 @@ export default function FeaturesSection() {
         <div>
           {features.map((feature, i) => (
             <FeatureBlock
-              key={feature.visual}
+              key={`${feature.visual}-${i}`}
               feature={feature}
               index={i}
               onActive={setActiveIndex}
@@ -80,7 +80,7 @@ export default function FeaturesSection() {
             <div className="relative w-[130%] -mr-[30%] aspect-[4/3] rounded-l-lg" style={{ clipPath: "inset(0 0 0 -20px round 8px 0 0 8px)" }}>
               {features.map((feature, index) => (
                 <motion.div
-                  key={feature.visual}
+                  key={`${feature.visual}-${index}`}
                   className="absolute inset-0"
                   animate={{ opacity: activeIndex === index ? 1 : 0 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
