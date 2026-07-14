@@ -1,6 +1,38 @@
 {
   "products": [
     {
+      "slug": "perceo",
+      "title": "Perceo",
+      "eyebrow": "Suite overview",
+      "description": "Understand the Perceo Suite as one product: knowledge, project memory, execution, and verification working together.",
+      "visibility": "public",
+      "backHref": "/products",
+      "backLabel": "Back to products",
+      "pages": [
+        {
+          "slug": [],
+          "title": "Overview",
+          "description": "What Perceo is and how the suite fits together.",
+          "file": "overview.md",
+          "section": "Get started"
+        },
+        {
+          "slug": ["products"],
+          "title": "Products",
+          "description": "Where each public product fits in the suite.",
+          "file": "products.md",
+          "section": "Concepts"
+        },
+        {
+          "slug": ["workflow"],
+          "title": "Workflow",
+          "description": "How context, execution, and verification move through the suite.",
+          "file": "workflow.md",
+          "section": "Concepts"
+        }
+      ]
+    },
+    {
       "slug": "archivum",
       "title": "Archivum Docs",
       "eyebrow": "Knowledge workspace",

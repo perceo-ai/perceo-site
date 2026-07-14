@@ -74,7 +74,7 @@
   "productsPage": {
     "metadata": {
       "title": "Products | Perceo Suite",
-      "description": "The four-part Perceo Suite: Archivum, Archgraph, Archductor, and computer-use testing."
+      "description": "Perceo and the product surfaces that support knowledge, execution, and verification."
     },
     "eyebrow": "Perceo Suite",
     "title": "One stack for agentic work.",
@@ -95,10 +95,10 @@
     "description": "Guides, concepts, and references for the Perceo stack: human knowledge, project memory, agent execution, and future computer-use verification.",
     "cards": [
       {
-        "href": "/docs/archivum",
+        "href": "/docs/perceo",
         "eyebrow": "Quickstart",
-        "title": "Read the suite overview",
-        "description": "Start with Archivum, then move through graph memory, execution, and verification."
+        "title": "Read the Perceo overview",
+        "description": "Start with the suite-level product, then move into the public product docs."
       },
       {
         "href": "/docs/archductor",
@@ -119,6 +119,18 @@
     }
   },
   "products": [
+    {
+      "slug": "perceo",
+      "name": "Perceo",
+      "status": "in-development",
+      "role": "Agentic work suite",
+      "summary": "The suite overview for knowledge, execution, and verification.",
+      "pitch": "Perceo connects human knowledge, project memory, agent execution, and verification into one workflow for shipping reviewable AI-assisted work.",
+      "href": "/products",
+      "docsHref": "/docs/perceo",
+      "docsVisibility": "public",
+      "primaryCta": "Read overview"
+    },
     {
       "slug": "archivum",
       "name": "Archivum",

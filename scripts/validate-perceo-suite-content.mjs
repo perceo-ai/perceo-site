@@ -7,9 +7,9 @@ const read = (file) => readFileSync(path.join(root, file), "utf8");
 
 const checks = [
   {
-    name: "product data includes all four Perceo Suite products",
+    name: "product data includes Perceo and suite products",
     file: "content/site.json",
-    needles: ["Archivum", "Archgraph", "Archductor", "Computer-use Testing"],
+    needles: ["Perceo", "Archivum", "Archgraph", "Archductor", "Computer-use Testing"],
   },
   {
     name: "home page tells the suite story",

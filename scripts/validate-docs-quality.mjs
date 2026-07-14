@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 
 const read = (file) => readFileSync(file, "utf8");
 
@@ -13,6 +13,11 @@ const required = [
   ["app/components/DocsPagination.tsx", ["Previous", "Next"]],
   ["app/docs/[product]/[[...slug]]/page.tsx", ["callout", "card-grid", "docs-code-header"]],
   ["lib/docs.ts", ["sections", "getDocsNeighbors", "card", "callout"]],
+  ["content/docs/index.json", ["\"slug\": \"perceo\"", "\"title\": \"Perceo\"", "\"file\": \"products.md\"", "\"file\": \"workflow.md\""]],
+  ["content/site.json", ["\"name\": \"Perceo\"", "\"docsHref\": \"/docs/perceo\""]],
+  ["content/docs/perceo/overview.md", ["::card", "/docs/archivum", "/docs/archductor", "/products#archivum", "/products/archductor"]],
+  ["content/docs/perceo/products.md", ["::card", "/docs/archivum", "/docs/archductor", "/products#archivum", "/products/archductor"]],
+  ["content/docs/perceo/workflow.md", ["::card", "/docs/archivum", "/docs/archductor", "/products#archivum", "/products/archductor"]],
   ["content/docs/archivum/overview.md", ["::card", "> Info:"]],
   ["content/docs/archgraph/overview.md", ["::card", "> Info:"]],
   ["content/docs/archductor/overview.md", ["::card", "> Info:", "```bash"]],
@@ -30,6 +35,11 @@ const forbiddenLightTheme = [
 const failures = [];
 
 for (const [file, needles] of required) {
+  if (!existsSync(file)) {
+    failures.push(`${file} is missing`);
+    continue;
+  }
+
   const content = read(file);
   for (const needle of needles) {
     try {
