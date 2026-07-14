@@ -1,0 +1,47 @@
+content/docs/index.json
+  s_8f69ed2e134ed2::t_dfedc33f28ccec 8,26,44,90
+app/products/page.tsx
+  s_8f69ed2e134ed2::t_5027c9399924c1 50-57
+app/components/DocsSidebar.tsx
+  s_8f69ed2e134ed2::t_5027c9399924c1 6,29,71-75
+  s_40ba6a5bf0bc41::t_da7e18a6233c31 76
+content/site.json
+  s_8f69ed2e134ed2::t_dfedc33f28ccec 136,148,160,172
+scripts/validate-site-config.mjs
+  s_8f69ed2e134ed2::t_f98ace82c2a251 11,54-56,68-70,95-103
+  s_8f69ed2e134ed2::t_1cde63a90e86fb 104-105
+lib/docs.ts
+  s_8f69ed2e134ed2::t_cd5e0f98633247 57-74
+  s_8f69ed2e134ed2::t_5eaaaa4126db40 102-115
+  s_8f69ed2e134ed2::t_dfedc33f28ccec 18,42,50,54-56,78
+scripts/validate-docs-quality.mjs
+  s_8f69ed2e134ed2::t_f98ace82c2a251 10-11,27
+app/components/DocsProductSwitcher.tsx
+  s_8f69ed2e134ed2::t_5027c9399924c1 6-7,32
+lib/site-config.ts
+  s_8f69ed2e134ed2::t_dfedc33f28ccec 9
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.13",
+  "base_commit_sha": "a75c691db392be928a3b6631e6c7903ff858740f",
+  "prompts": {},
+  "sessions": {
+    "s_40ba6a5bf0bc41": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f5ef4-76c8-71a3-8a36-16293aa7cb1d",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Pranav Kannepalli <pranav.kannepalli@gmail.com>"
+    },
+    "s_8f69ed2e134ed2": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f5eee-6a8f-7193-a0b6-17a04b514ad1",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Pranav Kannepalli <pranav.kannepalli@gmail.com>"
+    }
+  }
+}
