@@ -2,263 +2,258 @@
   "site": {
     "name": "Perceo",
     "baseUrl": "https://perceo.ai",
+    "docsUrl": "https://docs.perceo.ai",
+    "githubUrl": "https://github.com/perceo-ai",
+    "authorUrl": "https://github.com/pranavkannepalli",
     "metadata": {
-      "title": "Archductor - Linux-native Conductor workspaces",
-      "description": "Run Conductor-style coding agents in isolated Git worktree workspaces on Linux."
+      "title": "Perceo — local-first dev suite for agent operators",
+      "description": "Three self-hosted tools for people who run coding and computer-use agents all day. Dispatch agents across isolated workspaces, run them on real desktops, and keep what they learn."
     },
     "nav": {
       "links": [
         { "label": "Home", "href": "/" },
         { "label": "Products", "href": "/products" },
-        { "label": "Documentation", "href": "/docs" }
+        { "label": "Docs", "href": "https://docs.perceo.ai", "external": true }
       ],
-      "secondaryCta": { "label": "Read Docs", "href": "/docs" },
-      "primaryCta": { "label": "View Suite", "href": "/products" }
+      "secondaryCta": { "label": "Read docs", "href": "https://docs.perceo.ai", "external": true },
+      "primaryCta": { "label": "Get Archductor", "href": "/products/archductor" }
     },
     "footer": {
-      "headline": "Build with memory, execution, and verification.",
-      "description": "Perceo is the stack for teams that want AI agents to use real context, produce reviewable work, and prove behavior before release.",
+      "headline": "Runs on your machine. Ends at your machine.",
+      "description": "Your repos, your VMs, your notes, your keys. No account, no control plane, no telemetry endpoint.",
       "links": [
         { "label": "Home", "href": "/" },
-        { "label": "Products", "href": "/products/archductor" },
-        { "label": "Docs", "href": "/docs" },
-        { "label": "GitHub", "href": "https://github.com/pranavkannepalli/conductor-arch", "external": true }
+        { "label": "Products", "href": "/products" },
+        { "label": "Docs", "href": "https://docs.perceo.ai", "external": true },
+        { "label": "GitHub", "href": "https://github.com/perceo-ai", "external": true }
       ]
     }
   },
   "homePage": {
     "hero": {
-      "title": "Perceo Suite",
-      "subtitle": "agentic work stack.",
-      "descriptionLines": ["capture context, run agents,", "and ship reviewable work."],
+      "title": "Local-first",
+      "subtitle": "agent suite.",
+      "descriptionLines": [
+        "three tools for people who run coding",
+        "and computer-use agents all day."
+      ],
       "cards": [
         {
-          "title": "Archductor task",
-          "status": "Passed",
-          "successRate": "Agent running",
-          "frequency": "PR tracked"
+          "title": "feat/rework-auth",
+          "badge": "Running",
+          "tone": "active",
+          "steps": ["done", "done", "done", "active", "idle"],
+          "left": "Claude Code",
+          "right": "worktree · port 3120"
         },
         {
-          "title": "Review surface",
-          "status": "Passed",
-          "successRate": "Checks ready",
-          "frequency": "Diff tracked"
+          "title": "fix/session-restore",
+          "badge": "Ready",
+          "tone": "ready",
+          "steps": ["done", "done", "done", "done", "done"],
+          "left": "12 files changed",
+          "right": "checks passing"
         }
       ]
     },
     "features": [
       {
+        "visual": "archductor",
+        "title": "Archductor gives every task its own machine-shaped box.",
+        "description": "One workspace per task: its own Git worktree, branch, .context directory, and port range. Run Codex or Claude Code inside it, review the diff, merge the PR, archive, next."
+      },
+      {
+        "visual": "archfleet",
+        "title": "Archfleet runs computer-use agents on real desktops.",
+        "description": "Draw a workflow and run it on an isolated libvirt VM driven by Agent S. The agent gets a full desktop with real applications. When it gets stuck, take over via XRDP."
+      },
+      {
         "visual": "archivum",
-        "title": "Archivum keeps the brief close.",
-        "description": "Turn notes, repo context, meeting takeaways, and project decisions into a calm Markdown workspace your agents can read before they start work."
-      },
-      {
-        "visual": "archductor",
-        "title": "Archductor gives each task a clean workspace.",
-        "description": "Spin up isolated branches, worktrees, ports, and PTY-backed agent sessions without mixing terminal state or half-finished diffs."
-      },
-      {
-        "visual": "archductor",
-        "title": "Review the work before it ships.",
-        "description": "Keep diffs, checks, comments, PR state, and archive flow in one place so agent output stays visible and reviewable."
+        "title": "Archivum keeps what the work taught you.",
+        "description": "A self-hosted wiki that writes itself. Drop in a PDF or a URL and it writes the page, links the concepts, and serves it back through a built-in MCP server your agents read from."
       }
     ],
     "video": {
       "headline": "See the loop.",
-      "description": "Drop the Screen Studio capture here once the Linux MVP walkthrough is recorded.",
-      "label": "Screen Studio video placeholder",
+      "description": "Workspace to agent session to diff review to merged PR, without leaving the app.",
+      "label": "Archductor walkthrough",
       "meta": "16:10 product capture",
-      "placeholder": "Record: add repo, create workspace, start agent, review diff/checks, create PR, archive."
+      "placeholder": "Record: add project, create workspace, start agent, review diff and checks, create PR, archive."
     }
   },
   "productsPage": {
     "metadata": {
-      "title": "Products | Perceo Suite",
-      "description": "Perceo and the product surfaces that support knowledge, execution, and verification."
+      "title": "Products | Perceo",
+      "description": "Archductor, Archfleet, and Archivum — three self-hosted tools for running agents on your own hardware."
     },
-    "eyebrow": "Perceo Suite",
-    "title": "One stack for agentic work.",
-    "description": "Archivum stores human knowledge. Archgraph structures project knowledge. Archductor executes work using that knowledge. Computer-use testing verifies behavior.",
+    "eyebrow": "Perceo",
+    "title": "Three tools, one stack.",
+    "description": "Everything here is self-hosted and runs on your own machine. Dispatch coding agents across isolated workspaces, run computer-use agents on real desktops, and keep what they learn. Each tool works on its own; none of them require the others.",
     "statusLabels": {
+      "available": "Available",
       "in-development": "In development",
-      "concept": "Concept"
-    },
-    "archductorProductLinkLabel": "Product page"
-  },
-  "docsPage": {
-    "metadata": {
-      "title": "Perceo Suite Docs",
-      "description": "Product documentation for the Perceo Suite."
-    },
-    "eyebrow": "Perceo Suite Documentation",
-    "title": "Start with the suite.",
-    "description": "Guides, concepts, and references for the Perceo stack: human knowledge, project memory, agent execution, and future computer-use verification.",
-    "cards": [
-      {
-        "href": "/docs/perceo",
-        "eyebrow": "Quickstart",
-        "title": "Read the Perceo overview",
-        "description": "Start with the suite-level product, then move into the public product docs."
-      },
-      {
-        "href": "/docs/archductor",
-        "eyebrow": "Popular guides",
-        "title": "Run agent workspaces",
-        "description": "Learn how Archductor turns repository work into isolated workspaces and PRs."
-      }
-    ],
-    "productsEyebrow": "Products",
-    "productsTitle": "Documentation index",
-    "workflowLink": {
-      "label": "Reference workflow",
-      "href": "/docs/archductor/workflow"
-    },
-    "reference": {
-      "eyebrow": "Reference",
-      "description": "Use reference pages when you need exact behavior, install targets, release readiness, limits, or known constraints."
+      "early": "Early"
     }
   },
   "products": [
     {
-      "slug": "perceo",
-      "name": "Perceo",
-      "status": "in-development",
-      "role": "Agentic work suite",
-      "summary": "The suite overview for knowledge, execution, and verification.",
-      "pitch": "Perceo connects human knowledge, project memory, agent execution, and verification into one workflow for shipping reviewable AI-assisted work.",
-      "href": "/products",
-      "docsHref": "/docs/perceo",
-      "docsVisibility": "public",
-      "primaryCta": "Read overview"
+      "slug": "archductor",
+      "name": "Archductor",
+      "status": "available",
+      "role": "Coding agents",
+      "summary": "Desktop control plane for running coding agents across isolated Git worktree workspaces.",
+      "pitch": "One workspace per task: Git worktree, branch, Codex or Claude Code session, diff review, PR merge. Use it when one codebase has several streams of work in flight and you do not want branch state, terminal state, or half-finished diffs bleeding together.",
+      "href": "/products/archductor",
+      "docsHref": "https://docs.perceo.ai/archductor/overview",
+      "repoUrl": "https://github.com/perceo-ai/conductor-arch",
+      "primaryCta": "Install",
+      "install": {
+        "label": "Homebrew",
+        "command": "brew install perceo-ai/tap/archductor"
+      },
+      "detail": {
+        "tagline": "Desktop control plane for coding agents.",
+        "intro": "Create a workspace, start Codex or Claude Code, review the diff, open or merge a GitHub pull request, archive the workspace, then start the next task without leaving the app.",
+        "note": "Linux is the primary validated target. Windows is a preview target. Inspired by Conductor.",
+        "points": [
+          "Give each workspace its own Git worktree, branch, .context directory, and stable ARCHDUCTOR_PORT range.",
+          "Run multiple workspaces for the same repository in parallel without them trampling each other.",
+          "Start multiple Shell, Codex, or Claude Code sessions inside one workspace.",
+          "Review changed files, diffs, todos, comments, PR checks, and sibling workspace conflicts in one surface.",
+          "Create, refresh, merge, and archive GitHub PRs through your own local gh auth."
+        ],
+        "workflow": [
+          "Add an existing repository or clone a Git URL.",
+          "Configure scripts, prompts, and workspace defaults in .archductor/settings.toml.",
+          "Create a workspace from a branch, prompt, GitHub issue, GitHub PR, or Linear issue.",
+          "Start Codex, Claude Code, or shell sessions inside it.",
+          "Review the diff, checks, todos, comments, and conflicts.",
+          "Create or merge the PR, archive the workspace, then repeat."
+        ],
+        "installTargets": [
+          {
+            "name": "Homebrew / Linuxbrew",
+            "command": "brew tap perceo-ai/tap\nbrew install archductor"
+          },
+          {
+            "name": "AppImage",
+            "command": "curl -Lo archductor.AppImage \\\n  https://github.com/perceo-ai/conductor-arch/releases/latest/download/archductor-x86_64.AppImage\nchmod +x archductor.AppImage\nsudo mv archductor.AppImage /usr/local/bin/archductor"
+          },
+          {
+            "name": "Arch (AUR)",
+            "command": "paru -S archductor"
+          },
+          {
+            "name": "Nix",
+            "command": "nix run github:perceo-ai/conductor-arch#archductor -- doctor"
+          }
+        ],
+        "requirements": [
+          "Linux desktop with GTK4/libadwaita support, or the Windows preview build.",
+          "git for worktrees, branches, diffs, and commits.",
+          "gh authenticated with gh auth login for PRs, checks, comments, and merges.",
+          "openssh for SSH repository access.",
+          "Your existing local codex or claude authentication, if you want agent sessions."
+        ],
+        "docsLinks": [
+          { "label": "Install", "href": "https://docs.perceo.ai/archductor/install" },
+          { "label": "Core workflow", "href": "https://docs.perceo.ai/archductor/workflow" },
+          { "label": "Project setup", "href": "https://docs.perceo.ai/archductor/project-setup" },
+          { "label": "Release readiness", "href": "https://docs.perceo.ai/archductor/release-readiness" }
+        ]
+      }
+    },
+    {
+      "slug": "archfleet",
+      "name": "Archfleet",
+      "status": "early",
+      "role": "Computer-use agents",
+      "summary": "Fleet manager for computer-use agents running on isolated VMs.",
+      "pitch": "Draw a workflow, run it on an isolated libvirt VM driven by Agent S, and take over via XRDP when it gets stuck. Computer-use agents need a real desktop; this gives each run its own instead of yours.",
+      "href": "/products/archfleet",
+      "docsHref": "https://docs.perceo.ai/archfleet/overview",
+      "repoUrl": "https://github.com/perceo-ai/archfleet",
+      "primaryCta": "Read the overview",
+      "detail": {
+        "tagline": "Fleet manager for computer-use agents.",
+        "intro": "Computer-use agents need a real desktop — a window manager, a browser with a profile, a file picker, a login session. Giving one your actual machine is not something you want to do twice. Archfleet gives each run its own VM instead.",
+        "note": "Archfleet is the newest product in the suite and is in active development. Install and configuration docs land with the first tagged release.",
+        "points": [
+          "Define what the agent should accomplish as a workflow, not a single prompt.",
+          "Each run gets its own libvirt guest, so nothing the agent does touches the host.",
+          "Agent S drives the desktop inside the guest; Archfleet owns VM lifecycle, scheduling, and run history.",
+          "Connect over XRDP and drive the session yourself when the agent stalls."
+        ],
+        "workflow": [
+          "Draw the workflow the agent should follow.",
+          "Archfleet provisions an isolated libvirt guest for the run.",
+          "Agent S perceives and acts inside the guest desktop.",
+          "Watch the run, or take over via XRDP when it gets stuck.",
+          "Keep the trace as evidence of what the product actually did."
+        ],
+        "requirements": [
+          "A libvirt/KVM host with capacity for the guests you want to run in parallel.",
+          "Guest images with a desktop environment and XRDP.",
+          "Model access for Agent S."
+        ],
+        "docsLinks": [
+          { "label": "Overview", "href": "https://docs.perceo.ai/archfleet/overview" }
+        ]
+      }
     },
     {
       "slug": "archivum",
       "name": "Archivum",
       "status": "in-development",
-      "role": "Knowledge workspace",
-      "summary": "Server-hosted Obsidian for personal and team knowledge.",
-      "pitch": "Self-hosted second brain with AI ingest, Markdown wiki, backlinks, semantic search, graph views, and MCP knowledge access.",
-      "href": "/products#archivum",
-      "docsHref": "/docs/archivum",
-      "docsVisibility": "public",
-      "primaryCta": "Read docs"
-    },
-    {
-      "slug": "archgraph",
-      "name": "Archgraph",
-      "status": "concept",
-      "role": "Memory/retrieval infrastructure",
-      "summary": "Self-hosted GraphRAG infrastructure for projects, products, repos, and agents.",
-      "pitch": "Typed project graph that tracks products, repositories, branches, commits, issues, docs, source areas, confidence, freshness, and provenance.",
-      "href": "/products#archgraph",
-      "docsHref": "/docs/archgraph",
-      "docsVisibility": "locked",
-      "primaryCta": "View concept"
-    },
-    {
-      "slug": "archductor",
-      "name": "Archductor",
-      "status": "in-development",
-      "role": "Agent execution workbench",
-      "summary": "Linux-native conductor for running coding agents across branches, PTYs, checks, and PRs.",
-      "pitch": "Create workspaces, launch Codex/Claude/Cursor-style workers, watch PTYs, review diffs, run checks, and move PRs through the loop.",
-      "href": "/products/archductor",
-      "docsHref": "/docs/archductor",
-      "docsVisibility": "public",
-      "primaryCta": "Download"
-    },
-    {
-      "slug": "computer-use-testing",
-      "name": "Computer-use Testing",
-      "status": "concept",
-      "role": "Future QA/eval layer",
-      "summary": "Autonomous computer-use agents for browser, desktop, mobile, and voice testing.",
-      "pitch": "A future verification layer that runs flows, evaluates behavior, catches regressions, and feeds evidence back into the Perceo stack.",
-      "href": "/products#computer-use-testing",
-      "docsHref": "/docs/computer-use-testing",
-      "docsVisibility": "locked",
-      "primaryCta": "View concept"
-    }
-  ],
-  "linuxConductor": {
-    "name": "Archductor",
-    "technicalName": "Linux Conductor",
-    "repoUrl": "https://github.com/pranavkannepalli/conductor-arch",
-    "releasesUrl": "https://github.com/pranavkannepalli/conductor-arch/releases",
-    "latestReleaseUrl": "https://github.com/pranavkannepalli/conductor-arch/releases/latest",
-    "readmeUrl": "https://github.com/pranavkannepalli/conductor-arch/blob/main/README.md",
-    "deployDocsUrl": "https://github.com/pranavkannepalli/conductor-arch/blob/main/docs/deploy-and-local-test.md",
-    "manualChecklistUrl": "https://github.com/pranavkannepalli/conductor-arch/blob/main/docs/manual-testing-checklist.md",
-    "subhead": "Linux-native agent execution workbench for the Perceo Suite.",
-    "shortDescription": "A Linux-native desktop control plane for running multiple coding agents across isolated workspaces.",
-    "heroPoints": [
-      "Run multiple Shell, Codex, Claude Code, and Cursor sessions in parallel.",
-      "Give each task its own Git worktree, branch, .context directory, and port range.",
-      "Review diffs, todos, comments, PR checks, and sibling workspace conflicts.",
-      "Create, refresh, merge, archive, and restore GitHub PR work from the app."
-    ],
-    "workflow": [
-      "Add or clone a repository.",
-      "Configure scripts, prompts, providers, and workspace defaults.",
-      "Create a workspace from a branch, prompt, GitHub issue, GitHub PR, or Linear issue.",
-      "Start Codex, Claude Code, Cursor, or shell sessions.",
-      "Review changes, checks, todos, comments, and conflicts.",
-      "Create or merge the PR, archive the workspace, then repeat."
-    ],
-    "installTargets": [
-      {
-        "name": "AppImage / GitHub release artifact",
-        "command": "curl -Lo linux-conductor.AppImage https://github.com/pranavkannepalli/conductor-arch/releases/latest/download/linux-conductor-x86_64.AppImage\nchmod +x linux-conductor.AppImage\n./linux-conductor.AppImage",
-        "note": "Preferred portable artifact. With no arguments it launches the GTK app; with arguments it forwards to the CLI."
+      "role": "Knowledge",
+      "summary": "Self-hosted second brain with a built-in MCP server.",
+      "pitch": "The wiki that writes itself. Drop in a PDF or paste a URL and Archivum writes the page, links related concepts, and keeps it searchable — then serves the whole thing to your agents through a built-in MCP server.",
+      "href": "/products/archivum",
+      "docsHref": "https://docs.perceo.ai/archivum/overview",
+      "repoUrl": "https://github.com/perceo-ai/archivum",
+      "primaryCta": "Install",
+      "install": {
+        "label": "Docker",
+        "command": "docker compose up -d"
       },
-      {
-        "name": ".deb / Ubuntu-Debian",
-        "command": "sudo apt install ./linux-conductor_0.1.0_amd64.deb",
-        "note": "Native package built by the release workflow and local nfpm packaging."
-      },
-      {
-        "name": ".rpm / Fedora / openSUSE",
-        "command": "sudo dnf install ./linux-conductor-0.1.0-1.x86_64.rpm",
-        "note": "Use dnf or zypper-compatible RPM installation on supported distributions."
-      },
-      {
-        "name": "Arch / AUR",
-        "command": "cd packaging/aur\nmakepkg -si",
-        "note": "AUR packaging is expected for Arch users; update pkgver and sha256sums for local validation."
-      },
-      {
-        "name": "Flatpak (experimental)",
-        "command": "flatpak run io.github.pranavkannepalli.linux-conductor",
-        "note": "Experimental. Flatpak may require broad filesystem access for arbitrary repository paths."
+      "detail": {
+        "tagline": "The wiki that writes itself.",
+        "intro": "Repos carry code. They do not carry the reasoning: why a decision went the way it did, which approach already failed, what a customer actually asked for. Archivum is where that lives, and MCP is what makes it reachable.",
+        "note": "One command to start. No cloud account, no SaaS, and no data leaving your machine unless you point it at a hosted model.",
+        "points": [
+          "Ingest files and URLs; an LLM extracts structured notes and writes the wiki page.",
+          "A background agent maintains pages, vector embeddings, and the knowledge graph.",
+          "Semantic search and question answering over everything you have ingested.",
+          "A built-in MCP server so Claude Desktop, Claude Code, Cursor, or VS Code read the same notes you do.",
+          "Point OLLAMA_BASE_URL at a local model and nothing leaves the machine at all."
+        ],
+        "workflow": [
+          "Run the bootstrap script, or clone the repo and copy .env.example.",
+          "Fill in your model key, JWT secret, owner password, and MCP key.",
+          "docker compose up -d, then open http://localhost.",
+          "Drop in documents and URLs; the background agent does the filing.",
+          "Point your MCP client at the server so agents read and write the same wiki."
+        ],
+        "installTargets": [
+          {
+            "name": "One-command install",
+            "command": "curl -fsSL https://raw.githubusercontent.com/pranavkannepalli/archivum/main/scripts/bootstrap.sh | bash"
+          },
+          {
+            "name": "Manual (Docker Compose)",
+            "command": "git clone https://github.com/pranavkannepalli/archivum.git\ncd archivum\ncp .env.example .env\ndocker compose -f docker-compose.yml -f docker-compose.images.yml up -d --no-build"
+          }
+        ],
+        "requirements": [
+          "Docker and Docker Compose on the host.",
+          "Node.js, for the guided installer CLI.",
+          "A model provider key, or a local Ollama endpoint."
+        ],
+        "docsLinks": [
+          { "label": "Overview", "href": "https://docs.perceo.ai/archivum/overview" },
+          { "label": "Install", "href": "https://docs.perceo.ai/archivum/install" }
+        ]
       }
-    ],
-    "requirements": [
-      "Linux desktop with GTK app support.",
-      "git for worktrees, branches, diffs, and commits.",
-      "gh authenticated with gh auth login for GitHub PRs, checks, comments, and merge.",
-      "openssh for SSH repository access.",
-      "GTK4/libadwaita and Rust for source builds.",
-      "Local Codex, Claude Code, Cursor, or shell auth/configuration as applicable."
-    ],
-    "features": [
-      "Multiple isolated Git worktree workspaces per repository.",
-      "PTY-backed Shell, Codex, Claude Code, and Cursor sessions.",
-      "Workspace terminal, setup/run/stop controls, logs, and process lists.",
-      "Diffs, changed files, todos, local review comments, PR checks, and GitHub PR comments.",
-      "Context staging from failing checks or review comments into a selected agent session.",
-      "GitHub PR create, refresh, merge, archive, restore, and saved session history."
-    ],
-    "knownLimits": [
-      "Terminal rendering is not a full terminal emulator.",
-      "Visual parity with macOS Conductor is incomplete.",
-      "Project settings/onboarding still need polish.",
-      "Advanced prompt packs/hooks/theme/layout customization are not fully surfaced in GUI.",
-      "Linux-first; Windows/macOS packages are not current launch targets."
-    ],
-    "buildCommands": [
-      "sudo apt update\nsudo apt install -y git gh sqlite3 openssh-client pkg-config libgtk-4-dev libadwaita-1-dev",
-      "git clone https://github.com/pranavkannepalli/conductor-arch\ncd conductor-arch",
-      "cargo fmt --all -- --check\ncargo test -p linux-conductor-core -p linux-conductor -p linux-conductor-gtk\ncargo build --workspace --release --locked\n./target/release/linux-conductor-gtk"
-    ]
-  }
+    }
+  ]
 }

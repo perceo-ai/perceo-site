@@ -1,114 +1,190 @@
-import { existsSync, readFileSync } from "node:fs";
+import { readFileSync } from "node:fs";
 import path from "node:path";
 
 const root = process.cwd();
-const readJson = (file) => JSON.parse(readFileSync(path.join(root, file), "utf8"));
-const siteConfig = readJson("content/site.json");
-const docsIndex = readJson("content/docs/index.json");
+const siteConfig = JSON.parse(readFileSync(path.join(root, "content/site.json"), "utf8"));
 
 const failures = [];
-const requiredProductStatuses = new Set(["in-development", "concept"]);
-const requiredVisibility = new Set(["public", "locked"]);
-const requiredDocSections = new Set(["Get started", "Concepts", "Guides", "Reference"]);
-const requiredVisuals = new Set(["archivum", "archductor"]);
+const productStatuses = new Set(["available", "in-development", "early"]);
+const visualKinds = new Set(["archductor", "archfleet", "archivum"]);
+const stepStates = new Set(["done", "active", "idle"]);
+const cardTones = new Set(["active", "ready"]);
 
-const requireString = (value, label) => {
+const str = (value, label) => {
   if (typeof value !== "string" || value.trim().length === 0) {
     failures.push(`${label} must be a non-empty string`);
   }
 };
 
-const requireArray = (value, label) => {
+const arr = (value, label) => {
   if (!Array.isArray(value) || value.length === 0) {
     failures.push(`${label} must be a non-empty array`);
     return [];
   }
-
   return value;
 };
 
-requireString(siteConfig.site?.name, "site.name");
-requireString(siteConfig.site?.baseUrl, "site.baseUrl");
-requireString(siteConfig.site?.metadata?.title, "site.metadata.title");
-requireString(siteConfig.site?.metadata?.description, "site.metadata.description");
+const oneOf = (value, allowed, label) => {
+  if (!allowed.has(value)) {
+    failures.push(`${label} must be one of ${[...allowed].join(", ")}, got ${JSON.stringify(value)}`);
+  }
+};
 
-for (const [index, link] of requireArray(siteConfig.site?.nav?.links, "site.nav.links").entries()) {
-  requireString(link.label, `site.nav.links[${index}].label`);
-  requireString(link.href, `site.nav.links[${index}].href`);
+const link = (value, label) => {
+  str(value?.label, `${label}.label`);
+  str(value?.href, `${label}.href`);
+};
+
+// --- site ---------------------------------------------------------------
+const site = siteConfig.site ?? {};
+str(site.name, "site.name");
+str(site.baseUrl, "site.baseUrl");
+str(site.docsUrl, "site.docsUrl");
+str(site.githubUrl, "site.githubUrl");
+str(site.metadata?.title, "site.metadata.title");
+str(site.metadata?.description, "site.metadata.description");
+
+for (const [i, item] of arr(site.nav?.links, "site.nav.links").entries()) {
+  link(item, `site.nav.links[${i}]`);
+}
+link(site.nav?.primaryCta, "site.nav.primaryCta");
+link(site.nav?.secondaryCta, "site.nav.secondaryCta");
+
+str(site.footer?.headline, "site.footer.headline");
+str(site.footer?.description, "site.footer.description");
+for (const [i, item] of arr(site.footer?.links, "site.footer.links").entries()) {
+  link(item, `site.footer.links[${i}]`);
 }
 
-for (const [index, feature] of requireArray(siteConfig.homePage?.features, "homePage.features").entries()) {
-  if (!requiredVisuals.has(feature.visual)) {
-    failures.push(`homePage.features[${index}].visual must be one of ${Array.from(requiredVisuals).join(", ")}`);
-  }
-  requireString(feature.title, `homePage.features[${index}].title`);
-  requireString(feature.description, `homePage.features[${index}].description`);
+// --- home ---------------------------------------------------------------
+const hero = siteConfig.homePage?.hero ?? {};
+str(hero.title, "homePage.hero.title");
+str(hero.subtitle, "homePage.hero.subtitle");
+arr(hero.descriptionLines, "homePage.hero.descriptionLines");
+
+const cards = arr(hero.cards, "homePage.hero.cards");
+if (cards.length !== 2) {
+  failures.push("homePage.hero.cards must have exactly 2 entries (the hero renders two)");
 }
-
-for (const [index, product] of requireArray(siteConfig.products, "products").entries()) {
-  requireString(product.slug, `products[${index}].slug`);
-  requireString(product.name, `products[${index}].name`);
-  if (!requiredProductStatuses.has(product.status)) {
-    failures.push(`products[${index}].status must be one of ${Array.from(requiredProductStatuses).join(", ")}`);
-  }
-  if (product.docsVisibility && !requiredVisibility.has(product.docsVisibility)) {
-    failures.push(`products[${index}].docsVisibility must be one of ${Array.from(requiredVisibility).join(", ")}`);
-  }
-  requireString(product.href, `products[${index}].href`);
-  requireString(product.docsHref, `products[${index}].docsHref`);
-}
-
-const productSlugs = new Set(siteConfig.products.map((product) => product.slug));
-
-for (const [productIndex, product] of requireArray(docsIndex.products, "docs.products").entries()) {
-  requireString(product.slug, `docs.products[${productIndex}].slug`);
-  if (!productSlugs.has(product.slug)) {
-    failures.push(`docs.products[${productIndex}].slug "${product.slug}" has no matching product in content/site.json`);
-  }
-  if (!requiredVisibility.has(product.visibility)) {
-    failures.push(`docs.products[${productIndex}].visibility must be one of ${Array.from(requiredVisibility).join(", ")}`);
-  }
-
-  const seenPageSlugs = new Set();
-  for (const [pageIndex, page] of requireArray(product.pages, `docs.products[${productIndex}].pages`).entries()) {
-    const slug = Array.isArray(page.slug) ? page.slug.join("/") : "";
-    if (seenPageSlugs.has(slug)) {
-      failures.push(`docs product "${product.slug}" has duplicate page slug "${slug || "overview"}"`);
-    }
-    seenPageSlugs.add(slug);
-
-    requireString(page.title, `docs.products[${productIndex}].pages[${pageIndex}].title`);
-    requireString(page.description, `docs.products[${productIndex}].pages[${pageIndex}].description`);
-    requireString(page.file, `docs.products[${productIndex}].pages[${pageIndex}].file`);
-
-    if (!requiredDocSections.has(page.section)) {
-      failures.push(`docs.products[${productIndex}].pages[${pageIndex}].section must be one of ${Array.from(requiredDocSections).join(", ")}`);
-    }
-
-    const markdownPath = path.join(root, "content", "docs", product.slug, page.file ?? "");
-    if (!existsSync(markdownPath)) {
-      failures.push(`missing markdown file for docs page: content/docs/${product.slug}/${page.file}`);
-    }
+for (const [i, card] of cards.entries()) {
+  const label = `homePage.hero.cards[${i}]`;
+  str(card.title, `${label}.title`);
+  str(card.badge, `${label}.badge`);
+  oneOf(card.tone, cardTones, `${label}.tone`);
+  str(card.left, `${label}.left`);
+  str(card.right, `${label}.right`);
+  for (const [j, step] of arr(card.steps, `${label}.steps`).entries()) {
+    oneOf(step, stepStates, `${label}.steps[${j}]`);
   }
 }
 
-for (const slug of ["archgraph", "computer-use-testing"]) {
-  const docsProduct = docsIndex.products.find((product) => product.slug === slug);
-  const siteProduct = siteConfig.products.find((product) => product.slug === slug);
-  if (docsProduct?.visibility !== "locked") {
-    failures.push(`${slug} docs must stay locked`);
+const features = arr(siteConfig.homePage?.features, "homePage.features");
+for (const [i, feature] of features.entries()) {
+  const label = `homePage.features[${i}]`;
+  oneOf(feature.visual, visualKinds, `${label}.visual`);
+  str(feature.title, `${label}.title`);
+  str(feature.description, `${label}.description`);
+}
+
+const video = siteConfig.homePage?.video ?? {};
+for (const key of ["headline", "description", "label", "meta", "placeholder"]) {
+  str(video[key], `homePage.video.${key}`);
+}
+
+// --- products page ------------------------------------------------------
+const productsPage = siteConfig.productsPage ?? {};
+str(productsPage.metadata?.title, "productsPage.metadata.title");
+str(productsPage.metadata?.description, "productsPage.metadata.description");
+str(productsPage.eyebrow, "productsPage.eyebrow");
+str(productsPage.title, "productsPage.title");
+str(productsPage.description, "productsPage.description");
+
+for (const status of productStatuses) {
+  str(productsPage.statusLabels?.[status], `productsPage.statusLabels.${status}`);
+}
+
+// --- products -----------------------------------------------------------
+const products = arr(siteConfig.products, "products");
+const slugs = new Set();
+
+for (const [i, product] of products.entries()) {
+  const label = `products[${i}]`;
+  str(product.slug, `${label}.slug`);
+  str(product.name, `${label}.name`);
+  str(product.role, `${label}.role`);
+  str(product.summary, `${label}.summary`);
+  str(product.pitch, `${label}.pitch`);
+  str(product.repoUrl, `${label}.repoUrl`);
+  str(product.primaryCta, `${label}.primaryCta`);
+  oneOf(product.status, productStatuses, `${label}.status`);
+
+  if (slugs.has(product.slug)) {
+    failures.push(`${label}.slug is duplicated: ${product.slug}`);
   }
-  if (siteProduct?.docsVisibility !== "locked") {
-    failures.push(`${slug} product docsVisibility must stay locked`);
+  slugs.add(product.slug);
+
+  if (product.href !== `/products/${product.slug}`) {
+    failures.push(`${label}.href must be /products/${product.slug}, got ${product.href}`);
+  }
+
+  if (!visualKinds.has(product.slug)) {
+    failures.push(`${label}.slug has no matching SuiteProductVisual kind`);
+  }
+
+  if (typeof product.docsHref === "string" && !product.docsHref.startsWith(site.docsUrl)) {
+    failures.push(`${label}.docsHref must point at ${site.docsUrl}`);
+  } else {
+    str(product.docsHref, `${label}.docsHref`);
+  }
+
+  if (product.install) {
+    str(product.install.label, `${label}.install.label`);
+    str(product.install.command, `${label}.install.command`);
+  }
+
+  const detail = product.detail ?? {};
+  str(detail.tagline, `${label}.detail.tagline`);
+  str(detail.intro, `${label}.detail.intro`);
+  str(detail.note, `${label}.detail.note`);
+  arr(detail.points, `${label}.detail.points`);
+  arr(detail.workflow, `${label}.detail.workflow`);
+  arr(detail.requirements, `${label}.detail.requirements`);
+
+  for (const [j, item] of arr(detail.docsLinks, `${label}.detail.docsLinks`).entries()) {
+    link(item, `${label}.detail.docsLinks[${j}]`);
+  }
+
+  for (const [j, target] of (detail.installTargets ?? []).entries()) {
+    str(target.name, `${label}.detail.installTargets[${j}].name`);
+    str(target.command, `${label}.detail.installTargets[${j}].command`);
   }
 }
 
-if (failures.length) {
-  console.error("Site config validation failed:");
+// Every visual kind should be exercised by the home page.
+const usedVisuals = new Set(features.map((feature) => feature.visual));
+for (const kind of visualKinds) {
+  if (!usedVisuals.has(kind)) {
+    failures.push(`homePage.features never uses the "${kind}" visual`);
+  }
+}
+
+// Nothing should still reference the retired products or repo owner.
+const raw = JSON.stringify(siteConfig);
+for (const stale of ["archgraph", "computer-use-testing", "linux-conductor", "Linux Conductor", "CONDUCTOR_PORT"]) {
+  if (raw.includes(stale)) {
+    failures.push(`content/site.json still references retired term "${stale}"`);
+  }
+}
+if (/github\.com\/pranavkannepalli\/conductor-arch/.test(raw)) {
+  failures.push("conductor-arch links must use the perceo-ai org");
+}
+
+if (failures.length > 0) {
+  console.error("site config validation failed:");
   for (const failure of failures) {
-    console.error(`- ${failure}`);
+    console.error(`  - ${failure}`);
   }
   process.exit(1);
 }
 
-console.log("Site config validation passed.");
+console.log(`site config OK (${products.length} products, ${features.length} features)`);

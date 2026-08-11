@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
+import SmartLink from "./SmartLink";
 
 export default function Footer() {
   const { site } = siteConfig;
@@ -15,8 +16,9 @@ export default function Footer() {
           {site.footer.description}
         </p>
         <div className="flex items-center justify-center gap-3">
-          <Link
+          <SmartLink
             href={site.nav.secondaryCta.href}
+            external={site.nav.secondaryCta.external}
             className="rounded-[5px] px-[20px] py-[10px] text-sm font-semibold text-white transition-colors hover:bg-white/[0.08]"
             style={{
               background: "rgba(255, 255, 255, 0.05)",
@@ -25,7 +27,7 @@ export default function Footer() {
             }}
           >
             {site.nav.secondaryCta.label}
-          </Link>
+          </SmartLink>
           <Link
             href={site.nav.primaryCta.href}
             className="rounded-[5px] bg-gradient-to-b from-[#8b5cf6] to-[#7848e6] px-[20px] py-[10px] text-sm font-semibold text-white transition-colors hover:from-[#7c3aed] hover:to-[#6d28d9]"
@@ -43,25 +45,16 @@ export default function Footer() {
           </div>
 
           <nav className="flex items-center gap-6">
-            {site.footer.links.map((link) =>
-              link.external ? (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  className="text-zinc-500 hover:text-white transition-colors text-sm"
-                >
-                  {link.label}
-                </a>
-              ) : (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className="text-zinc-500 hover:text-white transition-colors text-sm"
-                >
-                  {link.label}
-                </Link>
-              ),
-            )}
+            {site.footer.links.map((link) => (
+              <SmartLink
+                key={link.href}
+                href={link.href}
+                external={link.external}
+                className="text-zinc-500 hover:text-white transition-colors text-sm"
+              >
+                {link.label}
+              </SmartLink>
+            ))}
           </nav>
 
           <span className="text-zinc-600 text-xs">

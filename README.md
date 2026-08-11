@@ -1,36 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# perceo-site
 
-## Getting Started
+Marketing site for [Perceo](https://perceo.ai) — the local-first dev suite
+(Archductor, Archfleet, Archivum). Next.js 16 App Router, React 19, Tailwind 4.
 
-First, run the development server:
+Documentation lives in a separate Mintlify project published at
+**docs.perceo.ai**. This repo redirects `/docs/*` there; it no longer renders any
+docs itself.
+
+## Develop
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Checks
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run validate   # content/site.json shape, slugs, and stale-term guard
+npm run lint
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+`npm run validate` is the one that catches content drift: it enforces the product
+status enum, requires every product slug to have a matching `SuiteProductVisual`
+kind, requires `docsHref` to point at `site.docsUrl`, and fails on retired terms
+(`archgraph`, `linux-conductor`, `CONDUCTOR_PORT`, the old repo owner).
 
-## Learn More
+## Content
 
-To learn more about Next.js, take a look at the following resources:
+Everything user-visible comes from `content/site.json`, typed in
+`lib/site-config.ts`. Adding or changing a product means editing that file, not
+the components.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+A new product also needs:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. A `SuiteVisualKind` entry and a visual in `app/components/SuiteProductVisual.tsx`
+   — the slug and the visual kind must match.
+2. A `detail` block, which drives the generated page at `/products/<slug>`.
+3. A `homePage.features` entry, or the validator fails on an unused visual.
 
-## Deploy on Vercel
+## Routes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+| Route | What it is |
+| --- | --- |
+| `/` | Home — hero, three scrolling product features, video placeholder |
+| `/products` | Three-up product grid |
+| `/products/[slug]` | Generated product page, one per entry in `content/site.json` |
+| `/docs/*` | Permanent redirect to docs.perceo.ai |
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Redirects for retired routes live in `next.config.ts`.
+
+## Source of truth
+
+Product copy tracks the org profile README at
+[perceo-ai/.github](https://github.com/perceo-ai) and the product repo READMEs.
+When install commands, binary names, or config paths change upstream, update
+`content/site.json` here and the matching page in the docs repo.

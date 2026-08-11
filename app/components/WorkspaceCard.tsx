@@ -1,21 +1,23 @@
 "use client";
 
 import { useId } from "react";
+import type { HeroCard } from "@/lib/site-config";
 
-interface StatusCardProps {
-  title: string;
-  status: "Passed" | "Failed";
-  successRate: string;
-  frequency: string;
-}
+const stepColor: Record<HeroCard["steps"][number], string> = {
+  done: "bg-[#8add84]",
+  active: "bg-[#60a5fa]",
+  idle: "bg-zinc-600",
+};
 
-export default function StatusCard({
+export default function WorkspaceCard({
   title,
-  status,
-  successRate,
-  frequency,
-}: StatusCardProps) {
-  const isPassed = status === "Passed";
+  badge,
+  tone,
+  steps,
+  left,
+  right,
+}: HeroCard) {
+  const isActive = tone === "active";
   const noiseId = useId();
 
   return (
@@ -51,27 +53,25 @@ export default function StatusCard({
       {/* Header row */}
       <div className="flex gap-[5px] items-center w-full relative">
         <div
-          className={`w-[7px] h-[7px] rounded-full shrink-0 ${isPassed ? "bg-[#8add84]" : "bg-[#848484]"
+          className={`w-[7px] h-[7px] rounded-full shrink-0 ${isActive ? "bg-[#60a5fa]" : "bg-[#8add84]"
             }`}
         />
-        <span className="text-white text-[16px] font-semibold truncate flex-1 min-w-0">
+        <span className="text-white text-[15px] font-mono font-medium truncate flex-1 min-w-0">
           {title}
         </span>
         <span
-          className={`text-[12px] px-[10px] py-[4px] rounded-full font-semibold shrink-0 text-black ${isPassed ? "bg-[#8add84]" : "bg-[#dd9384]"
+          className={`text-[12px] px-[10px] py-[4px] rounded-full font-semibold shrink-0 text-black ${isActive ? "bg-[#9ec5fb]" : "bg-[#8add84]"
             }`}
         >
-          {status}
+          {badge}
         </span>
       </div>
 
       {/* Progress dots */}
       <div className="flex items-center gap-[5px] relative">
-        <div className="w-[12px] h-[12px] rounded-full bg-[#8add84]" />
-        <div className="w-[12px] h-[12px] rounded-full bg-[#8add84]" />
-        <div className="w-[12px] h-[12px] rounded-full bg-[#8add84]" />
-        <div className="w-[12px] h-[12px] rounded-full bg-[#60a5fa]" />
-        <div className="w-[12px] h-[12px] rounded-full bg-zinc-600" />
+        {steps.map((step, index) => (
+          <div key={index} className={`w-[12px] h-[12px] rounded-full ${stepColor[step]}`} />
+        ))}
       </div>
 
       {/* Divider */}
@@ -79,8 +79,8 @@ export default function StatusCard({
 
       {/* Stats row */}
       <div className="flex justify-between text-[12px] text-[#848484] relative">
-        <span>{successRate}</span>
-        <span>{frequency}</span>
+        <span>{left}</span>
+        <span>{right}</span>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { List, X } from "@phosphor-icons/react";
+import SmartLink from "./SmartLink";
 import { siteConfig } from "@/lib/site-config";
 
 export default function Navbar() {
@@ -41,19 +42,21 @@ export default function Navbar() {
           {/* Desktop Nav - absolutely centered */}
           <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
             {site.nav.links.map((link) => (
-              <Link
+              <SmartLink
                 key={link.href}
                 href={link.href}
+                external={link.external}
                 className="text-white/70 hover:text-white transition-colors text-sm"
               >
                 {link.label}
-              </Link>
+              </SmartLink>
             ))}
           </nav>
 
           <div className="flex items-center gap-3">
-            <Link
+            <SmartLink
               href={site.nav.secondaryCta.href}
+              external={site.nav.secondaryCta.external}
               className="hidden rounded-[5px] px-[20px] py-[10px] text-sm font-semibold text-white transition-colors hover:bg-white/[0.08] md:block"
               style={{
                 background: "rgba(255, 255, 255, 0.05)",
@@ -62,7 +65,7 @@ export default function Navbar() {
               }}
             >
               {site.nav.secondaryCta.label}
-            </Link>
+            </SmartLink>
             <Link
               href={site.nav.primaryCta.href}
               className="rounded-[5px] bg-gradient-to-b from-[#8b5cf6] to-[#7848e6] px-[20px] py-[10px] text-sm font-semibold text-white transition-colors hover:from-[#7c3aed] hover:to-[#6d28d9]"
@@ -115,21 +118,23 @@ export default function Navbar() {
         {/* Sheet Links */}
         <nav className="flex flex-col gap-6 mt-12">
           {site.nav.links.map((link) => (
-            <Link
+            <SmartLink
               key={link.href}
               href={link.href}
+              external={link.external}
               className="text-white text-2xl font-medium"
               onClick={() => setMenuOpen(false)}
             >
               {link.label}
-            </Link>
+            </SmartLink>
           ))}
         </nav>
 
         {/* Mobile CTA at bottom of list */}
         <div className="mt-auto pb-12">
-          <Link
+          <SmartLink
             href={site.nav.secondaryCta.href}
+            external={site.nav.secondaryCta.external}
             className="block w-full rounded-[5px] px-[20px] py-[12px] text-center text-sm font-semibold text-white"
             onClick={() => setMenuOpen(false)}
             style={{
@@ -139,7 +144,7 @@ export default function Navbar() {
             }}
           >
             {site.nav.secondaryCta.label}
-          </Link>
+          </SmartLink>
         </div>
       </div>
     </>

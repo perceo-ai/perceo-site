@@ -5,13 +5,18 @@ import {
   BookOpenText,
   CirclesThree,
   Code,
+  Desktop,
+  FlowArrow,
   GitBranch,
   GitPullRequest,
+  HardDrives,
   MagnifyingGlass,
   TerminalWindow,
 } from "@phosphor-icons/react";
 
-export type SuiteVisualKind = "archivum" | "archductor";
+import type { SuiteVisualKind } from "@/lib/site-config";
+
+export type { SuiteVisualKind };
 
 type SuiteProductVisualProps = {
   kind: SuiteVisualKind;
@@ -63,7 +68,7 @@ function ArchivumVisual({ active }: { active: boolean }) {
   const links = ["citations", "search", "agent context"];
 
   return (
-    <VisualShell active={active} product="Archivum" role="Knowledge workspace">
+    <VisualShell active={active} product="Archivum" role="Knowledge">
       <motion.div
         className={`${panelBase} left-5 top-5 w-[190px] p-3`}
         animate={active ? { opacity: 1, x: 0 } : { opacity: 0.55, x: -16 }}
@@ -142,7 +147,7 @@ function ArchivumVisual({ active }: { active: boolean }) {
 
 function ArchductorVisual({ active }: { active: boolean }) {
   return (
-    <VisualShell active={active} product="Archductor" role="Agent execution workbench">
+    <VisualShell active={active} product="Archductor" role="Coding agents">
       <div className="grid h-full grid-cols-[220px_1fr] gap-4 p-5">
         <motion.div className={`${panelSurface} p-3`} animate={active ? { opacity: 1 } : { opacity: 0.55 }}>
           <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
@@ -206,9 +211,93 @@ function ArchductorVisual({ active }: { active: boolean }) {
   );
 }
 
+function ArchfleetVisual({ active }: { active: boolean }) {
+  const nodes = ["Open app", "Sign in", "Upload", "Verify"];
+  const guests = [
+    { name: "guest-01", state: "running", tone: "bg-[#8add84]" },
+    { name: "guest-02", state: "takeover", tone: "bg-[#facc15]" },
+    { name: "guest-03", state: "queued", tone: "bg-zinc-600" },
+  ];
+
+  return (
+    <VisualShell active={active} product="Archfleet" role="Computer-use agents">
+      <div className="grid h-full grid-cols-[1fr_200px] gap-4 p-5">
+        <div className="relative">
+          <motion.div
+            className={`${panelBase} left-0 top-0 h-[150px] w-full p-4`}
+            animate={active ? { opacity: 1 } : { opacity: 0.5 }}
+          >
+            <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+              <FlowArrow size={17} weight="bold" />
+              Workflow
+            </div>
+            <div className="flex items-center gap-2">
+              {nodes.map((node, index) => (
+                <motion.div
+                  key={node}
+                  className="flex items-center gap-2"
+                  animate={active ? { opacity: 1 } : { opacity: 0.45 }}
+                  transition={{ delay: index * 0.08 }}
+                >
+                  <span className="rounded-[6px] border border-white/10 bg-white/[0.06] px-2.5 py-1.5 text-[11px] text-zinc-200">
+                    {node}
+                  </span>
+                  {index < nodes.length - 1 ? (
+                    <span className="h-px w-3 bg-white/20" aria-hidden="true" />
+                  ) : null}
+                </motion.div>
+              ))}
+            </div>
+          </motion.div>
+
+          <motion.div
+            className={`${panelBase} bottom-0 left-0 w-full p-4`}
+            animate={active ? { opacity: 1, y: 0 } : { opacity: 0.5, y: 10 }}
+            transition={{ delay: 0.14 }}
+          >
+            <div className="flex items-center gap-2 text-sm font-semibold text-white">
+              <Desktop size={17} weight="bold" />
+              Guest desktop
+            </div>
+            <div className="mt-3 font-mono text-[12px] leading-6 text-zinc-300">
+              <p className="text-zinc-500">agent-s: clicking &ldquo;Continue&rdquo;</p>
+              <p className="text-[#facc15]">stalled &mdash; XRDP takeover available</p>
+            </div>
+          </motion.div>
+        </div>
+
+        <motion.div className={`${panelSurface} p-3`} animate={active ? { opacity: 1 } : { opacity: 0.55 }}>
+          <div className="mb-3 flex items-center gap-2 text-sm font-semibold text-white">
+            <HardDrives size={17} weight="bold" />
+            Fleet
+          </div>
+          {guests.map((guest, index) => (
+            <motion.div
+              key={guest.name}
+              className="mb-2 rounded-[6px] border border-white/10 bg-white/[0.045] p-2"
+              animate={active ? { x: 0, opacity: 1 } : { x: 8, opacity: 0.5 }}
+              transition={{ delay: index * 0.08 }}
+            >
+              <p className="font-mono text-xs text-zinc-200">{guest.name}</p>
+              <p className="mt-1 flex items-center gap-1.5 text-[11px] text-zinc-500">
+                <span className={`h-1.5 w-1.5 rounded-full ${guest.tone}`} />
+                {guest.state}
+              </p>
+            </motion.div>
+          ))}
+        </motion.div>
+      </div>
+    </VisualShell>
+  );
+}
+
 export default function SuiteProductVisual({ kind, active }: SuiteProductVisualProps) {
   if (kind === "archivum") {
     return <ArchivumVisual active={active} />;
+  }
+
+  if (kind === "archfleet") {
+    return <ArchfleetVisual active={active} />;
   }
 
   return <ArchductorVisual active={active} />;

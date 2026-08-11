@@ -1,5 +1,5 @@
 export {
-  linuxConductor,
+  getProduct,
   products,
   type ProductStatus,
   type ProductSummary,

@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ComponentProps } from "react";
+import { useRef } from "react";
 import {
   motion,
   useScroll,
@@ -8,7 +8,7 @@ import {
   useInView,
 } from "framer-motion";
 import { siteConfig } from "@/lib/site-config";
-import StatusCard from "./StatusCard";
+import WorkspaceCard from "./WorkspaceCard";
 
 function AnimatedHeading({
   children,
@@ -51,16 +51,15 @@ function AnimatedHeading({
 
 export default function HeroSection() {
   const { hero } = siteConfig.homePage;
-  const [failedCard, passedCard] = hero.cards as Array<ComponentProps<typeof StatusCard>>;
-  const secondDescriptionLine = hero.descriptionLines[1] ?? "";
+  const [runningCard, readyCard] = hero.cards;
   const containerRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end start"],
   });
 
-  const passedCardY = useTransform(scrollYProgress, [0, 1], [0, -80]);
-  const failedCardY = useTransform(scrollYProgress, [0, 1], [0, -140]);
+  const readyCardY = useTransform(scrollYProgress, [0, 1], [0, -80]);
+  const runningCardY = useTransform(scrollYProgress, [0, 1], [0, -140]);
 
   return (
     <main
@@ -77,16 +76,12 @@ export default function HeroSection() {
         {hero.subtitle}
       </AnimatedHeading>
       <p className="text-zinc-500 text-right text-sm leading-relaxed mt-4">
-        {hero.descriptionLines[0]}
-        <br />
-        {secondDescriptionLine.startsWith("and verify ") ? (
-          <>
-            and <span className="text-white">verify</span>{" "}
-            {secondDescriptionLine.slice("and verify ".length)}
-          </>
-        ) : (
-          secondDescriptionLine
-        )}
+        {hero.descriptionLines.map((line, index) => (
+          <span key={line}>
+            {index > 0 ? <br /> : null}
+            {line}
+          </span>
+        ))}
       </p>
 
       <motion.div
@@ -94,14 +89,9 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.8 }}
-        style={{ y: failedCardY }}
+        style={{ y: runningCardY }}
       >
-        <StatusCard
-          title={failedCard.title}
-          status={failedCard.status}
-          successRate={failedCard.successRate}
-          frequency={failedCard.frequency}
-        />
+        <WorkspaceCard {...runningCard} />
       </motion.div>
 
       <motion.div
@@ -109,14 +99,9 @@ export default function HeroSection() {
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
-        style={{ y: passedCardY }}
+        style={{ y: readyCardY }}
       >
-        <StatusCard
-          title={passedCard.title}
-          status={passedCard.status}
-          successRate={passedCard.successRate}
-          frequency={passedCard.frequency}
-        />
+        <WorkspaceCard {...readyCard} />
       </motion.div>
     </main>
   );

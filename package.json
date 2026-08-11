@@ -7,24 +7,17 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "validate:config": "node scripts/validate-site-config.mjs",
-    "validate:archductor": "node scripts/validate-linux-conductor-content.mjs",
-    "validate:suite": "node scripts/validate-perceo-suite-content.mjs",
-    "validate:docs": "node scripts/validate-docs-quality.mjs"
+    "validate": "node scripts/validate-site-config.mjs"
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.10",
-    "@supabase/supabase-js": "^2.96.0",
-    "bcryptjs": "^3.0.3",
     "framer-motion": "^12.34.0",
-    "libsodium-wrappers": "^0.8.2",
     "next": "16.1.6",
     "react": "19.2.3",
     "react-dom": "19.2.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

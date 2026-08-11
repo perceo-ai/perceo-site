@@ -7,7 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/perceo-legacy", "/setup", "/setup/complete"],
       },
     ],
     sitemap: `${siteConfig.site.baseUrl}/sitemap.xml`,
