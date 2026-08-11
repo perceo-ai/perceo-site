@@ -11,21 +11,52 @@
     },
     "nav": {
       "links": [
-        { "label": "Home", "href": "/" },
-        { "label": "Products", "href": "/products" },
-        { "label": "Docs", "href": "https://docs.perceo.ai", "external": true }
+        {
+          "label": "Home",
+          "href": "/"
+        },
+        {
+          "label": "Products",
+          "href": "/products"
+        },
+        {
+          "label": "Docs",
+          "href": "https://docs.perceo.ai",
+          "external": true
+        }
       ],
-      "secondaryCta": { "label": "Read docs", "href": "https://docs.perceo.ai", "external": true },
-      "primaryCta": { "label": "Get Archductor", "href": "/products/archductor" }
+      "secondaryCta": {
+        "label": "Read docs",
+        "href": "https://docs.perceo.ai",
+        "external": true
+      },
+      "primaryCta": {
+        "label": "Get Archductor",
+        "href": "/products/archductor"
+      }
     },
     "footer": {
       "headline": "Runs on your machine. Ends at your machine.",
       "description": "Your repos, your VMs, your notes, your keys. No account, no control plane, no telemetry endpoint.",
       "links": [
-        { "label": "Home", "href": "/" },
-        { "label": "Products", "href": "/products" },
-        { "label": "Docs", "href": "https://docs.perceo.ai", "external": true },
-        { "label": "GitHub", "href": "https://github.com/perceo-ai", "external": true }
+        {
+          "label": "Home",
+          "href": "/"
+        },
+        {
+          "label": "Products",
+          "href": "/products"
+        },
+        {
+          "label": "Docs",
+          "href": "https://docs.perceo.ai",
+          "external": true
+        },
+        {
+          "label": "GitHub",
+          "href": "https://github.com/perceo-ai",
+          "external": true
+        }
       ]
     }
   },
@@ -42,7 +73,13 @@
           "title": "feat/rework-auth",
           "badge": "Running",
           "tone": "active",
-          "steps": ["done", "done", "done", "active", "idle"],
+          "steps": [
+            "done",
+            "done",
+            "done",
+            "active",
+            "idle"
+          ],
           "left": "Claude Code",
           "right": "worktree · port 3120"
         },
@@ -50,7 +87,13 @@
           "title": "fix/session-restore",
           "badge": "Ready",
           "tone": "ready",
-          "steps": ["done", "done", "done", "done", "done"],
+          "steps": [
+            "done",
+            "done",
+            "done",
+            "done",
+            "done"
+          ],
           "left": "12 files changed",
           "right": "checks passing"
         }
@@ -156,10 +199,22 @@
           "Your existing local codex or claude authentication, if you want agent sessions."
         ],
         "docsLinks": [
-          { "label": "Install", "href": "https://docs.perceo.ai/archductor/install" },
-          { "label": "Core workflow", "href": "https://docs.perceo.ai/archductor/workflow" },
-          { "label": "Project setup", "href": "https://docs.perceo.ai/archductor/project-setup" },
-          { "label": "Release readiness", "href": "https://docs.perceo.ai/archductor/release-readiness" }
+          {
+            "label": "Install",
+            "href": "https://docs.perceo.ai/archductor/install"
+          },
+          {
+            "label": "Core workflow",
+            "href": "https://docs.perceo.ai/archductor/workflow"
+          },
+          {
+            "label": "Project setup",
+            "href": "https://docs.perceo.ai/archductor/project-setup"
+          },
+          {
+            "label": "Release readiness",
+            "href": "https://docs.perceo.ai/archductor/release-readiness"
+          }
         ]
       }
     },
@@ -197,7 +252,10 @@
           "Model access for Agent S."
         ],
         "docsLinks": [
-          { "label": "Overview", "href": "https://docs.perceo.ai/archfleet/overview" }
+          {
+            "label": "Overview",
+            "href": "https://docs.perceo.ai/archfleet/overview"
+          }
         ]
       }
     },
@@ -206,8 +264,8 @@
       "name": "Archivum",
       "status": "in-development",
       "role": "Knowledge",
-      "summary": "Self-hosted second brain with a built-in MCP server.",
-      "pitch": "The wiki that writes itself. Drop in a PDF or paste a URL and Archivum writes the page, links related concepts, and keeps it searchable — then serves the whole thing to your agents through a built-in MCP server.",
+      "summary": "Self-hosted Obsidian-style second brain with a built-in MCP server.",
+      "pitch": "A private Markdown wiki that runs in your browser and stores notes as local files. Drop in a PDF or paste a URL and Archivum turns it into a searchable, linked page — then serves the whole vault to your agents through a built-in MCP server.",
       "href": "/products/archivum",
       "docsHref": "https://docs.perceo.ai/archivum/overview",
       "repoUrl": "https://github.com/perceo-ai/archivum",
@@ -221,37 +279,43 @@
         "intro": "Repos carry code. They do not carry the reasoning: why a decision went the way it did, which approach already failed, what a customer actually asked for. Archivum is where that lives, and MCP is what makes it reachable.",
         "note": "One command to start. No cloud account, no SaaS, and no data leaving your machine unless you point it at a hosted model.",
         "points": [
-          "Ingest files and URLs; an LLM extracts structured notes and writes the wiki page.",
-          "A background agent maintains pages, vector embeddings, and the knowledge graph.",
-          "Semantic search and question answering over everything you have ingested.",
+          "Markdown pages stored on disk stay the source of truth — readable and backup-able outside the app.",
+          "A browser wiki with the Obsidian shape: folders, backlinks, wikilinks, autosave, search, and a graph view.",
+          "File and URL ingest turns sources into searchable wiki pages with source metadata.",
           "A built-in MCP server so Claude Desktop, Claude Code, Cursor, or VS Code read the same notes you do.",
-          "Point OLLAMA_BASE_URL at a local model and nothing leaves the machine at all."
+          "Point the extraction and embedding providers at Ollama and nothing leaves the machine."
         ],
         "workflow": [
-          "Run the bootstrap script, or clone the repo and copy .env.example.",
-          "Fill in your model key, JWT secret, owner password, and MCP key.",
-          "docker compose up -d, then open http://localhost.",
-          "Drop in documents and URLs; the background agent does the filing.",
+          "Clone the repo and run ./install.sh (or .\\install.ps1 on Windows).",
+          "The installer writes .env, generates missing secrets, and starts the stack.",
+          "Log in at http://localhost as the owner account you configured.",
+          "Drop in documents and URLs; ingest turns them into linked wiki pages.",
           "Point your MCP client at the server so agents read and write the same wiki."
         ],
         "installTargets": [
           {
-            "name": "One-command install",
-            "command": "curl -fsSL https://raw.githubusercontent.com/pranavkannepalli/archivum/main/scripts/bootstrap.sh | bash"
+            "name": "Guided installer",
+            "command": "git clone https://github.com/perceo-ai/archivum.git\ncd archivum\n./install.sh"
           },
           {
             "name": "Manual (Docker Compose)",
-            "command": "git clone https://github.com/pranavkannepalli/archivum.git\ncd archivum\ncp .env.example .env\ndocker compose -f docker-compose.yml -f docker-compose.images.yml up -d --no-build"
+            "command": "cp .env.example .env\ndocker compose -f docker-compose.yml -f docker-compose.images.yml up -d --no-build"
           }
         ],
         "requirements": [
-          "Docker and Docker Compose on the host.",
-          "Node.js, for the guided installer CLI.",
-          "A model provider key, or a local Ollama endpoint."
+          "Docker Engine 24+ with Docker Compose v2.",
+          "Node.js 20+.",
+          "An Anthropic key, OpenRouter key, OpenAI-compatible endpoint, or local Ollama setup."
         ],
         "docsLinks": [
-          { "label": "Overview", "href": "https://docs.perceo.ai/archivum/overview" },
-          { "label": "Install", "href": "https://docs.perceo.ai/archivum/install" }
+          {
+            "label": "Overview",
+            "href": "https://docs.perceo.ai/archivum/overview"
+          },
+          {
+            "label": "Install",
+            "href": "https://docs.perceo.ai/archivum/install"
+          }
         ]
       }
     }
