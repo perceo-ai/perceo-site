@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { siteConfig } from "@/lib/site-config";
 import SmartLink from "./SmartLink";
+import Wordmark from "./Wordmark";
 
 export default function Footer() {
   const { site } = siteConfig;
@@ -40,9 +41,7 @@ export default function Footer() {
       {/* Bottom bar */}
       <div className="border-t border-white/5">
         <div className="max-w-[1400px] mx-auto px-5 md:px-12.5 py-6 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="text-xl font-bold font-serif text-white tracking-tight">
-            {site.name}
-          </div>
+          <Wordmark size="sm" href={null} />
 
           <nav className="flex items-center gap-6">
             {site.footer.links.map((link) => (

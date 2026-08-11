@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { List, X } from "@phosphor-icons/react";
 import SmartLink from "./SmartLink";
+import Wordmark from "./Wordmark";
 import { siteConfig } from "@/lib/site-config";
 
 export default function Navbar() {
@@ -35,9 +36,7 @@ export default function Navbar() {
         }
       >
         <div className="flex items-center justify-between md:relative">
-          <Link href="/" className="text-xl md:text-2xl font-bold font-serif text-white tracking-tight">
-            {site.name}
-          </Link>
+          <Wordmark />
 
           {/* Desktop Nav - absolutely centered */}
           <nav className="hidden md:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
@@ -103,9 +102,7 @@ export default function Navbar() {
       >
         {/* Sheet Header */}
         <div className="flex items-center justify-between">
-          <Link href="/" className="text-xl font-bold font-serif text-white tracking-tight">
-            {site.name}
-          </Link>
+          <Wordmark size="sm" />
           <button
             className="text-white p-1"
             onClick={() => setMenuOpen(false)}
