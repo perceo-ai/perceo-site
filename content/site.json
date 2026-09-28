@@ -151,13 +151,13 @@
       "repoUrl": "https://github.com/perceo-ai/conductor-arch",
       "primaryCta": "Install",
       "install": {
-        "label": "Homebrew",
-        "command": "brew install perceo-ai/tap/archductor"
+        "label": "Homebrew / Linuxbrew",
+        "command": "brew tap perceo-ai/tap\nbrew install archductor"
       },
       "detail": {
         "tagline": "Desktop control plane for coding agents.",
         "intro": "Create a workspace, start Codex or Claude Code, review the diff, open or merge a GitHub pull request, archive the workspace, then start the next task without leaving the app.",
-        "note": "Linux is the primary validated target. Windows is a preview target. Inspired by Conductor.",
+        "note": "Linux is the primary validated target. Homebrew installs the headless CLI and archcar daemon; APT, DNF, and AppImage are the Linux desktop paths. Windows is a preview target. Inspired by Conductor.",
         "points": [
           "Give each workspace its own Git worktree, branch, .context directory, and stable ARCHDUCTOR_PORT range.",
           "Run multiple workspaces for the same repository in parallel without them trampling each other.",
@@ -175,12 +175,20 @@
         ],
         "installTargets": [
           {
-            "name": "Homebrew / Linuxbrew",
-            "command": "brew tap perceo-ai/tap\nbrew install archductor"
+            "name": "Homebrew / Linuxbrew (CLI)",
+            "command": "brew tap perceo-ai/tap\nbrew install archductor\narchductor doctor"
+          },
+          {
+            "name": "APT (Debian / Ubuntu)",
+            "command": "curl -fsSLo /tmp/archductor-archive-keyring.gpg \\\n  https://packages.perceo.ai/apt/archductor-archive-keyring.gpg\nsudo install -Dm644 /tmp/archductor-archive-keyring.gpg \\\n  /usr/share/keyrings/archductor-archive-keyring.gpg\nsudo curl -fsSLo /etc/apt/sources.list.d/archductor.sources \\\n  https://packages.perceo.ai/apt/archductor.sources\nsudo apt update\nsudo apt install archductor archductor-desktop"
+          },
+          {
+            "name": "DNF (Fedora)",
+            "command": "sudo curl -fsSLo /etc/yum.repos.d/archductor.repo \\\n  https://packages.perceo.ai/rpm/archductor.repo\nsudo dnf makecache --repo archductor\nsudo dnf install archductor archductor-desktop"
           },
           {
             "name": "AppImage",
-            "command": "curl -Lo archductor.AppImage \\\n  https://github.com/perceo-ai/conductor-arch/releases/latest/download/archductor-x86_64.AppImage\nchmod +x archductor.AppImage\nsudo mv archductor.AppImage /usr/local/bin/archductor"
+            "command": "VERSION=0.8.3\ncurl -Lo archductor.AppImage \\\n  https://github.com/perceo-ai/conductor-arch/releases/download/v${VERSION}/archductor-${VERSION}-x86_64.AppImage\nchmod +x archductor.AppImage\nsudo mv archductor.AppImage /usr/local/bin/archductor-desktop"
           },
           {
             "name": "Arch (AUR)",
@@ -192,7 +200,7 @@
           }
         ],
         "requirements": [
-          "Linux desktop with GTK4/libadwaita support, or the Windows preview build.",
+          "Linux desktop for the Electron app, or the Windows preview build.",
           "git for worktrees, branches, diffs, and commits.",
           "gh authenticated with gh auth login for PRs, checks, comments, and merges.",
           "openssh for SSH repository access.",
