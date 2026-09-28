@@ -1,8 +1,8 @@
 Archductor RPM repository root.
 
 Client setup:
-  https://packages.perceo.ai/rpm/archductor.repo
-  https://packages.perceo.ai/rpm/RPM-GPG-KEY-archductor
+  https://www.perceo.ai/rpm/archductor.repo
+  https://www.perceo.ai/rpm/RPM-GPG-KEY-archductor
 
 Repository metadata under x86_64/repodata and RPM packages under x86_64/ are
 generated during package publication. Do not publish this route as ready until

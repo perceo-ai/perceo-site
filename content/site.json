@@ -180,11 +180,11 @@
           },
           {
             "name": "APT (Debian / Ubuntu)",
-            "command": "curl -fsSLo /tmp/archductor-archive-keyring.gpg \\\n  https://packages.perceo.ai/apt/archductor-archive-keyring.gpg\nsudo install -Dm644 /tmp/archductor-archive-keyring.gpg \\\n  /usr/share/keyrings/archductor-archive-keyring.gpg\nsudo curl -fsSLo /etc/apt/sources.list.d/archductor.sources \\\n  https://packages.perceo.ai/apt/archductor.sources\nsudo apt update\nsudo apt install archductor archductor-desktop"
+            "command": "curl -fsSLo /tmp/archductor-archive-keyring.gpg \\\n  https://www.perceo.ai/apt/archductor-archive-keyring.gpg\nsudo install -Dm644 /tmp/archductor-archive-keyring.gpg \\\n  /usr/share/keyrings/archductor-archive-keyring.gpg\nsudo curl -fsSLo /etc/apt/sources.list.d/archductor.sources \\\n  https://www.perceo.ai/apt/archductor.sources\nsudo apt update\nsudo apt install archductor archductor-desktop"
           },
           {
             "name": "DNF (Fedora)",
-            "command": "sudo curl -fsSLo /etc/yum.repos.d/archductor.repo \\\n  https://packages.perceo.ai/rpm/archductor.repo\nsudo dnf makecache --repo archductor\nsudo dnf install archductor archductor-desktop"
+            "command": "sudo curl -fsSLo /etc/yum.repos.d/archductor.repo \\\n  https://www.perceo.ai/rpm/archductor.repo\nsudo dnf makecache --repo archductor\nsudo dnf install archductor archductor-desktop"
           },
           {
             "name": "AppImage",
