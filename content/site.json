@@ -188,7 +188,7 @@
           },
           {
             "name": "AppImage",
-            "command": "VERSION=0.8.3\ncurl -Lo archductor.AppImage \\\n  https://github.com/perceo-ai/conductor-arch/releases/download/v${VERSION}/archductor-${VERSION}-x86_64.AppImage\nchmod +x archductor.AppImage\nsudo mv archductor.AppImage /usr/local/bin/archductor-desktop"
+            "command": "VERSION=0.8.3\ncurl -Lo archductor-desktop.AppImage \\\n  https://github.com/perceo-ai/conductor-arch/releases/download/v${VERSION}/archductor-desktop-${VERSION}-x86_64.AppImage\nchmod +x archductor-desktop.AppImage\nsudo mv archductor-desktop.AppImage /usr/local/bin/archductor-desktop"
           },
           {
             "name": "Arch (AUR)",
