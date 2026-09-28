@@ -1,0 +1,38 @@
+Package: archductor
+Version: 0.8.3-1
+Architecture: amd64
+Maintainer: Pranav Kannepalli <pranav.kannepalli@gmail.com>
+Installed-Size: 32800
+Depends: git, gh, sqlite3, openssh-client
+Filename: pool/main/a/archductor/archductor_0.8.3-1_amd64.deb
+Size: 11678206
+MD5sum: 71d6370a136c2bd5f8c1a0ef339e7c16
+SHA1: 3a5e6b26c318dab8ac12a9c7dce220a7f2347e5d
+SHA256: 8c6c71803030906cc560f9074059e0908e6799dbd64a2efb247278504ebd17c5
+Section: utils
+Priority: optional
+Homepage: https://github.com/perceo-ai/conductor-arch
+Description: Archductor is a parallel coding-agent workflow tool built around Git worktrees.
+ Each task gets its own isolated workspace: a branch, a directory, a terminal,
+ agent sessions, run scripts, diffs, checks, and a pull request path.
+
+Package: archductor-desktop
+Version: 0.8.3
+Architecture: amd64
+Maintainer: Pranav Kannepalli <pranav.kannepalli@gmail.com>
+Installed-Size: 321661
+Depends: git, gh, openssh-client
+Recommends: libappindicator3-1
+Filename: pool/main/a/archductor/archductor-desktop_0.8.3_amd64.deb
+Size: 84500074
+MD5sum: 6d8a81384fafde9debd241ace1a03815
+SHA1: 790fa0ff8940f412eea1aa39ba25ace4309f7bbf
+SHA256: e61d7bdc05fa62ab00fcbedfdba2e5874b1cfb5c81d0e9ac91ea14d422c130ee
+Section: default
+Priority: optional
+Homepage: https://github.com/perceo-ai/conductor-arch
+Description: Parallel coding-agent workflow tool built around Git worktrees.
+  Archductor desktop UI. Talks to the archcar daemon over a Unix socket.
+License: unknown
+Vendor: Pranav Kannepalli <pranav.kannepalli@gmail.com>
+
