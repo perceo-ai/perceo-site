@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:archductor-repos": "bash scripts/build-archductor-package-repositories.sh",
+    "check:archductor-release": "node scripts/check-archductor-release-assets.mjs",
     "start": "next start",
     "lint": "eslint",
     "validate": "node scripts/validate-site-config.mjs"

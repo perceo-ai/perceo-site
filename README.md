@@ -57,3 +57,20 @@ Product copy tracks the org profile README at
 [perceo-ai/.github](https://github.com/perceo-ai) and the product repo READMEs.
 When install commands, binary names, or config paths change upstream, update
 `content/site.json` here and the matching page in the docs repo.
+
+## Archductor Package Repositories
+
+The public APT and DNF client files live under `public/apt` and `public/rpm` so
+they can be served from `packages.perceo.ai`.
+
+Before publishing package repository metadata for a release, verify the GitHub
+release has the CLI packages, desktop packages, and separate checksum manifests:
+
+```bash
+npm run check:archductor-release -- --version 0.8.3 --download-dir /tmp/archductor-0.8.3
+```
+
+The signed APT `dists/` metadata, RPM package signatures and `repodata/`,
+package signing keys, and package binaries are publication artifacts. Do not
+advertise the package repositories as ready until install, launch, upgrade,
+checksum, and removal validation pass on fresh Debian/Ubuntu and Fedora VMs.
