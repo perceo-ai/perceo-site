@@ -61,7 +61,7 @@ When install commands, binary names, or config paths change upstream, update
 ## Archductor Package Repositories
 
 The public APT and DNF client files live under `public/apt` and `public/rpm` so
-they can be served from `packages.perceo.ai`.
+they can be served from `www.perceo.ai`.
 
 Before publishing package repository metadata for a release, verify the GitHub
 release has the CLI packages, desktop packages, and separate checksum manifests:
